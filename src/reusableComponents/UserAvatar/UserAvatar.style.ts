@@ -1,0 +1,10 @@
+import {Theme} from "@mui/material/styles";
+import createStyles from "@mui/styles/createStyles";
+
+export const styles = (theme: Theme) => createStyles({
+    avatar: {
+        padding: theme.spacing(.5),
+        borderRadius: '50%',
+        backgroundColor: theme.palette.background.paper
+    },
+})
