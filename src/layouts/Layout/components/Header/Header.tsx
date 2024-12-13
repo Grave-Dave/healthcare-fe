@@ -8,10 +8,13 @@ import HeaderAvatar from "./components/HeaderAvatar";
 import Nav from "../Nav";
 import {useStyles} from './Header.style';
 import useWindowSize from "../../../../hooks/useWindowSize.ts";
+import {useAppSelector} from "../../../../hooks/reduxHooks.ts";
+import selectors from "../../selectors.ts";
 
 const Header = () => {
     const classes = useStyles()
     const {windowWidth} = useWindowSize();
+    const testValue = useAppSelector(selectors.getTestValue);
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
@@ -21,6 +24,8 @@ const Header = () => {
     const onMenuClick = () => {
         setIsMobileMenuOpen(prevMobileMenuState => !prevMobileMenuState)
     }
+
+    console.log(testValue)
 
 
     return (
