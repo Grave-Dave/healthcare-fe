@@ -39,6 +39,7 @@ const theme = createTheme({
         success: {
             main: '#2e7d32',
         },
+        divider: 'rgba(87, 86, 86, 0.5)',
         background: {
             default: '#f5f5f5', // Page background
             paper: PURE_WHITE,   // Card and modal backgrounds
@@ -59,8 +60,11 @@ const theme = createTheme({
             fontWeight: 600,
         },
         body1: {
-            fontSize: '1rem',
+            fontSize: '.87rem',
             lineHeight: 1.5,
+            '@media (min-width:800px)': {
+                fontSize: '1rem',
+            },
         },
         button: {
             textTransform: 'none', // Disable uppercase for buttons
@@ -105,6 +109,15 @@ const theme = createTheme({
             },
         },
     },
+    breakpoints: {
+        values: {
+            xs: 540,
+            sm: 800,
+            md: 1280,
+            lg: 1440,
+            xl: 1636,
+        },
+    }
 });
 
 export default theme;

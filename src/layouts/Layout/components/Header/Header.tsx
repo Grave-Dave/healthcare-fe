@@ -1,25 +1,36 @@
-import React from "react";
+import React, {useState} from "react";
 
-import {useStyles} from './Header.style';
-// import useWindowSize from "../../../../hooks/useWindowSize.ts";
-import HeaderTitle from "./components/HeaderTitle/HeaderTitle.tsx";
-import Nav from "../Nav/Nav.tsx";
-import useWindowSize from "../../../../hooks/useWindowSize.ts";
+import MenuIcon from '@mui/icons-material/Menu';
+
 import {BREAKPOINT_NUMBERS} from "../../constants.ts";
-import UserAvatar from "../../../../reusableComponents/UserAvatar";
+import HeaderTitle from "./components/HeaderTitle";
 import HeaderAvatar from "./components/HeaderAvatar";
+import Nav from "../Nav";
+import {useStyles} from './Header.style';
+import useWindowSize from "../../../../hooks/useWindowSize.ts";
 
 const Header = () => {
     const classes = useStyles()
     const {windowWidth} = useWindowSize();
 
-    const isMobile = windowWidth <= BREAKPOINT_NUMBERS.SM;
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+
+    const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
+
+    const onMenuClick = () => {
+        setIsMobileMenuOpen(prevMobileMenuState => !prevMobileMenuState)
+    }
+
 
     return (
-        <div className={classes.container}>
+        <div className={classes.headerContainer}>
+            {isMobile && <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
             <HeaderTitle/>
-            <Nav isMobile={isMobile}/>
-            <HeaderAvatar/>
+            <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
+            <HeaderAvatar
+                onArrowClick={(userMenuState) => setIsUserMenuOpen(userMenuState)}
+                isUserMenuOpen={isUserMenuOpen}/>
         </div>
     )
 }

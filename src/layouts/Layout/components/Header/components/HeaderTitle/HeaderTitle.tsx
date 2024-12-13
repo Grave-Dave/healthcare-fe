@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 import {useStyles} from "./HeaderTitle.style.ts";
 
@@ -13,7 +14,9 @@ const HeaderTitle = () => {
 
     return (
         <div className={classes.headerTitleContainer}>
-            <p className={classes.headerText}>{getHeaderText()} </p>
+            <Link to={'/'} style={{textDecoration: 'none'}}>
+                <p className={classes.headerText}>{getHeaderText()}</p>
+            </Link>
         </div>
     )
 }
