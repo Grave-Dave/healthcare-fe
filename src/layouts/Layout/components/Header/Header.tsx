@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -8,34 +8,34 @@ import HeaderAvatar from "./components/HeaderAvatar";
 import Nav from "../Nav";
 import {useStyles} from './Header.style';
 import useWindowSize from "../../../../hooks/useWindowSize.ts";
-import {useAppSelector} from "../../../../hooks/reduxHooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import selectors from "../../selectors.ts";
+import actions from "../../actions.tsx";
 
 const Header = () => {
     const classes = useStyles()
+    const dispatch = useAppDispatch();
     const {windowWidth} = useWindowSize();
-    const testValue = useAppSelector(selectors.getTestValue);
 
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+    const isUserMenuOpen = useAppSelector(selectors.getIsUserMenuOpen);
+    const isMobileMenuOpen = useAppSelector(selectors.getIsMobileMenuOpen);
 
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
     const onMenuClick = () => {
-        setIsMobileMenuOpen(prevMobileMenuState => !prevMobileMenuState)
+        dispatch(actions.setMobileMenuOpen(!isMobileMenuOpen))
     }
 
-    console.log(testValue)
-
+    const onUserArrowClick = () => {
+        dispatch(actions.setUserMenuOpen(!isUserMenuOpen))
+    }
 
     return (
         <div className={classes.headerContainer}>
             {isMobile && <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
             <HeaderTitle/>
             <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
-            <HeaderAvatar
-                onArrowClick={(userMenuState) => setIsUserMenuOpen(userMenuState)}
-                isUserMenuOpen={isUserMenuOpen}/>
+            <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen}/>
         </div>
     )
 }

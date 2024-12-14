@@ -11,7 +11,11 @@ const Layout = () => {
     return (
         <ThemeProvider theme={theme}>
             <Header/>
-            <Scrollbars>
+            <Scrollbars style={{
+                display: 'flex',
+                height: 'calc(100vh - 96px)',
+                overflow: 'clip',
+            }}>
                 <Outlet/>
             </Scrollbars>
         </ThemeProvider>

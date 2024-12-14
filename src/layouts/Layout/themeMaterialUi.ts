@@ -57,7 +57,10 @@ const theme = createTheme({
         },
         h2: {
             fontSize: '2rem',
-            fontWeight: 600,
+            fontWeight: 500,
+            '@media (min-width:800px)': {
+                fontSize: '2.5rem',
+            },
         },
         body1: {
             fontSize: '.87rem',
@@ -67,7 +70,11 @@ const theme = createTheme({
             },
         },
         button: {
-            textTransform: 'none', // Disable uppercase for buttons
+            fontSize:'0.87rem',
+            textTransform: 'none',
+            '@media (min-width:800px)': {
+                fontSize: '1rem',
+            },
         },
     },
     components: {

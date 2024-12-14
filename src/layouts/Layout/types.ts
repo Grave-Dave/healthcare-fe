@@ -1,3 +1,4 @@
 export interface EntryPageReducerState {
-    testValue: boolean
+    isMobileMenuOpen: boolean
+    isUserMenuOpen: boolean
 }

@@ -4,19 +4,26 @@ import {EntryPageReducerState} from "./types.ts";
 export const REDUCER_KEY = 'ENTRY_PAGE';
 
 const initialState: EntryPageReducerState = {
-    testValue: false
+    isMobileMenuOpen: false,
+    isUserMenuOpen: false
 }
 
-const setTestValue: CaseReducer<EntryPageReducerState, PayloadAction<boolean>> =
+const setMobileMenuOpen: CaseReducer<EntryPageReducerState, PayloadAction<boolean>> =
     (state, action) => {
-        state.testValue = action.payload;
+        state.isMobileMenuOpen = action.payload;
+    };
+
+const setUserMenuOpen: CaseReducer<EntryPageReducerState, PayloadAction<boolean>> =
+    (state, action) => {
+        state.isUserMenuOpen = action.payload;
     };
 
 const slice = createSlice({
     name: REDUCER_KEY,
     initialState: initialState,
     reducers: {
-        setTestValue
+        setMobileMenuOpen,
+        setUserMenuOpen
     }
 })
 

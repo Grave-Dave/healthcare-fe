@@ -26,6 +26,6 @@ createRoot(document.getElementById('root')!).render(
             <Router>
                 <App/>
             </Router>
-        </Provider>,
-    </StrictMode>,
+        </Provider>
+    </StrictMode>
 )

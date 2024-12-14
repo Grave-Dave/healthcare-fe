@@ -5,6 +5,7 @@ import makeStyles from '@mui/styles/makeStyles';
 
 export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles({
     headerContainer: {
+        position: 'sticky',
         padding: spacing(1, 3),
         display: 'flex',
         alignItems: 'center',
@@ -12,6 +13,7 @@ export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles(
         height: 96,
         boxShadow: "0px 3px 3px -2px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 1px 8px 0px rgba(0,0,0,0.12)",
         backgroundColor: palette.primary.main,
+        zIndex: 200
     },
     burgerMenu: {
         color: palette.primary.contrastText,

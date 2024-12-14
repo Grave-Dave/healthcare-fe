@@ -5,6 +5,8 @@ import {NavType} from "./types.ts";
 import {adminNav, defaultNav, loginItem, userItems} from "./constants.ts";
 import {useStyles} from "./Nav.style.ts";
 import NavItem from "./components/NavItem";
+import {useAppDispatch} from "../../../../hooks/reduxHooks.ts";
+import actions from "../../actions.tsx";
 
 interface NavProps {
     isMobile: boolean;
@@ -14,10 +16,12 @@ interface NavProps {
 
 const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
     const classes = useStyles()
+    const dispatch = useAppDispatch();
+
     const [navItemsData, setNavItemsData] = useState<NavType[]>([])
     const [userMenuData, setUserMenuData] = useState<NavType[]>([])
     const isAdmin = undefined
-    const isLogged = true
+    const isLogged = false
 
     useEffect(() => {
         if (isAdmin) {
@@ -32,13 +36,19 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
         }
     }, [isAdmin])
 
+    const onNavItemClick = () =>{
+        dispatch(actions.setMobileMenuOpen(false))
+    }
+    const onUserItemClick = () =>{
+        dispatch(actions.setUserMenuOpen(false))
+    }
 
     const navItems = navItemsData.map((navItemData, i) => (
-        <NavItem key={`navItem-${i}`} navItemData={navItemData} isDropDownView={isMobile}/>
+        <NavItem key={`navItem-${i}`} navItemData={navItemData} isDropDownView={isMobile} onClick={onNavItemClick}/>
     ))
 
     const menuItems = userMenuData.map((navItemData, i) => (
-        <NavItem key={`navItem-${i}`} navItemData={navItemData} isDropDownView/>
+        <NavItem key={`userMenuItem-${i}`} navItemData={navItemData} isDropDownView onClick={onUserItemClick}/>
     ))
 
     return (
@@ -49,7 +59,7 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
             })}>
                 {navItems}
             </div>
-            <div className={classNames(classes.userMenuContainer, {
+            <div style={{height: `${100 * menuItems.length}px`}} className={classNames(classes.userMenuContainer, {
                 [classes.userMenuOpen]: isUserMenuOpen
             })}>
                 {menuItems}

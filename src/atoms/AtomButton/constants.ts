@@ -1,0 +1,7 @@
+export enum AtomButtonVariants {
+    STANDARD_BUTTON_VARIANT = 'STANDARD',
+    TEXT = 'TEXT',
+    CANCEL = 'CANCEL',
+    CTA_BUTTON_VARIANT = 'CTA',
+    FLOATING_BUTTON_VARIANT = 'FLOATING',
+}

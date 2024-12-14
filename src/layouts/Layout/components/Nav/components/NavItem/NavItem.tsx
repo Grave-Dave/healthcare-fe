@@ -10,9 +10,10 @@ import classNames from "classnames";
 interface NavItemProps {
     navItemData: NavType
     isDropDownView: boolean
+    onClick: () => void
 }
 
-const NavItem = ({navItemData, isDropDownView}: NavItemProps) => {
+const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
     const classes = useStyles()
     const [isHovered, setIsHovered] = useState<boolean>(false)
 
@@ -31,6 +32,7 @@ const NavItem = ({navItemData, isDropDownView}: NavItemProps) => {
             <div className={classNames(classes.navItemContainer, {[classes.dropDownItemContainer]: isDropDownView})}
                  onMouseEnter={() => setIsHovered(true)}
                  onMouseLeave={() => setIsHovered(false)}
+                 onClick={onClick}
             >
 
                 <NavLink isMobile={isDropDownView}

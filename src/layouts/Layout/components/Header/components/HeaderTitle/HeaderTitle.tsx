@@ -11,7 +11,6 @@ const HeaderTitle = () => {
         <span>Katarzyna Trzeciakiewicz</span>
     </>
 
-
     return (
         <div className={classes.headerTitleContainer}>
             <Link to={'/'} style={{textDecoration: 'none'}}>
