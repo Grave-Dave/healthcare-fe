@@ -34,7 +34,6 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
                  onMouseLeave={() => setIsHovered(false)}
                  onClick={onClick}
             >
-
                 <NavLink isMobile={isDropDownView}
                          isHovered={isHovered}
                          href={navItemData.link}>

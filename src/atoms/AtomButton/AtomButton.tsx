@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import {Link} from "react-router-dom";
 
 import {Button} from "@mui/material";
 
@@ -18,20 +19,21 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
                 padding: theme.spacing(1),
                 backgroundColor: theme.palette.secondary.main,
                 '&:hover': {
-                    backgroundColor:theme.palette.secondary.dark,
+                    backgroundColor: theme.palette.secondary.dark,
                 },
             }
             break;
         case AtomButtonVariants.TEXT:
+        case AtomButtonVariants.LINK:
             stylesForVariant = {
                 padding: theme.spacing(1),
-                color:theme.palette.secondary.contrastText,
-                background:'none',
-                boxShadow:'none',
+                color: theme.palette.secondary.contrastText,
+                background: 'none',
+                boxShadow: 'none',
                 '&:hover': {
-                    background:'none',
-                    boxShadow:'none',
-                    color:theme.palette.secondary.main,
+                    background: 'none',
+                    boxShadow: 'none',
+                    color: theme.palette.secondary.main,
                 },
             }
             break;
@@ -50,6 +52,7 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
                 position: 'fixed',
                 padding: theme.spacing(2, 3),
                 textTransform: 'uppercase',
+                width: 250,
                 letterSpacing: 1,
                 backgroundColor: theme.palette.secondary.main,
                 transition: 'background-color .3s ease',
@@ -84,22 +87,33 @@ const AtomButton = ({
                         buttonVariant,
                         buttonClassName,
                         text,
+                        link = '/',
                         ...otherProps
                     }: AtomButtonProps) => {
     const {windowWidth} = useWindowSize();
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
+    let buttonText
+
+    switch (buttonVariant) {
+        case AtomButtonVariants.LINK:
+            buttonText = <Link style={{textDecoration: 'none', color: 'inherit'}} to={link}>{text}</Link>
+            break;
+        default:
+            buttonText = text
+    }
+
     return (
         <Button
             variant={"contained"}
             sx={getStylesForVariant(buttonVariant, isMobile)}
-            fullWidth={isMobile}
+            fullWidth={isMobile && buttonVariant !== AtomButtonVariants.LINK}
             className={classNames(
                 classes,
                 buttonClassName,
             )}
             {...otherProps}>
-            {text}
+            {buttonText}
         </Button>
     )
 }

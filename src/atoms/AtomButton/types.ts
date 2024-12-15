@@ -1,12 +1,10 @@
-import { ButtonProps, ButtonTypeMap} from "@mui/material";
-import {WithStyles} from "@mui/styles";
+import {ButtonProps, ButtonTypeMap} from "@mui/material";
 
-import styles from "./AtomButton.style";
 import {AtomButtonVariants} from "./constants.ts";
 
 type MuiPropsButton = ButtonTypeMap['props'];
 
-export interface AtomButtonExposedProps extends ButtonProps{
+export interface AtomButtonProps extends ButtonProps {
     /**
      * Button Variant
      */
@@ -16,9 +14,11 @@ export interface AtomButtonExposedProps extends ButtonProps{
      */
     text: MuiPropsButton['children'];
     /**
+     * Button Text
+     */
+    link?: string;
+    /**
      * Classes for button
      */
     buttonClassName?: string;
 }
-
-export type AtomButtonProps = AtomButtonExposedProps  & WithStyles<typeof styles>;

@@ -4,27 +4,12 @@ import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 
 export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
-    loginContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        padding: spacing(3, 2)
-    },
-    mobileLoginContainer: {
-        padding: spacing(0),
-    },
     paperContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         width: 600,
-        height: 'calc(100vh - 144px)'
     },
-    mobilePaperContainer: {
-        flex: '1 0 auto',
-        width: 'auto',
-        height: 'calc(100vh - 96px)',
-        alignItems: 'stretch',
+    loginHeader: {
+        padding: spacing(3, 2, 4),
+        textAlign: 'center',
     },
     actionsContainer: {
         display: 'flex',
@@ -33,9 +18,13 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         padding: spacing(3),
     },
     mobileActionsContainer: {
+        gap: spacing(1),
+        padding: spacing(2),
+    },
+    inputsContainer: {
         display: 'flex',
         flexDirection: 'column',
-        gap: spacing(2),
-        padding: spacing(3),
-    }
+        gap: spacing(4),
+        padding: spacing(2),
+    },
 }))

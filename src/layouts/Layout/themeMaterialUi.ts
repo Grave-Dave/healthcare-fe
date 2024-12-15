@@ -70,7 +70,7 @@ const theme = createTheme({
             },
         },
         button: {
-            fontSize:'0.87rem',
+            fontSize: '0.87rem',
             textTransform: 'none',
             '@media (min-width:800px)': {
                 fontSize: '1rem',
@@ -105,6 +105,43 @@ const theme = createTheme({
                 root: {
                     color: PURE_WHITE,
                     fontFamily: "Poppins, sans-serif",
+                },
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    '& .MuiOutlinedInput-root': {
+                        '&.Mui-focused fieldset': {
+                            borderColor: GOLDEN_BROWN,
+                        },
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                        color: GOLDEN_BROWN,
+                    },
+                },
+            },
+        },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused': {
+                        color: GOLDEN_BROWN, // Focused label color
+                    },
+                    '&.Mui-error': {
+                        color: '#D32F2F', // Error label color
+                    },
+                },
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-focused': {
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: GOLDEN_BROWN
+                        }
+                    },
                 },
             },
         },
