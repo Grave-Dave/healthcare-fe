@@ -2,15 +2,7 @@ import React, {useState} from "react";
 import classNames from "classnames";
 import Scrollbars from "react-custom-scrollbars-2";
 
-import {
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Typography,
-    FormControl
-} from "@mui/material";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Typography} from "@mui/material";
 
 import {useStyles} from "./Login.style.ts";
 import AtomButton from "../../atoms/AtomButton";
@@ -20,6 +12,9 @@ import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
 import {LoginForm} from "./types.ts";
 import {LOGIN_FORM_KEYS} from "./constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
+import FormInput from "../../reusableComponents/FormInput";
+import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
+import {ROUTES} from "../../constants.ts";
 
 const Login = () => {
     const {windowWidth} = useWindowSize();
@@ -35,17 +30,9 @@ const Login = () => {
         email: false,
         password: false
     })
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
-
-    const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
 
     const handleFormChange = (key: string, value: string) => {
         setFormValues(prevState => {
@@ -62,39 +49,26 @@ const Login = () => {
     const getInput = (field: keyof LoginForm, fieldValue: string, label: string) => {
         return (
             field !== LOGIN_FORM_KEYS.PASSWORD
-                ? <FormControl variant="outlined" required error={formError[field]}>
-                    <InputLabel>{label}</InputLabel>
-                    <OutlinedInput
-                        label={label}
-                        value={fieldValue}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            handleFormChange(field, event.target.value);
-                        }}
-                    />
-                </FormControl>
-                : <FormControl variant="outlined" required error={formError[field]}>
-                    <InputLabel>{label}</InputLabel>
-                    <OutlinedInput
-                        type={showPassword ? 'text' : 'password'}
-                        value={fieldValue}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            handleFormChange(field, event.target.value);
-                        }}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    onMouseUp={handleMouseUpPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                        label={label}
-                    />
-                </FormControl>
+                ? <FormInput
+                    required
+                    error={formError[field]}
+                    label={label}
+                    value={fieldValue}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        handleFormChange(field, event.target.value);
+                    }}
+                />
+                : <FormInput
+                    required
+                    error={formError[field]}
+                    label={label}
+                    value={fieldValue}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        handleFormChange(field, event.target.value);
+                    }}
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={<PasswordAdornment showPassword={showPassword} onClick={handleClickShowPassword}/>}
+                />
         )
     }
 
@@ -113,14 +87,14 @@ const Login = () => {
                 <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
                             text={'Zaloguj się'}/>
                 <AtomButton buttonVariant={AtomButtonVariants.LINK}
-                            link={'/register'}
+                            link={ROUTES.REGISTER}
                             text={'lub zarejestruj się'}/>
             </div>
         )
     }
 
     return (
-        <MyPaper paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
             <Typography className={classes.loginHeader} variant="h2">Zaloguj się</Typography>
             <Scrollbars>
                 {inputsContainer()}

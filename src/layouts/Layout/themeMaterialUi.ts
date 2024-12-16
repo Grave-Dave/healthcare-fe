@@ -29,6 +29,7 @@ const theme = createTheme({
         },
         error: {
             main: '#d32f2f',
+            light: '#e85959'
         },
         warning: {
             main: '#ffa726',
@@ -37,7 +38,7 @@ const theme = createTheme({
             main: '#0288d1',
         },
         success: {
-            main: '#2e7d32',
+            main: '#3bbb42',
         },
         divider: 'rgba(87, 86, 86, 0.5)',
         background: {

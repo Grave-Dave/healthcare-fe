@@ -1,4 +1,5 @@
 import {NavType} from "./types.ts";
+import {ROUTES} from "../../../../constants.ts";
 import calendarIconWithPen from '../../../../public/images/calendar-lines-pen-svgrepo-com.svg'
 import calendarIcon from '../../../../public/images/calendar-lines-svgrepo-com.svg'
 import infoIcon from '../../../../public/images/file-info-alt-svgrepo-com.svg'
@@ -10,59 +11,59 @@ import logIcon from '../../../../public/images/logout-svgrepo-com.svg'
 
 export const defaultNav: NavType[] = [
     {
-        link: '/umow-wizyte',
+        path: ROUTES.MAKE_VISIT,
         name: 'Umów wizytę',
         icon: calendarIconWithPen
     },
     {
-        link: '/moje-wizyty',
+        path: ROUTES.MY_VISITS,
         name: 'Moje wizyty',
         icon: calendarIcon
     },
     {
-        link: '/o-mnie',
+        path: ROUTES.ABOUT_ME,
         name: 'O mnie',
         icon: infoIcon
     },
     {
-        link: '/dojazd',
+        path: ROUTES.COMMUTE,
         name: 'Dojazd',
         icon: mapIcon
     },
     {
-        link: '/kontakt',
+        path: ROUTES.CONTACT,
         name: 'Kontakt',
         icon: phoneIcon
     },
 ]
 export const adminNav: NavType[] = [
     {
-        link: '/admin',
+        path: ROUTES.ADMIN,
         name: 'Admin panel',
         icon: adminIcon
     },
     {
-        link: '/kalendarz',
+        path: ROUTES.CALENDAR,
         name: 'Kalendarz',
         icon: calendarIconWithPen
     },
     {
-        link: '/wizyty',
+        path: ROUTES.VISITS,
         name: 'Wizyty',
         icon: calendarIcon
     },
     {
-        link: '/o-mnie',
+        path: ROUTES.ABOUT_ME,
         name: 'O mnie',
         icon: infoIcon
     },
     {
-        link: '/dojazd',
+        path: ROUTES.COMMUTE,
         name: 'Dojazd',
         icon: mapIcon
     },
     {
-        link: '/kontakt',
+        path: ROUTES.CONTACT,
         name: 'Kontakt',
         icon: phoneIcon
     },
@@ -70,12 +71,12 @@ export const adminNav: NavType[] = [
 
 export const userItems: NavType[] = [
     {
-        link: '/user',
+        path: ROUTES.USER,
         name: 'Mój profil',
         icon: userIcon
     },
     {
-        link: '/',
+        path: ROUTES.HOME,
         name: 'Wyloguj',
         icon: logIcon
     }
@@ -83,7 +84,7 @@ export const userItems: NavType[] = [
 
 export const loginItem: NavType[] = [
     {
-        link: '/login',
+        path: ROUTES.LOGIN,
         name: 'Zaloguj',
         icon: logIcon
     }

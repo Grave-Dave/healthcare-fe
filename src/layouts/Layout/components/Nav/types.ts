@@ -1,5 +1,5 @@
 export type NavType = {
-    link: string;
+    path: string;
     name: string;
     icon: string;
 }
