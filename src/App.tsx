@@ -6,6 +6,7 @@ import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
 import UserVisitOverview from "./containers/UserVisitOverview";
+import VisitManager from "./containers/VisitManager";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
                 <Route path={ROUTES.LOGIN} element={<Login/>}/>
                 <Route path={ROUTES.REGISTER} element={<Register/>}/>
                 <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
+                <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
             </Route>
         </Routes>
     )

@@ -40,6 +40,10 @@ const theme = createTheme({
         success: {
             main: '#3bbb42',
         },
+        action:{
+            hover: '#f5f5f5',
+            selected: '#e0dfdf',
+        },
         divider: 'rgba(87, 86, 86, 0.5)',
         background: {
             default: '#f5f5f5', // Page background
@@ -82,13 +86,13 @@ const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: 8, // Rounded buttons
+                    borderRadius: 8,
                     padding: '8px 16px',
                 },
                 containedPrimary: {
-                    backgroundColor: '#1976d2',
+                    backgroundColor: GOLDEN_BROWN,
                     '&:hover': {
-                        backgroundColor: '#1565c0', // Darker shade on hover
+                        backgroundColor: BURNT_SIENNA,
                     },
                 },
             },
@@ -127,7 +131,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     '&.Mui-focused': {
-                        color: GOLDEN_BROWN, // Focused label color
+                        color: GOLDEN_BROWN,
                     },
                     '&.Mui-error': {
                         color: '#D32F2F', // Error label color
@@ -150,6 +154,36 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: '#1976d2',
+                },
+            },
+        },
+        MuiDialog: {
+            styleOverrides: {
+                paper: {
+                    borderRadius: 8,
+                    padding: '16px 0',
+                },
+            },
+        },
+        MuiDialogTitle: {
+            styleOverrides: {
+                root: {
+                    fontSize: 24,
+                    borderBottom: '1px solid rgba(0,0,0,0.3)',
+                },
+            },
+        },
+        MuiDialogContent: {
+            styleOverrides: {
+                root: {
+                    padding: '24px !important',
+                },
+            },
+        },
+        MuiDialogActions: {
+            styleOverrides: {
+                root: {
+                    padding: '8px 24px',
                 },
             },
         },

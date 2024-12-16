@@ -13,5 +13,14 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
         width: '100%',
         height: 2,
         backgroundColor: palette.divider
+    },
+    clickable: {
+        cursor: "pointer",
+        '&:hover': {
+            backgroundColor: palette.action.hover
+        }
+    },
+    selected:{
+        backgroundColor: palette.action.selected
     }
 })

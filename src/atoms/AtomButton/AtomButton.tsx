@@ -9,24 +9,17 @@ import useWindowSize from "../../hooks/useWindowSize.ts";
 import {AtomButtonVariants} from "./constants.ts";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 
-const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolean) => {
+const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolean, isSmall: boolean) => {
     let stylesForVariant;
     let stylesForMobile;
 
     switch (buttonVariant) {
         case AtomButtonVariants.STANDARD_BUTTON_VARIANT:
-            stylesForVariant = {
-                padding: theme.spacing(1),
-                backgroundColor: theme.palette.secondary.main,
-                '&:hover': {
-                    backgroundColor: theme.palette.secondary.dark,
-                },
-            }
+            stylesForVariant = {}
             break;
         case AtomButtonVariants.TEXT:
         case AtomButtonVariants.LINK:
             stylesForVariant = {
-                padding: theme.spacing(1),
                 color: theme.palette.secondary.contrastText,
                 background: 'none',
                 boxShadow: 'none',
@@ -39,12 +32,27 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
             break;
         case AtomButtonVariants.CANCEL:
             stylesForVariant = {
-                padding: theme.spacing(1)
+                background: 'none',
+                boxShadow: 'none',
+                color: theme.palette.error.main,
+                '&:hover': {
+                    background: 'none',
+                    boxShadow: 'none',
+                    color: theme.palette.error.light,
+                }
             }
             break;
         case AtomButtonVariants.FLOATING_BUTTON_VARIANT:
             stylesForVariant = {
-                padding: theme.spacing(1)
+                position: isSmall ? 'fixed' : 'absolute',
+                bottom: 15,
+                right: isSmall ? 15 :'50%',
+                transform: isSmall ? 'none' : 'translate(50%)',
+                width: isSmall ? 60 : 250,
+                textTransform: 'uppercase',
+                borderRadius: 2,
+                padding: theme.spacing(2, 3),
+                boxShadow: 'rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px'
             }
             break;
         case AtomButtonVariants.CTA_BUTTON_VARIANT:
@@ -66,6 +74,12 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
     }
 
     switch (true) {
+        case isSmall && buttonVariant === AtomButtonVariants.FLOATING_BUTTON_VARIANT:
+            stylesForMobile = {
+                height: 64,
+                borderRadius: '50%'
+            }
+            break;
         case isMobile:
             stylesForMobile = {
                 height: 60,
@@ -92,6 +106,7 @@ const AtomButton = ({
                     }: AtomButtonProps) => {
     const {windowWidth} = useWindowSize();
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
+    const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
     let buttonText
 
@@ -106,7 +121,7 @@ const AtomButton = ({
     return (
         <Button
             variant={"contained"}
-            sx={getStylesForVariant(buttonVariant, isMobile)}
+            sx={getStylesForVariant(buttonVariant, isMobile, isSmall)}
             fullWidth={isMobile && buttonVariant !== AtomButtonVariants.LINK}
             className={classNames(
                 classes,

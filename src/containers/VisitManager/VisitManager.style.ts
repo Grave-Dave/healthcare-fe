@@ -1,26 +1,30 @@
 import {Theme} from '@mui/material/styles';
 
 import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
-export const styles = ({spacing}: Theme) => createStyles({
-    papersContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap'
-    },
-    mobilePapersContainer: {
-        flexDirection: 'column',
-        gap: 16
-    },
+export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     paperContainer: {
         position: 'relative',
-        width: 700,
-        padding: spacing(3, 1),
+        width: 1100,
+        padding: spacing(3, 2),
         gap: 16,
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
         padding: spacing(1, 4, 3, 1),
+        gap: 24
+    },
+    headerWithButton: {
+        position: 'absolute',
+        top: 32,
+        left: '50%',
+        transform: 'translate(-50%)'
+    },
+    contentContainer: {
+        display: 'flex',
+        width: '100%',
+        flex: '1 0 auto',
         gap: 24
     },
     paperContent: {
@@ -33,14 +37,4 @@ export const styles = ({spacing}: Theme) => createStyles({
         flexDirection: 'column',
         height: '80%',
     },
-    header: {
-        padding: spacing(1),
-        textAlign: 'center',
-    },
-    headerWithButton: {
-        position: 'absolute',
-        top: 32,
-        left: '50%',
-        transform: 'translate(-50%)'
-    },
-})
+}))

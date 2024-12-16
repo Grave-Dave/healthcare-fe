@@ -1,22 +1,29 @@
+import {useState} from "react";
 import classNames from "classnames";
-import Scrollbars from "react-custom-scrollbars-2";
 
-import { Typography} from "@mui/material";
+import {Typography} from "@mui/material";
+import {WithStyles, withStyles} from "@mui/styles";
+import AddIcon from '@mui/icons-material/Add';
 
 import useWindowSize from "../../hooks/useWindowSize.ts";
-import {useStyles} from "./UserVisitOverview.style.ts";
+import {styles} from "./UserVisitOverview.style.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {EmptyVisitsIcon} from "./icons/icons.tsx";
 import {VisitItemType} from "./types.ts";
 import VisitItem from "../../reusableComponents/VisitItem";
+import DeleteVisitDialog from "./components/DeleteVisitDialog";
+import AtomButton from "../../atoms/AtomButton";
+import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
+import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
 
-const UserVisitOverview = () => {
+const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
-    const classes = useStyles()
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
+
+    const [isDeleteVisitDialogOpen, setIsDeleteVisitDialogOpen] = useState(false)
 
     const visitItemsData: VisitItemType[] = [
         {
@@ -72,10 +79,17 @@ const UserVisitOverview = () => {
             accepted: false
         },
     ]
+    const onDialogClose = () => {
+        setIsDeleteVisitDialogOpen(false)
+    }
+
+    const onDialogOpen = () => {
+        setIsDeleteVisitDialogOpen(true)
+    }
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`} visitItem={visitItem}/>
+            <VisitItem key={`visit-item-${i}`} visitItem={visitItem} withConfirm withDelete onDeleteIconClick={onDialogOpen}/>
         )
     })
 
@@ -86,10 +100,7 @@ const UserVisitOverview = () => {
                 [classes.mobilePaperContainer]: isSmall
             })}>
                 <Typography className={classes.headerWithButton} variant="subtitle1">{`Nadchodzące (${0})`}</Typography>
-                <Scrollbars
-                    renderView={({style: originalStyle}) =>
-                        <div style={{...originalStyle}} className={classes.shadowedScrollBar}/>}
-                >
+                <ShadowedScrollbar>
                     {visitItems.length
                         ? <div className={classes.paperContent}>
                             {visitItems}
@@ -100,23 +111,31 @@ const UserVisitOverview = () => {
                             >Brak nadchodzących wizyt</Typography>
                         </div>
                     }
-                </Scrollbars>
+                </ShadowedScrollbar>
             </MyPaper>
-            <MyPaper paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+            <MyPaper paperClassName={classNames({
+                [classes.paperContainer]: !isSmall,
+                [classes.mobilePaperContainer]: isSmall
+            })}>
                 <Typography className={classes.header} variant="subtitle1">{`Zakończone (${0})`}</Typography>
-                <Scrollbars
-                    renderView={({style: originalStyle}) =>
-                        <div style={{...originalStyle}} className={classes.shadowedScrollBar}/>}
-                >
-                    <div className={classes.emptyContent}>
-                        <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                        <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                        >Brak zakończonych wizyt</Typography>
-                    </div>
-                </Scrollbars>
+                <ShadowedScrollbar style={{height: 'calc(100% - 120px)'}}>
+                    {visitItems.length
+                        ? <div className={classes.paperContent}>
+                            {visitItems}
+                        </div>
+                        : <div className={classes.emptyContent}>
+                            <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                            <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                            >Brak zakończonych wizyt</Typography>
+                        </div>
+                    }
+                </ShadowedScrollbar>
+                <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
+                            text={isSmall ? <AddIcon/> : "Umów nową wizytę"}/>
             </MyPaper>
+            <DeleteVisitDialog onClose={onDialogClose} open={isDeleteVisitDialogOpen}/>
         </div>
     )
 }
 
-export default UserVisitOverview
+export default withStyles(styles)(UserVisitOverview);
