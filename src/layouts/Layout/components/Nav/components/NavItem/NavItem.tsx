@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
+import classNames from "classnames";
 
 import {Divider} from "@mui/material";
 
 import NavLink from "../../../../../../reusableComponents/NavLink/NavLink.tsx";
 import {useStyles} from "./NavItem.style.ts";
 import {NavType} from "../../types.ts";
-import classNames from "classnames";
-import {useLocation} from "react-router-dom";
+import {ROUTES} from "../../../../../../constants.ts";
 
 interface NavItemProps {
     navItemData: NavType
@@ -22,7 +23,7 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
     const [isActive, setIsActive] = useState<boolean>(false)
 
     useEffect(() => {
-        if (location.pathname === navItemData.path) {
+        if (location.pathname === navItemData.path && location.pathname !== ROUTES.HOME) {
             setIsActive(true)
         } else {
             setIsActive(false)
@@ -41,7 +42,7 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
 
     return (
         <>
-            <div className={classNames(classes.navItemContainer, {[classes.dropDownItemContainer]: isDropDownView})}
+            <div className={classNames(classes.navItemContainer)}
                  onMouseEnter={() => setIsHovered(true)}
                  onMouseLeave={() => setIsHovered(false)}
                  onClick={onClick}

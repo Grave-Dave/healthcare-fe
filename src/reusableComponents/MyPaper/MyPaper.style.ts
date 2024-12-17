@@ -27,5 +27,10 @@ export const styles = ({spacing}: Theme) => createStyles({
     },
     backButton: {
         alignSelf: 'flex-start',
+    },
+    backButtonText: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: spacing(1)
     }
 })

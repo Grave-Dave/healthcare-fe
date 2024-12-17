@@ -27,10 +27,13 @@ const MyPaper = ({children, paperClassName, withBackButton = false, classes, ...
                    {...otherProps}>
                 {withBackButton && <AtomButton
                     buttonVariant={AtomButtonVariants.LINK}
-                    text={'Home'}
                     className={classes.backButton}
-                    startIcon={<ArrowBackIcon sx={{width: 24, height: 24}}/>}
-                />}
+                >
+                    <span className={classes.backButtonText}>
+                        <ArrowBackIcon sx={{width: 24, height: 24}}/>
+                        Home
+                    </span>
+                </AtomButton>}
                 {children}
             </Paper>
         </div>

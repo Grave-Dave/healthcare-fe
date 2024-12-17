@@ -13,6 +13,9 @@ html {
 }
 
 body {
-    overflow: hidden;
     background-color: #dbdbdb;
+}
+
+#root {
+    overflow: hidden;
 }

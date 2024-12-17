@@ -12,6 +12,7 @@ interface FormInputProps extends WithStyles<typeof styles> {
     label: string,
     value?: unknown,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+    onClick?: () => void,
     onBlur?: () => void,
     error?: boolean,
     required?: boolean,
@@ -23,6 +24,7 @@ const FormInput = ({
                        label,
                        value,
                        onChange,
+                       onClick,
                        onBlur,
                        type,
                        error,
@@ -42,6 +44,7 @@ const FormInput = ({
             )}>
             <InputLabel>{label}</InputLabel>
             <OutlinedInput
+                onClick={onClick}
                 onBlur={onBlur}
                 type={type}
                 value={value}

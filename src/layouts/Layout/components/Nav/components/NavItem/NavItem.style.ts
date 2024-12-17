@@ -10,9 +10,6 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
         flex: '1 0 auto',
         cursor: 'pointer',
     },
-    dropDownItemContainer: {
-        padding: theme.spacing(0, 4),
-    },
     divider: {
         width: '100%',
         height: 2,

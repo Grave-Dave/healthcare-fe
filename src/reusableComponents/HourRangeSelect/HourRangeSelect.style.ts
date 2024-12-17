@@ -1,9 +1,9 @@
-import {Theme} from '@mui/material/styles';
-
 import createStyles from '@mui/styles/createStyles';
+import {Theme} from "@mui/material/styles";
 
 export const styles = ({spacing}: Theme) => createStyles({
-    calendarContainer: {
-        flex:'1 0 auto'
+
+    sliderContainer: {
+        padding: spacing(2)
     }
 })

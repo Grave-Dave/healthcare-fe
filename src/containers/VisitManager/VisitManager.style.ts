@@ -13,7 +13,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     },
     mobilePaperContainer: {
         padding: spacing(1, 4, 3, 1),
-        gap: 24
+        gap: 24,
     },
     headerWithButton: {
         position: 'absolute',
@@ -23,9 +23,11 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     },
     contentContainer: {
         display: 'flex',
+        justifyContent:'center',
         width: '100%',
         flex: '1 0 auto',
-        gap: 24
+        gap: 8,
+        flexWrap:'wrap',
     },
     paperContent: {
         padding: spacing(3, 2, 3),

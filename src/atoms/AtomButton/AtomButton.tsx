@@ -18,8 +18,20 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
             stylesForVariant = {}
             break;
         case AtomButtonVariants.TEXT:
+            stylesForVariant = {
+                color: theme.palette.secondary.contrastText,
+                background: 'none',
+                boxShadow: 'none',
+                '&:hover': {
+                    background: 'none',
+                    boxShadow: 'none',
+                    color: theme.palette.secondary.main,
+                },
+            }
+            break;
         case AtomButtonVariants.LINK:
             stylesForVariant = {
+                padding: 0,
                 color: theme.palette.secondary.contrastText,
                 background: 'none',
                 boxShadow: 'none',
@@ -46,7 +58,7 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
             stylesForVariant = {
                 position: isSmall ? 'fixed' : 'absolute',
                 bottom: 15,
-                right: isSmall ? 15 :'50%',
+                right: isSmall ? 15 : '50%',
                 transform: isSmall ? 'none' : 'translate(50%)',
                 width: isSmall ? 60 : 250,
                 textTransform: 'uppercase',
@@ -97,6 +109,7 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
 }
 
 const AtomButton = ({
+                        children,
                         classes,
                         buttonVariant,
                         buttonClassName,
@@ -112,7 +125,14 @@ const AtomButton = ({
 
     switch (buttonVariant) {
         case AtomButtonVariants.LINK:
-            buttonText = <Link style={{textDecoration: 'none', color: 'inherit'}} to={link}>{text}</Link>
+            buttonText =
+                <Link style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    padding: theme.spacing(1, 2),
+                    width: '100%'
+                }}
+                      to={link}>{text ?? children}</Link>
             break;
         default:
             buttonText = text

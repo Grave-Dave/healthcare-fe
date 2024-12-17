@@ -22,5 +22,9 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
     },
     selected:{
         backgroundColor: palette.action.selected
+    },
+    mobile:{
+        gap: 32,
+        padding: spacing(3, 2)
     }
 })

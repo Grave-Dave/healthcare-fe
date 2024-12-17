@@ -18,6 +18,8 @@ function App() {
                 <Route path={ROUTES.REGISTER} element={<Register/>}/>
                 <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
                 <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
+                <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
+                <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
             </Route>
         </Routes>
     )

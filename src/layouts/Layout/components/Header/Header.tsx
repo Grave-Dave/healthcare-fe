@@ -11,6 +11,7 @@ import useWindowSize from "../../../../hooks/useWindowSize.ts";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import selectors from "../../selectors.ts";
 import actions from "../../actions.tsx";
+import {ClickAwayListener} from "@mui/material";
 
 const Header = () => {
     const classes = useStyles()
@@ -30,13 +31,24 @@ const Header = () => {
         dispatch(actions.setUserMenuOpen(!isUserMenuOpen))
     }
 
+    const onClickAwayHeader = () => {
+        if (isMobileMenuOpen || isUserMenuOpen) {
+            dispatch(actions.setMobileMenuOpen(false))
+            dispatch(actions.setUserMenuOpen(false))
+        }
+    }
+
+
     return (
-        <div className={classes.headerContainer}>
-            {isMobile && <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
-            <HeaderTitle/>
-            <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
-            <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen}/>
-        </div>
+        <ClickAwayListener onClickAway={onClickAwayHeader}>
+            <div className={classes.headerContainer}>
+                {isMobile &&
+                    <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
+                <HeaderTitle/>
+                <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
+                <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen}/>
+            </div>
+        </ClickAwayListener>
     )
 }
 

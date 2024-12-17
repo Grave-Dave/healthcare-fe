@@ -16,11 +16,12 @@ export const styles = (theme: Theme) => createStyles({
     },
     mobileLink: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        width:'100%',
         gap: 24,
         color: theme.palette.secondary.contrastText,
-        padding: theme.spacing(0, 2),
+        padding: theme.spacing(0, 6),
     },
     hovered: {
         color: `${theme.palette.secondary.light} !important`,
