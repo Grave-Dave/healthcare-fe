@@ -12,7 +12,7 @@ import {EmptyVisitsIcon} from "../UserVisitOverview/icons/icons.tsx";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import useWindowSize from "../../hooks/useWindowSize.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
-import {VisitItemType} from "../UserVisitOverview/types.ts";
+import {VisitItemInterface} from "../UserVisitOverview/types.ts";
 import VisitItem from "../../reusableComponents/VisitItem/VisitItem.tsx";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import AtomButton from "../../atoms/AtomButton";
@@ -34,58 +34,58 @@ const VisitManager = () => {
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(today));
     const [isCreateVisitDialogOpen, setIsCreateVisitDialogOpen] = useState<boolean>(false);
 
-    const visitItemsData: VisitItemType[] = [
+    const visitItemsData: VisitItemInterface[] = [
         {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '15:20',
-            accepted: true
+            status: true
         },
         {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         }, {
             address: 'Legnicka 55a/3, 54-234 Wrocław',
             date: 'wtorek, 28 marca 2024',
             time: '16:20',
-            accepted: false
+            status: false
         },
     ]
 
@@ -132,7 +132,7 @@ const VisitManager = () => {
                             onCalendarChange={onCalendarChange}
                             selectedDate={selectedDate}
                         />
-                        : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange}/>}
+                        : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisablePast/>}
                     <ShadowedScrollbar
                         style={{
                             height: isMobile ? 'calc(100% - 150px)' : 'calc(100% - 100px)',

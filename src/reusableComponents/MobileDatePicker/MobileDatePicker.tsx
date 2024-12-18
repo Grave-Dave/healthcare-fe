@@ -45,7 +45,7 @@ const MobileDatePicker = ({onCalendarChange, selectedDate}: MobileDatePickerProp
                 endAdornment={<EventRepeatIcon style={{cursor: 'pointer'}}/>}
             />
             <Dialog open={isCalendarOpen} onClose={onClose}>
-                <VisitCalendar isMobile onChange={onChange} selectedDate={selectedDate}/>
+                <VisitCalendar isMobile onChange={onChange} selectedDate={selectedDate} shouldDisablePast/>
             </Dialog>
         </>
     )

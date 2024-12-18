@@ -44,7 +44,7 @@ const theme = createTheme({
             },
             action: {
                 hover: '#f5f5f5',
-                selected: '#e0dfdf',
+                selected: '#ececec',
             },
             divider: 'rgba(87, 86, 86, 0.5)',
             background: {
@@ -67,6 +67,18 @@ const theme = createTheme({
                 fontWeight: 500,
                 '@media (min-width:800px)': {
                     fontSize: '2.5rem',
+                },
+            },
+            h3: {
+                fontSize: '2rem',
+                '@media (min-width:800px)': {
+                    fontSize: '2.5rem',
+                },
+            },
+            h4: {
+                fontSize: '1.5rem',
+                '@media (min-width:800px)': {
+                    fontSize: '2rem',
                 },
             },
             body1: {

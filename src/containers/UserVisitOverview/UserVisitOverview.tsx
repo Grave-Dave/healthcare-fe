@@ -11,74 +11,23 @@ import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {EmptyVisitsIcon} from "./icons/icons.tsx";
-import {VisitItemType} from "./types.ts";
 import VisitItem from "../../reusableComponents/VisitItem";
 import DeleteVisitDialog from "./components/DeleteVisitDialog";
 import AtomButton from "../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
+import {visitItemsData} from "./constants.ts";
 
 const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
+
+    const isAdmin = true // todo reducer
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
     const [isDeleteVisitDialogOpen, setIsDeleteVisitDialogOpen] = useState(false)
 
-    const visitItemsData: VisitItemType[] = [
-        {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '15:20',
-            accepted: true
-        },
-        {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            accepted: false
-        },
-    ]
+
     const onDialogClose = () => {
         setIsDeleteVisitDialogOpen(false)
     }
@@ -89,7 +38,7 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`} visitItem={visitItem} withConfirm withDelete onDeleteIconClick={onDialogOpen}/>
+            <VisitItem key={`visit-item-${i}`} visitItem={visitItem} withConfirm withDelete onDeleteIconClick={onDialogOpen} extended/>
         )
     })
 
@@ -99,7 +48,7 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.paperContainer]: !isSmall,
                 [classes.mobilePaperContainer]: isSmall
             })}>
-                <Typography className={classes.headerWithButton} variant="subtitle1">{`Nadchodzące (${0})`}</Typography>
+                <Typography className={classes.headerWithButton} variant="subtitle1">{isAdmin ? `Oczekujące na potwierdzenie (${0})` : `Nadchodzące (${0})`}</Typography>
                 <ShadowedScrollbar>
                     {visitItems.length
                         ? <div className={classes.paperContent}>
@@ -117,8 +66,8 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.paperContainer]: !isSmall,
                 [classes.mobilePaperContainer]: isSmall
             })}>
-                <Typography className={classes.header} variant="subtitle1">{`Zakończone (${0})`}</Typography>
-                <ShadowedScrollbar style={{height: 'calc(100% - 120px)'}}>
+                <Typography className={classes.header} variant="subtitle1">{isAdmin ? `Nadchodzące (${0})` : `Zakończone (${0})`}</Typography>
+                <ShadowedScrollbar style={{height: isAdmin ? '100%' : 'calc(100% - 120px)'}}>
                     {visitItems.length
                         ? <div className={classes.paperContent}>
                             {visitItems}
@@ -130,8 +79,8 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                         </div>
                     }
                 </ShadowedScrollbar>
-                <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
-                            text={isSmall ? <AddIcon/> : "Umów nową wizytę"}/>
+                {!isAdmin && <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
+                    text={isSmall ? <AddIcon/> : "Umów nową wizytę"}/>}
             </MyPaper>
             <DeleteVisitDialog onClose={onDialogClose} open={isDeleteVisitDialogOpen}/>
         </div>

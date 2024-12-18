@@ -1,6 +1,5 @@
 import "dayjs/locale/pl";
-import {Dayjs} from 'dayjs';
-
+import dayjs, {Dayjs} from 'dayjs';
 
 import {WithStyles, withStyles} from "@mui/styles";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,6 +15,7 @@ interface CalendarProps extends WithStyles<typeof styles> {
     isMobile?: boolean
     onChange: (value: any) => void
     selectedDate: Dayjs | null
+    shouldDisablePast?: boolean
 }
 
 interface StyledCalendarProps extends WithStyles<typeof styles> {
@@ -87,13 +87,23 @@ const StyledDayCalendarSkeleton = styled(DayCalendarSkeleton)({
     },
 });
 
-const VisitCalendar = ({classes, isMobile = false, onChange, selectedDate}: CalendarProps) => {
+const VisitCalendar = ({
+                           classes,
+                           isMobile = false,
+                           onChange,
+                           selectedDate,
+                           shouldDisablePast = false
+                       }: CalendarProps) => {
 
+    const disablePastDates = (date: Dayjs) => {
+        return date.isBefore(dayjs(), 'day');
+    };
 
     return (
         <div className={classes.calendarContainer}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'pl'}>
                 <StyledDateCalendar
+                    shouldDisableDate={shouldDisablePast ? disablePastDates : undefined}
                     classes={classes}
                     isMobile={isMobile}
                     value={selectedDate}
@@ -107,4 +117,4 @@ const VisitCalendar = ({classes, isMobile = false, onChange, selectedDate}: Cale
     )
 }
 
-export default withStyles(styles)(VisitCalendar);
+export default withStyles(styles)(VisitCalendar)

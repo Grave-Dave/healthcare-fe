@@ -30,6 +30,9 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         flexWrap:'wrap',
     },
     paperContent: {
+        display:'flex',
+        flexDirection:'column',
+        gap:16,
         padding: spacing(3, 2, 3),
     },
     emptyContent: {
