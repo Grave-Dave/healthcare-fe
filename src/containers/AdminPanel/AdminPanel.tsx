@@ -1,3 +1,5 @@
+import {useState} from "react";
+import dayjs, {Dayjs} from "dayjs";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -9,16 +11,26 @@ import MyPaper from "../../reusableComponents/MyPaper/MyPaper.tsx";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar/ShadowedScrollbar.tsx";
 import {EmptyVisitsIcon} from "../UserVisitOverview/icons/icons.tsx";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
-import {VisitItemInterfaceWithUser} from "../UserVisitOverview/types.ts";
 import VisitItem from "../../reusableComponents/VisitItem/VisitItem.tsx";
+import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
+import VisitCalendar from "../../reusableComponents/VisitCalendar/VisitCalendar.tsx";
+import {visitItemsData} from "../UserVisitOverview/constants.ts";
+import PersonSelector from "../../reusableComponents/PersonSelector";
 
 const AdminPanel = () => {
     const {windowWidth} = useWindowSize();
     const classes = useStyles()
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
+    const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
-    const visitItemsData: VisitItemInterfaceWithUser[] = []
+    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(new Date()));
+
+    // const visitItemsData: VisitItemInterfaceWithUser[] = []
+
+    const onCalendarChange = (value: any) => {
+        setSelectedDate(value)
+    }
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
@@ -33,24 +45,37 @@ const AdminPanel = () => {
                 [classes.mobilePaperContainer]: isSmall
             })}>
                 <Typography className={classes.headerWithButton} variant="subtitle1">{"Historia"}</Typography>
-                <ShadowedScrollbar>
-                    {visitItems.length
-                        ? <div className={classes.paperContent}>
-                            {visitItems}
-                        </div>
-                        : <div className={classes.emptyContent}>
-                            <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                            <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                            >Brak odbytych wizyt dla tego dnia</Typography>
-                        </div>
-                    }
-                </ShadowedScrollbar>
+                <div className={classes.contentContainer}>
+                    {isMobile
+                        ? < MobileDatePicker
+                            onCalendarChange={onCalendarChange}
+                            selectedDate={selectedDate}
+                            shouldDisableFuture
+                        />
+                        : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisableFuture/>}
+                    <ShadowedScrollbar style={{
+                        height: isMobile ? 'calc(100% - 150px)' :'100%',
+                        flex: isMobile ? '1 0 auto' : '1 0 610px'
+                    }}>
+                        {visitItems.length
+                            ? <div className={classes.paperContent}>
+                                {visitItems}
+                            </div>
+                            : <div className={classes.emptyContent}>
+                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                >Brak odbytych wizyt dla tego dnia</Typography>
+                            </div>
+                        }
+                    </ShadowedScrollbar>
+                </div>
             </MyPaper>
             <MyPaper paperClassName={classNames({
                 [classes.paperContainer]: !isSmall,
                 [classes.mobilePaperContainer]: isSmall
             })}>
                 <Typography className={classes.header} variant="subtitle1">{"Znajdź pacjenta"}</Typography>
+                <PersonSelector/>
                 <ShadowedScrollbar style={{height: '100%'}}>
                     {visitItems.length
                         ? <div className={classes.paperContent}>

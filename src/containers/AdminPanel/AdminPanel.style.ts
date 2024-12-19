@@ -7,22 +7,30 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     papersContainer: {
         display: 'flex',
         justifyContent: 'center',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
     },
     mobilePapersContainer: {
-        flexDirection: 'column',
         gap: 16
     },
     paperContainer: {
         position: 'relative',
-        width: 700,
-        padding: spacing(3, 1),
+        maxWidth: 1100,
+        padding: spacing(3, 2),
         gap: 16,
+        flex: '1 0 auto',
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
         padding: spacing(1, 4, 3, 1),
         gap: 32
+    },
+    contentContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        flex: '1 0 auto',
+        gap: 8,
+        flexWrap: 'wrap',
     },
     header: {
         padding: spacing(1),
@@ -36,9 +44,9 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         textAlign: 'center',
     },
     paperContent: {
-        display:'flex',
-        flexDirection:'column',
-        gap:16,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 16,
         padding: spacing(3, 2, 3),
     },
     emptyContent: {

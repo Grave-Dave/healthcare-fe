@@ -20,7 +20,7 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
 
     const [navItemsData, setNavItemsData] = useState<NavType[]>([])
     const [userMenuData, setUserMenuData] = useState<NavType[]>([])
-    const isAdmin = true
+    const isAdmin = undefined
     const isLogged = false
 
     useEffect(() => {

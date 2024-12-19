@@ -21,7 +21,7 @@ import {visitItemsData} from "./constants.ts";
 const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
 
-    const isAdmin = true // todo reducer
+    const isAdmin = undefined // todo reducer
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 

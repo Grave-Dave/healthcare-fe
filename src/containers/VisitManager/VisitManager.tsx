@@ -28,7 +28,7 @@ const VisitManager = () => {
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
-    const isAdmin = true // todo reducer
+    const isAdmin = undefined // todo reducer
     const today = new Date();
 
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(today));
@@ -131,6 +131,7 @@ const VisitManager = () => {
                         ? < MobileDatePicker
                             onCalendarChange={onCalendarChange}
                             selectedDate={selectedDate}
+                            shouldDisablePast
                         />
                         : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisablePast/>}
                     <ShadowedScrollbar

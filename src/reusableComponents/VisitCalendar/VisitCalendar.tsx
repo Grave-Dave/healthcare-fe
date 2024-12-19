@@ -16,6 +16,7 @@ interface CalendarProps extends WithStyles<typeof styles> {
     onChange: (value: any) => void
     selectedDate: Dayjs | null
     shouldDisablePast?: boolean
+    shouldDisableFuture?: boolean
 }
 
 interface StyledCalendarProps extends WithStyles<typeof styles> {
@@ -92,18 +93,27 @@ const VisitCalendar = ({
                            isMobile = false,
                            onChange,
                            selectedDate,
-                           shouldDisablePast = false
+                           shouldDisablePast = false,
+                           shouldDisableFuture = false,
                        }: CalendarProps) => {
 
     const disablePastDates = (date: Dayjs) => {
         return date.isBefore(dayjs(), 'day');
     };
 
+    const disableFutureDates = (date: Dayjs) => {
+        return date.isAfter(dayjs(), 'day');
+    };
+
     return (
         <div className={classes.calendarContainer}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'pl'}>
                 <StyledDateCalendar
-                    shouldDisableDate={shouldDisablePast ? disablePastDates : undefined}
+                    shouldDisableDate={shouldDisablePast
+                        ? disablePastDates
+                        : shouldDisableFuture
+                            ? disableFutureDates
+                            : undefined}
                     classes={classes}
                     isMobile={isMobile}
                     value={selectedDate}
