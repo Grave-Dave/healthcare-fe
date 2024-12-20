@@ -4,6 +4,7 @@ import {styled} from '@mui/material/styles';
 
 import defaultAvatar from '../../public/images/default-avatar.svg'
 import {styles} from "./UserAvatar.style.ts";
+import {User} from "../../layouts/Layout/types.ts";
 
 const StyledBadge = styled(Badge)(({theme}) => ({
     '& .MuiBadge-badge': {
@@ -35,16 +36,17 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 }));
 
 interface UserAvatarProps extends WithStyles<typeof styles> {
+    user: User
     userAvatar?: string
 }
 
-const UserAvatar = ({userAvatar, classes}: UserAvatarProps) => {
+const UserAvatar = ({user, userAvatar, classes}: UserAvatarProps) => {
     return (
         <div className={classes.avatar}>
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-                variant="dot"
+                variant={user.id ? "dot" : undefined}
             >
                 <Avatar alt="user avatar" src={userAvatar ?? defaultAvatar}/>
             </StyledBadge>

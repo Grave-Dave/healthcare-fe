@@ -11,14 +11,14 @@ import theme from "../../layouts/Layout/themeMaterialUi.ts";
 const peopleOptionsData: User[] = [
     {
         id: 1,
-        name: 'Jan',
-        surname: 'Kowalski',
+        firstName: 'Jan',
+        lastName: 'Kowalski',
         phone: '666 666 666',
         email: 'jan@kowalski.pl'
     }, {
         id: 2,
-        name: 'Barbara',
-        surname: 'Nowak',
+        firstName: 'Barbara',
+        lastName: 'Nowak',
         phone: '666 666 666',
         email: 'jan@kowalski.pl'
     },
@@ -32,7 +32,7 @@ const PersonSelector = ({}: PersonSelectorProps) => {
 
     const peopleOptions: OptionType[] = peopleOptionsData.map(personOptionData => ({
         value: personOptionData.id.toString(),
-        label: `${personOptionData.name} ${personOptionData.surname}`,
+        label: `${personOptionData.firstName} ${personOptionData.lastName}`,
     }))
 
     const [selectedOption, setSelectedOption] = useState<OptionType>(peopleOptions[0]);

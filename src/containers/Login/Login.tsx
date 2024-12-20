@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import classNames from "classnames";
 import Scrollbars from "react-custom-scrollbars-2";
 
@@ -15,35 +16,50 @@ import MyPaper from "../../reusableComponents/MyPaper";
 import FormInput from "../../reusableComponents/FormInput";
 import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
 import {ROUTES} from "../../constants.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import selectors from "../Login/selectors.ts";
+import actions from "../Login/actions.tsx";
+import CircularLoader from "../../reusableComponents/CircularLoader";
 
 const Login = () => {
     const {windowWidth} = useWindowSize();
     const classes = useStyles()
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
-    const [formValues, setFormValues] = useState<LoginForm>({
-        email: '',
-        password: ''
-    })
-    const [formError, setFormError] = useState({
-        email: false,
-        password: false
-    })
+    const loginForm = useAppSelector(selectors.getLoginForm);
+    const loginFormError = useAppSelector(selectors.getLoginFormError)
+    const isLoading = useAppSelector(selectors.getIsLoading)
+
+    const [isSubmittable, setIsSubmittable] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        const isFormFilled = Object.keys(loginForm).every(prop => {
+            return loginForm[prop] !== undefined
+                && loginForm[prop] !== ''
+                && loginFormError[prop] === false;
+        });
+
+        setIsSubmittable(isFormFilled);
+    }, [loginForm, loginFormError]);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleFormChange = (key: string, value: string) => {
-        setFormValues(prevState => {
-            return {...prevState, [key]: value.trim()};
-        });
+        dispatch(actions.setLoginForm({key, value}))
 
         if (value.trim() === '') {
-            setFormError(prevState => ({...prevState, [key]: true}));
+            dispatch(actions.setLoginFormError({[key]: true}))
         } else {
-            setFormError(prevState => ({...prevState, [key]: false}));
+            dispatch(actions.setLoginFormError({[key]: false}))
         }
+    }
+
+    const handleOnClick = () => {
+        dispatch(actions.login(loginForm, navigate))
     }
 
     const getInput = (field: keyof LoginForm, fieldValue: string, label: string) => {
@@ -51,7 +67,7 @@ const Login = () => {
             field !== LOGIN_FORM_KEYS.PASSWORD
                 ? <FormInput
                     required
-                    error={formError[field]}
+                    error={loginFormError[field]}
                     label={label}
                     value={fieldValue}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +76,7 @@ const Login = () => {
                 />
                 : <FormInput
                     required
-                    error={formError[field]}
+                    error={loginFormError[field]}
                     label={label}
                     value={fieldValue}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,8 +91,8 @@ const Login = () => {
     const inputsContainer = () => {
         return (
             <div className={classes.inputsContainer}>
-                {getInput(LOGIN_FORM_KEYS.EMAIL, formValues.email, 'Adres e-mail')}
-                {getInput(LOGIN_FORM_KEYS.PASSWORD, formValues.password, 'Hasło')}
+                {getInput(LOGIN_FORM_KEYS.EMAIL, loginForm.email, 'Adres e-mail')}
+                {getInput(LOGIN_FORM_KEYS.PASSWORD, loginForm.password, 'Hasło')}
             </div>
         )
     }
@@ -85,7 +101,9 @@ const Login = () => {
         return (
             <div className={classNames(classes.actionsContainer, {[classes.mobileActionsContainer]: isSmall})}>
                 <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
-                            text={'Zaloguj się'}/>
+                            text={'Zaloguj się'}
+                            disabled={!isSubmittable || isLoading}
+                            onClick={handleOnClick}/>
                 <AtomButton buttonVariant={AtomButtonVariants.LINK}
                             link={ROUTES.REGISTER}
                             text={'lub zarejestruj się'}/>
@@ -97,7 +115,9 @@ const Login = () => {
         <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
             <Typography className={classes.loginHeader} variant="h2">Zaloguj się</Typography>
             <Scrollbars>
-                {inputsContainer()}
+                {isLoading
+                    ? <CircularLoader isLoading={isLoading}/>
+                    : inputsContainer()}
             </Scrollbars>
             {actionsContainer()}
         </MyPaper>

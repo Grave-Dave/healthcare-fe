@@ -8,6 +8,7 @@ import Register from "./containers/Register";
 import UserVisitOverview from "./containers/UserVisitOverview";
 import VisitManager from "./containers/VisitManager";
 import AdminPanel from "./containers/AdminPanel";
+import ProtectedRoute from "./reusableComponents/ProtectedRoute";
 
 function App() {
 
@@ -17,11 +18,20 @@ function App() {
                 <Route index element={<Home/>}/>
                 <Route path={ROUTES.LOGIN} element={<Login/>}/>
                 <Route path={ROUTES.REGISTER} element={<Register/>}/>
-                <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
-                <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
-                <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
-                <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
-                <Route path={ROUTES.ADMIN} element={<AdminPanel/>}/>
+                <Route
+                    path="*"
+                    element={
+                        <ProtectedRoute>
+                            <Routes>
+                                <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
+                                <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
+                                <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
+                                <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
+                                <Route path={ROUTES.ADMIN} element={<AdminPanel/>}/>
+                            </Routes>
+                        </ProtectedRoute>
+                    }
+                />
             </Route>
         </Routes>
     )

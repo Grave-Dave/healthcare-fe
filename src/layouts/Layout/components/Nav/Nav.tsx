@@ -5,8 +5,9 @@ import {NavType} from "./types.ts";
 import {adminNav, defaultNav, loginItem, userItems} from "./constants.ts";
 import {useStyles} from "./Nav.style.ts";
 import NavItem from "./components/NavItem";
-import {useAppDispatch} from "../../../../hooks/reduxHooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import actions from "../../actions.tsx";
+import selectors from "../../selectors.ts";
 
 interface NavProps {
     isMobile: boolean;
@@ -20,26 +21,36 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
 
     const [navItemsData, setNavItemsData] = useState<NavType[]>([])
     const [userMenuData, setUserMenuData] = useState<NavType[]>([])
-    const isAdmin = undefined
-    const isLogged = false
+
+    const isAdmin = useAppSelector(selectors.getIsAdmin)
+    const isLogged = useAppSelector(selectors.getIsLogged)
 
     useEffect(() => {
-        if (isAdmin) {
-            setNavItemsData(adminNav)
-            setUserMenuData(userItems)
-        } else if (isLogged) {
-            setNavItemsData(defaultNav)
-            setUserMenuData(userItems)
-        } else {
-            setNavItemsData(defaultNav)
-            setUserMenuData(loginItem)
-        }
-    }, [isAdmin])
 
-    const onNavItemClick = () =>{
+        switch (true) {
+            case isLogged: {
+                setNavItemsData(defaultNav)
+                setUserMenuData(userItems)
+            }
+                break;
+            case isAdmin: {
+                setNavItemsData(adminNav)
+                setUserMenuData(userItems)
+            }
+                break;
+            default: {
+                setNavItemsData(defaultNav)
+                setUserMenuData(loginItem)
+            }
+                break;
+        }
+
+    }, [isAdmin, isLogged])
+
+    const onNavItemClick = () => {
         dispatch(actions.setMobileMenuOpen(false))
     }
-    const onUserItemClick = () =>{
+    const onUserItemClick = () => {
         dispatch(actions.setUserMenuOpen(false))
     }
 

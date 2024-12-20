@@ -28,5 +28,12 @@ export const useStyles = makeStyles(({spacing, palette, breakpoints}: Theme) => 
     },
     arrowRotated: {
         transform: 'rotate(180deg)'
+    } ,
+    disabledArrow: {
+        color: palette.action.disabled,
+        cursor: 'default',
+        '&:hover': {
+            color: palette.action.disabled,
+        },
     }
 }))

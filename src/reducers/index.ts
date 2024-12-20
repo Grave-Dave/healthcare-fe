@@ -1,7 +1,13 @@
 import sortBy from "lodash/sortBy";
 import fromPairs from "lodash/fromPairs";
 import map from "lodash/map";
-import {reducer as entryPageReducer, REDUCER_KEY as ENTRY_PAGE_REDUCER_KEY} from "../layouts/Layout/reducer.js";
+
+import {reducer as layoutReducer, REDUCER_KEY as LAYOUT_REDUCER_KEY} from "../layouts/Layout/reducer.js";
+import {reducer as loginPageReducer, REDUCER_KEY as LOGIN_PAGE_REDUCER_KEY} from "../containers/Login/reducer.ts";
+import {
+    reducer as registerPageReducer,
+    REDUCER_KEY as REGISTER_PAGE_REDUCER_KEY
+} from "../containers/Register/reducer.ts";
 
 const sortByKeys = (object: any) => {
     const keys = Object.keys(object);
@@ -13,5 +19,7 @@ const sortByKeys = (object: any) => {
 };
 
 export const rootReducer = sortByKeys({
-    [ENTRY_PAGE_REDUCER_KEY]: entryPageReducer
+    [LAYOUT_REDUCER_KEY]: layoutReducer,
+    [REGISTER_PAGE_REDUCER_KEY]: registerPageReducer,
+    [LOGIN_PAGE_REDUCER_KEY]: loginPageReducer,
 })

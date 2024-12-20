@@ -20,6 +20,7 @@ const Header = () => {
 
     const isUserMenuOpen = useAppSelector(selectors.getIsUserMenuOpen);
     const isMobileMenuOpen = useAppSelector(selectors.getIsMobileMenuOpen);
+    const isLoading = useAppSelector(selectors.getIsLoading);
 
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
@@ -28,7 +29,7 @@ const Header = () => {
     }
 
     const onUserArrowClick = () => {
-        dispatch(actions.setUserMenuOpen(!isUserMenuOpen))
+        !isLoading && dispatch(actions.setUserMenuOpen(!isUserMenuOpen))
     }
 
     const onClickAwayHeader = () => {
@@ -46,7 +47,7 @@ const Header = () => {
                     <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
                 <HeaderTitle/>
                 <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
-                <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen}/>
+                <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen} isLoading={isLoading}/>
             </div>
         </ClickAwayListener>
     )
