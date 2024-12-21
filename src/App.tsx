@@ -8,7 +8,8 @@ import Register from "./containers/Register";
 import UserVisitOverview from "./containers/UserVisitOverview";
 import VisitManager from "./containers/VisitManager";
 import AdminPanel from "./containers/AdminPanel";
-import ProtectedRoute from "./reusableComponents/ProtectedRoute";
+import ProtectedRoute from "./reusableComponents/ProtectedRoutes";
+import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/types.ts";
 
 function App() {
 
@@ -16,12 +17,26 @@ function App() {
         <Routes>
             <Route path={ROUTES.HOME} element={<Layout/>}>
                 <Route index element={<Home/>}/>
-                <Route path={ROUTES.LOGIN} element={<Login/>}/>
-                <Route path={ROUTES.REGISTER} element={<Register/>}/>
+                <Route
+                    path={ROUTES.LOGIN}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
+                            <Login/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.REGISTER}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
+                            <Register/>
+                        </ProtectedRoute>
+                    }
+                />
                 <Route
                     path="*"
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
                             <Routes>
                                 <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
                                 <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>

@@ -9,7 +9,7 @@ import {useStyles} from "./NavItem.style.ts";
 import {NavType} from "../../types.ts";
 import {ROUTES} from "../../../../../../constants.ts";
 import {useAppDispatch} from "../../../../../../hooks/reduxHooks.ts";
-import actions from "../../../../actions.tsx";
+import actions from "../../../../../../auth/actions.tsx";
 
 interface NavItemProps {
     navItemData: NavType

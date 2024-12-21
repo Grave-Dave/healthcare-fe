@@ -19,6 +19,7 @@ import {enterKeyListener} from "../../utils/utils.ts";
 import {ROUTES} from "../../constants.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "../Login/selectors.ts";
+import authSelectors from "../../auth/selectors.ts";
 import actions from "../Login/actions.tsx";
 import CircularLoader from "../../reusableComponents/CircularLoader";
 
@@ -32,7 +33,7 @@ const Login = () => {
 
     const loginForm = useAppSelector(selectors.getLoginForm);
     const loginFormError = useAppSelector(selectors.getLoginFormError)
-    const isLoading = useAppSelector(selectors.getIsLoading)
+    const isLoading = useAppSelector(authSelectors.getIsLoading)
 
     const [isSubmittable, setIsSubmittable] = useState(false);
     const [showPassword, setShowPassword] = useState(false);

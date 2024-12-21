@@ -20,6 +20,7 @@ import useWindowSize from "../../hooks/useWindowSize.ts";
 import {useStyles} from "./Register.style.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
+import authSelectors from "../../auth/selectors.ts";
 
 const Register = () => {
     const {windowWidth} = useWindowSize();
@@ -31,7 +32,7 @@ const Register = () => {
 
     const registerForm = useAppSelector(selectors.getRegisterForm);
     const registerFormError = useAppSelector(selectors.getRegisterFormError)
-    const isLoading = useAppSelector(selectors.getIsLoading)
+    const isLoading = useAppSelector(authSelectors.getIsLoading)
 
     const [isSubmittable, setIsSubmittable] = useState(false);
     const [showPassword, setShowPassword] = useState<ShowPassword>({

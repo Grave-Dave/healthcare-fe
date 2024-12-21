@@ -6,18 +6,12 @@ import {ThemeProvider} from "@mui/material";
 
 import theme from "./themeMaterialUi.ts";
 import Header from "./components/Header/Header.tsx";
-import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import {useAppDispatch} from "../../hooks/reduxHooks.ts";
 import actions from "../../auth/actions.tsx";
-import selectors from "../../auth/selectors.ts";
 import SmoothSnackbar from "../../reusableComponents/SmoothSnackbar";
 
 const Layout = () => {
     const dispatch = useAppDispatch();
-
-    const access_token = useAppSelector(selectors.getAccessToken)
-
-    console.log(access_token)
-
 
     useEffect(() => {
         dispatch(actions.checkAuth())

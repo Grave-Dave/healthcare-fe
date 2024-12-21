@@ -17,7 +17,7 @@ import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 const service = new Service();
 
 const login = (loginForm: LoginForm, navigate: NavigateFunction) => (dispatch: any) => {
-    dispatch(staticActions.setIsLoading(true))
+    dispatch(authActions.setIsLoading(true))
 
     return service.login(loginForm).then((response) => {
         const access_token = get(response, "data.access_token", "")
@@ -40,7 +40,7 @@ const login = (loginForm: LoginForm, navigate: NavigateFunction) => (dispatch: a
             type: SmoothSnackbarEnum.ERROR
         }))
     }).finally(() =>
-        dispatch(staticActions.setIsLoading(false))
+        dispatch(authActions.setIsLoading(false))
     )
 }
 

@@ -1,7 +1,7 @@
 import axiosLib, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import AppConfig from "../config/service-config.ts";
 import HeaderService from "./header-service.ts";
-import authActions from '../auth/actions.tsx';
+import {actions} from '../auth/reducer.ts';
 import authSelectors from '../auth/selectors.ts';
 import store from "../store/store.ts";
 
@@ -77,7 +77,7 @@ export default class ApiService {
 
         if (axios !== null) {
             const state = store.getState();
-            const token = authSelectors.getAccessToken(state)
+            let token = authSelectors.getAccessToken(state)
 
             axios.interceptors.request.use((config) => {
                 if (token) {
@@ -109,6 +109,9 @@ export default class ApiService {
 
                     if (error.response?.status === 401 && !originalRequest._retry) {
                         if (isRefreshing) {
+                            store.dispatch(actions.setIsAuthenticated(false));
+                            store.dispatch(actions.setIsLoading(false));
+                            store.dispatch(actions.clearAccessToken());
                             return new Promise((resolve, reject) => {
                                 failedQueue.push({resolve, reject});
                             })
@@ -129,9 +132,8 @@ export default class ApiService {
                                 {withCredentials: true}
                             );
 
-                            const newAccessToken = response.data.access_token;
-
-                            authActions.setAccessToken(newAccessToken);
+                            const newAccessToken = response.data.access_token
+                            store.dispatch(actions.setAccessToken(newAccessToken));
 
                             processQueue(null, newAccessToken);
 
@@ -139,7 +141,6 @@ export default class ApiService {
                             return axios(originalRequest);
                         } catch (err) {
                             processQueue(err, null);
-                            authActions.clearAccessToken();
                             return Promise.reject(err);
                         } finally {
                             isRefreshing = false;
@@ -151,6 +152,7 @@ export default class ApiService {
 
             if (token) {
                 this.headerService.setAuthorization(token);
+                token = null
             }
 
             axios.defaults.headers.common['Authorization'] = this.headerService.getAuthorization();

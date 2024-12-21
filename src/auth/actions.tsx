@@ -31,10 +31,10 @@ const checkAuth = () => (dispatch: any) => {
 const logout = () => (dispatch: any) => {
     dispatch(staticActions.setIsLoading(true))
     return service.logout().then(() => {
-        localStorage.removeItem('access_token')
         dispatch(staticActions.setUserData(DEFAULT_USER_DATA))
         dispatch(staticActions.setIsAdmin(false))
         dispatch(staticActions.setIsAuthenticated(false))
+        dispatch(staticActions.clearAccessToken())
         dispatch(layoutActions.showSnackBar({
             message: 'Wylogowano!',
             autoHideDuration: 5000
