@@ -16,9 +16,17 @@ export const extractValidationMessages = (response: any) => {
                 messages.push(message as string)
             })
         }
-    } else if(responseValidationError){
+    } else if (responseValidationError) {
         messages.push(responseValidationError.message)
     }
 
     return messages
 }
+
+export const enterKeyListener = (event: KeyboardEvent, onEnterKey: () => void) => {
+
+    if (event.key === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        onEnterKey()
+    }
+};

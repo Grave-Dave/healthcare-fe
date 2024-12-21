@@ -8,6 +8,7 @@ import {RegisterForm} from "./types.ts";
 import {ROUTES} from "../../constants.ts";
 import {extractValidationMessages} from "../../utils/utils.ts";
 import {DEFAULT_REGISTER_FORM, DEFAULT_REGISTER_FORM_ERROR} from "./constants.ts";
+import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 
 const service = new Service();
 
@@ -31,7 +32,8 @@ const register = (registerForm: RegisterForm, navigate: NavigateFunction) => (di
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
             message: extractValidationMessages(error)[0] ?? error.message,
-            autoHideDuration: 5000
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.ERROR
         }))
     }).finally(() =>
         dispatch(staticActions.setIsLoading(false))

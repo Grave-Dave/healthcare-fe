@@ -16,7 +16,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         position: 'relative',
         maxWidth: 1100,
         padding: spacing(3, 2),
-        gap: 16,
+        gap: 24,
         flex: '1 0 auto',
         justifyContent: 'flex-start',
     },

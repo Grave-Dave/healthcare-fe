@@ -7,7 +7,7 @@ import {useStyles} from "./Nav.style.ts";
 import NavItem from "./components/NavItem";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import actions from "../../actions.tsx";
-import selectors from "../../selectors.ts";
+import selectors from "../../../../auth/selectors.ts";
 
 interface NavProps {
     isMobile: boolean;
@@ -23,18 +23,18 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
     const [userMenuData, setUserMenuData] = useState<NavType[]>([])
 
     const isAdmin = useAppSelector(selectors.getIsAdmin)
-    const isLogged = useAppSelector(selectors.getIsLogged)
+    const isLogged = useAppSelector(selectors.getIsAuthenticated)
 
     useEffect(() => {
 
         switch (true) {
-            case isLogged: {
-                setNavItemsData(defaultNav)
+            case isAdmin: {
+                setNavItemsData(adminNav)
                 setUserMenuData(userItems)
             }
                 break;
-            case isAdmin: {
-                setNavItemsData(adminNav)
+            case isLogged: {
+                setNavItemsData(defaultNav)
                 setUserMenuData(userItems)
             }
                 break;

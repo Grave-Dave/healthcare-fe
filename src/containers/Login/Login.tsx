@@ -15,6 +15,7 @@ import {LOGIN_FORM_KEYS} from "./constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
 import FormInput from "../../reusableComponents/FormInput";
 import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
+import {enterKeyListener} from "../../utils/utils.ts";
 import {ROUTES} from "../../constants.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "../Login/selectors.ts";
@@ -46,6 +47,19 @@ const Login = () => {
         setIsSubmittable(isFormFilled);
     }, [loginForm, loginFormError]);
 
+    useEffect(() => {
+        const callBackFn = (event: KeyboardEvent) => {
+            if (isSubmittable) {
+                enterKeyListener(event, handleOnSubmit)
+            }
+        };
+
+        document.addEventListener("keydown", callBackFn);
+        return () => {
+            document.removeEventListener("keydown", callBackFn);
+        };
+    }, [loginForm]);
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleFormChange = (key: string, value: string) => {
@@ -58,7 +72,7 @@ const Login = () => {
         }
     }
 
-    const handleOnClick = () => {
+    const handleOnSubmit = () => {
         dispatch(actions.login(loginForm, navigate))
     }
 
@@ -67,6 +81,7 @@ const Login = () => {
             field !== LOGIN_FORM_KEYS.PASSWORD
                 ? <FormInput
                     required
+                    autoFocus
                     error={loginFormError[field]}
                     label={label}
                     value={fieldValue}
@@ -103,7 +118,7 @@ const Login = () => {
                 <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
                             text={'Zaloguj się'}
                             disabled={!isSubmittable || isLoading}
-                            onClick={handleOnClick}/>
+                            onClick={handleOnSubmit}/>
                 <AtomButton buttonVariant={AtomButtonVariants.LINK}
                             link={ROUTES.REGISTER}
                             text={'lub zarejestruj się'}/>

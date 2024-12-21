@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import UserAvatar from "../../../../../../reusableComponents/UserAvatar";
 import {useStyles} from "./HeaderAvatar.style.ts";
 import {useAppSelector} from "../../../../../../hooks/reduxHooks.ts";
-import selectors from "../../../../selectors.ts";
+import selectors from "../../../../../../auth/selectors.ts";
 
 interface HeaderAvatarProps {
     onArrowClick: () => void,

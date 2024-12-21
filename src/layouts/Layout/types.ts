@@ -1,13 +1,7 @@
 export interface LayoutReducerState {
     isMobileMenuOpen: boolean
     isUserMenuOpen: boolean
-    userState: {
-        user: User
-        isLogged: boolean
-        isAdmin: boolean
-    }
     snackBarState: SmoothSnackbarState
-    isLoading: boolean
 }
 
 export interface User {

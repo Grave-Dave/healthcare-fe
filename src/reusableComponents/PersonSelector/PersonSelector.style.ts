@@ -49,7 +49,10 @@ export const customStyles = {
     singleValue: (provided: Object) => ({
         ...provided,
         color: '#333',
-        fontSize: 18,
-        fontWeight: 400
+        fontSize: 16,
+        fontWeight: 400,
+        [theme.breakpoints.up('md')]: {
+            fontSize: 18,
+        },
     }),
 };

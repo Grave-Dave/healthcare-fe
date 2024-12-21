@@ -7,5 +7,5 @@ export const getIsLoading = (state: any) => state.reducers[REDUCER_KEY].isLoadin
 export default {
     getLoginForm,
     getLoginFormError,
-    getIsLoading
+    getIsLoading,
 }

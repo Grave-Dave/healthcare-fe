@@ -1,4 +1,4 @@
-import BaseService from "../../../services/base-service.ts";
+import BaseService from "../../../services/api-service.ts";
 import {RegisterForm} from "../types.ts";
 
 export default class Service extends BaseService {

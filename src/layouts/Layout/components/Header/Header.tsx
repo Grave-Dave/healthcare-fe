@@ -9,6 +9,7 @@ import Nav from "../Nav";
 import {useStyles} from './Header.style';
 import useWindowSize from "../../../../hooks/useWindowSize.ts";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
+import authSelectors from "../../../../auth/selectors.ts";
 import selectors from "../../selectors.ts";
 import actions from "../../actions.tsx";
 import {ClickAwayListener} from "@mui/material";
@@ -20,7 +21,7 @@ const Header = () => {
 
     const isUserMenuOpen = useAppSelector(selectors.getIsUserMenuOpen);
     const isMobileMenuOpen = useAppSelector(selectors.getIsMobileMenuOpen);
-    const isLoading = useAppSelector(selectors.getIsLoading);
+    const isLoading = useAppSelector(authSelectors.getIsLoading);
 
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 

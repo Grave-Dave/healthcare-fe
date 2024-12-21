@@ -13,6 +13,7 @@ import AtomButton from "../../atoms/AtomButton";
 import {EMAIL_REGEX, REGISTER_FORM_KEYS} from "./constants.ts";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
+import {enterKeyListener} from "../../utils/utils.ts";
 import {RegisterForm, ShowPassword} from "./types.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import useWindowSize from "../../hooks/useWindowSize.ts";
@@ -48,6 +49,19 @@ const Register = () => {
         setIsSubmittable(isFormFilled);
     }, [registerForm, registerFormError]);
 
+    useEffect(() => {
+        const callBackFn = (event: KeyboardEvent) => {
+            if (isSubmittable) {
+                enterKeyListener(event, handleOnSubmit)
+            }
+        };
+
+        document.addEventListener("keydown", callBackFn);
+        return () => {
+            document.removeEventListener("keydown", callBackFn);
+        };
+    }, [registerForm]);
+
     const handleClickShowPassword = (field: keyof ShowPassword) => setShowPassword((prevState) => ({
         ...prevState,
         [field]: !prevState[field]
@@ -82,8 +96,8 @@ const Register = () => {
         }
     }
 
-    const handleOnClick = () => {
-        dispatch(actions.register(registerForm, navigate))
+    const handleOnSubmit = () => {
+            dispatch(actions.register(registerForm, navigate))
     }
 
     const getInput = (field: keyof RegisterForm, fieldValue: string, label: string) => {
@@ -110,6 +124,7 @@ const Register = () => {
                 return (
                     <FormInput
                         required
+                        autoFocus={field === REGISTER_FORM_KEYS.FIRST_NAME}
                         error={registerFormError[field]}
                         label={label}
                         value={fieldValue}
@@ -169,7 +184,7 @@ const Register = () => {
                 <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
                             text={'Zarejestruj się'}
                             disabled={!isSubmittable || isLoading}
-                            onClick={handleOnClick}/>
+                            onClick={handleOnSubmit}/>
             </div>
         )
     }

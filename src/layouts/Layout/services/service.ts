@@ -1,12 +1,12 @@
-import BaseService from "../../../services/base-service.ts";
+import BaseService from "../../../services/api-service.ts";
 
 export default class Service extends BaseService {
     checkAuth(): Promise<boolean> {
         return this.get('/user');
     }
 
-    checkAdmin(): Promise<boolean> {
-        return this.get('/admin');
+    refreshAuth(): Promise<boolean> {
+        return this.post('/auth/refresh');
     }
 
     logout(): Promise<boolean> {
