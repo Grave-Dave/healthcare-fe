@@ -1,6 +1,7 @@
 import {User} from "../../layouts/Layout/types.ts";
 
 export interface VisitItemInterface {
+    id: number
     address: string,
     date: string,
     time: string,

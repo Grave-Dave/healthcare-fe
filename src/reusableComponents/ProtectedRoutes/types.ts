@@ -1,4 +1,5 @@
 export enum ProtectedRouteEnum {
     AuthRoute = 'AuthRoute',
-    GuestRoute = 'GuestRoute'
+    GuestRoute = 'GuestRoute',
+    AdminRoute = 'AdminRoute'
 }

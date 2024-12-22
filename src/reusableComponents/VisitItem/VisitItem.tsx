@@ -21,7 +21,7 @@ import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
 interface VisitItemProps extends WithStyles<typeof styles> {
     visitItem: VisitItemInterface | VisitItemInterfaceWithUser
     onDeleteIconClick?: () => void
-    onClick?: () => void
+    onClick?: (value: number) => void
     withDelete?: boolean
     withConfirm?: boolean
     isClickable?: boolean
@@ -45,9 +45,13 @@ const VisitItem = ({
 
     const user = (visitItem as VisitItemInterfaceWithUser).user;
 
+    const handleOnClick = () => {
+        onClick && onClick(visitItem.id)
+    }
+
     return (
         <>
-            <Paper elevation={isSelected ? 10 : 3} onClick={onClick}
+            <Paper elevation={isSelected ? 10 : 3} onClick={handleOnClick}
                    sx={{background:'none'}}
                  className={classNames(classes.visitItemContainer,
                      {
@@ -69,7 +73,7 @@ const VisitItem = ({
                             variant="body1"
                             className={classes.userItem}>
                             <PersonOutlineIcon sx={{width: 20, height: 20}}/>
-                            {`${user.name} ${user.surname}`}
+                            {`${user.firstName} ${user.lastName}`}
                         </Typography>
                         <Typography variant="body1">
                             <a href={`tel:${user.phone}`}

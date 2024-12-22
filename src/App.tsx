@@ -34,6 +34,14 @@ function App() {
                     }
                 />
                 <Route
+                    path={ROUTES.ADMIN}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AdminRoute}>
+                            <AdminPanel/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
                     path="*"
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
@@ -42,7 +50,6 @@ function App() {
                                 <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
                                 <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
                                 <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
-                                <Route path={ROUTES.ADMIN} element={<AdminPanel/>}/>
                             </Routes>
                         </ProtectedRoute>
                     }

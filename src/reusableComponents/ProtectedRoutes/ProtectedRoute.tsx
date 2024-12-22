@@ -15,14 +15,23 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({children, routeType}: ProtectedRouteProps) => {
 
     const isLogged = useAppSelector(selectors.getIsAuthenticated)
+    const isAdmin = useAppSelector(selectors.getIsAdmin)
     const isLoading = useAppSelector(selectors.getIsLoading)
 
 
     switch (routeType) {
+        case ProtectedRouteEnum.AdminRoute: {
+            if (isLoading || isLogged === undefined) {
+                return <CircularLoader isLoading={isLoading}/>
+            }
+
+            return isAdmin ? <>{children}</> : <Navigate to={ROUTES.HOME}/>
+        }
         case ProtectedRouteEnum.AuthRoute: {
             if (isLoading || isLogged === undefined) {
                 return <CircularLoader isLoading={isLoading}/>
             }
+
             return isLogged ? <>{children}</> : <Navigate to={ROUTES.LOGIN}/>
         }
         case ProtectedRouteEnum.GuestRoute: {

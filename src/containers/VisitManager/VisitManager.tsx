@@ -1,5 +1,4 @@
-import {useState} from "react";
-import dayjs, {Dayjs} from 'dayjs';
+import {useEffect} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -12,97 +11,53 @@ import {EmptyVisitsIcon} from "../UserVisitOverview/icons/icons.tsx";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import useWindowSize from "../../hooks/useWindowSize.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
-import {VisitItemInterface} from "../UserVisitOverview/types.ts";
 import VisitItem from "../../reusableComponents/VisitItem/VisitItem.tsx";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import AtomButton from "../../atoms/AtomButton";
 import VisitCalendar from "../../reusableComponents/VisitCalendar";
 import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
 import AddVisitDialog from "./components/AddVisitDialog";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import authSelectors from "../../auth/selectors.ts";
+import selectors from "./selectors.ts";
+import actions from "./actions.tsx";
 
 
 const VisitManager = () => {
     const {windowWidth} = useWindowSize();
     const classes = useStyles()
+    const dispatch = useAppDispatch();
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
-    const isAdmin = undefined // todo reducer
-    const today = new Date();
+    const isAdmin = useAppSelector(authSelectors.getIsAdmin)
+    const selectedTermId = useAppSelector(selectors.getSelectedTermId)
+    const selectedDate = useAppSelector(selectors.getSelectedDate)
+    const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
+    const visitItemsData = useAppSelector(selectors.getVisitItemsData)
 
-    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(today));
-    const [isCreateVisitDialogOpen, setIsCreateVisitDialogOpen] = useState<boolean>(false);
+    console.log(visitItemsData)
 
-    const visitItemsData: VisitItemInterface[] = [
-        {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '15:20',
-            status: true
-        },
-        {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        }, {
-            address: 'Legnicka 55a/3, 54-234 Wrocław',
-            date: 'wtorek, 28 marca 2024',
-            time: '16:20',
-            status: false
-        },
-    ]
 
-    const onSelectVisit = () => {
+    useEffect(()=>{
+        dispatch(actions.fetchAvailableTerms(selectedDate))
+    },[])
 
+    const onSelectTerm = (availableTermId: number) => {
+        dispatch(actions.setSelectedTermId(availableTermId))
     }
 
     const onCalendarChange = (value: any) => {
-        setSelectedDate(value)
+        dispatch(actions.setSelectedDate(value))
     }
 
     const onCreateVisitDialogClose = () => {
-        setIsCreateVisitDialogOpen(false)
+        dispatch(actions.setIsCreateVisitDialogOpen(false))
     }
 
     const onCreateVisitDialogOpen = () => {
-        setIsCreateVisitDialogOpen(true)
+        dispatch(actions.setIsCreateVisitDialogOpen(true))
     }
 
 
@@ -111,8 +66,8 @@ const VisitManager = () => {
             <VisitItem key={`visit-item-${i}`}
                        visitItem={visitItem}
                        isClickable
-                       onClick={onSelectVisit}
-                       isSelected={i === 3}
+                       onClick={onSelectTerm}
+                       isSelected={visitItem.id === selectedTermId}
                        withDelete={isAdmin}
             />
         )
