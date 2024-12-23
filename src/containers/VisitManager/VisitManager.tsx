@@ -16,6 +16,7 @@ import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import AtomButton from "../../atoms/AtomButton";
 import VisitCalendar from "../../reusableComponents/VisitCalendar";
 import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
+import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
 import AddVisitDialog from "./components/AddVisitDialog";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import authSelectors from "../../auth/selectors.ts";
@@ -36,13 +37,14 @@ const VisitManager = () => {
     const selectedDate = useAppSelector(selectors.getSelectedDate)
     const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
     const visitItemsData = useAppSelector(selectors.getVisitItemsData)
+    const isLoading = useAppSelector(selectors.getIsLoading)
 
-    console.log(visitItemsData)
 
-
-    useEffect(()=>{
-        dispatch(actions.fetchAvailableTerms(selectedDate))
-    },[])
+    useEffect(() => {
+        if (selectedDate) {
+            dispatch(actions.fetchAvailableTerms(selectedDate))
+        }
+    }, [selectedDate])
 
     const onSelectTerm = (availableTermId: number) => {
         dispatch(actions.setSelectedTermId(availableTermId))
@@ -94,15 +96,19 @@ const VisitManager = () => {
                             height: isMobile ? 'calc(100% - 150px)' : 'calc(100% - 100px)',
                             flex: isMobile ? '1 0 auto' : '1 0 610px'
                         }}>
-                        {visitItems.length
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {visitItems}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak dostępnych wizyt</Typography>
-                            </div>
+                            : visitItems.length
+                                ? <div className={classes.paperContent}>
+                                    {visitItems}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak dostępnych wizyt</Typography>
+                                </div>
                         }
                     </ShadowedScrollbar>
                 </div>

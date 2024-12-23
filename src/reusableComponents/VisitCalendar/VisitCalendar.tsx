@@ -1,20 +1,27 @@
-import "dayjs/locale/pl";
+import {useEffect, useState} from "react";
 import dayjs, {Dayjs} from 'dayjs';
+import "dayjs/locale/pl";
 
 import {WithStyles, withStyles} from "@mui/styles";
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DateCalendar} from '@mui/x-date-pickers/DateCalendar';
-import {DayCalendarSkeleton} from "@mui/x-date-pickers";
+import {DayCalendarSkeleton, PickersDay, PickersDayProps} from "@mui/x-date-pickers";
 import {styled} from "@mui/material/styles";
+import {Badge} from "@mui/material";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 import {styles} from "./VisitCalendar.style.ts";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import actions from "../../containers/VisitManager/actions.tsx";
+import selectors from "../../containers/VisitManager/selectors.ts";
+import {CurrentMonthYearType} from "./types.ts";
 
 interface CalendarProps extends WithStyles<typeof styles> {
     isMobile?: boolean
     onChange: (value: any) => void
-    selectedDate: Dayjs | null
+    selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
 }
@@ -96,6 +103,19 @@ const VisitCalendar = ({
                            shouldDisablePast = false,
                            shouldDisableFuture = false,
                        }: CalendarProps) => {
+    const dispatch = useAppDispatch();
+
+    const [currentMonthYear, setCurrentMonthYear] = useState<CurrentMonthYearType>({
+        month: selectedDate?.format('MM'),
+        year: selectedDate?.format('YYYY')
+    })
+    const highlightedDays = useAppSelector(selectors.getFutureTerms)
+    const isLoading = useAppSelector(selectors.getIsCalendarLoading)
+
+    useEffect(() => {
+        currentMonthYear && dispatch((actions.fetchMonthAvailableTerms(currentMonthYear)))
+    }, [currentMonthYear])
+
 
     const disablePastDates = (date: Dayjs) => {
         return date.isBefore(dayjs(), 'day');
@@ -104,6 +124,35 @@ const VisitCalendar = ({
     const disableFutureDates = (date: Dayjs) => {
         return date.isAfter(dayjs(), 'day');
     };
+
+    const handleMonthChange = (value: any) => {
+        setCurrentMonthYear({
+            month: value?.format('MM'),
+            year: value?.format('YYYY')
+        })
+    }
+
+    function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }) {
+        const {highlightedDays = [], day, outsideCurrentMonth, ...other} = props;
+
+        const isSelected =
+            !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+
+        return (
+            <Badge
+                key={props.day.toString()}
+                overlap="circular"
+                badgeContent={isSelected ? <EventAvailableIcon
+                    sx={{width: 16,
+                        height: 16,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius:1
+                }}/> : undefined}
+            >
+                <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day}/>
+            </Badge>
+        );
+    }
 
     return (
         <div className={classes.calendarContainer}>
@@ -118,7 +167,16 @@ const VisitCalendar = ({
                     isMobile={isMobile}
                     value={selectedDate}
                     onChange={(value) => onChange(value)}
-                    // loading
+                    onMonthChange={handleMonthChange}
+                    slots={{
+                        day: ServerDay,
+                    }}
+                    slotProps={{
+                        day: {
+                            highlightedDays,
+                        } as any,
+                    }}
+                    loading={isLoading}
                     renderLoading={() =>
                         <StyledDayCalendarSkeleton/>
                     }/>

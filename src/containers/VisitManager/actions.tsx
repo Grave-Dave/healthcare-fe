@@ -1,34 +1,53 @@
 import {get} from "lodash";
-import dayjs, {Dayjs} from "dayjs";
+import {Dayjs} from "dayjs";
 
 import {actions as staticActions} from './reducer';
 import Service from "./services/service.ts";
 import layoutActions from "../../layouts/Layout/actions.tsx";
 import {extractValidationMessages} from "../../utils/utils.ts";
 import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
-import {formatDayJs} from "./utils.ts";
+import {formatDayJsToString, formatStringToCertainDayString, formatStringToDayjsString} from "./utils/utils.ts";
+import {VisitItemInterface} from "../UserVisitOverview/types.ts";
+import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
 
-dayjs.locale('pl');
 
 const service = new Service();
+
+const fetchMonthAvailableTerms = (currentMonthYear: CurrentMonthYearType) => (dispatch: any) => {
+    dispatch(staticActions.setIsCalendarLoading(true))
+    return service.getMonthTerms(currentMonthYear).then((response) => {
+        const terms = get(response, "data", [])
+
+        const convertedTerms = terms.map((term: string) => Number(formatStringToCertainDayString(term)))
+
+        if (convertedTerms) {
+            dispatch(staticActions.setFutureTerms(convertedTerms))
+        }
+
+    }).catch((error) => {
+        dispatch(layoutActions.showSnackBar({
+            message: extractValidationMessages(error)[0] ?? error.message,
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.ERROR
+        }))
+    }).finally(() =>
+        dispatch(staticActions.setIsCalendarLoading(false))
+    )
+}
 
 const fetchAvailableTerms = (selectedDate: Dayjs) => (dispatch: any) => {
     dispatch(staticActions.setIsLoading(true))
 
-    return service.getTerms(formatDayJs(selectedDate)).then((response) => {
+    return service.getTerms(formatDayJsToString(selectedDate)).then((response) => {
         const terms = get(response, "data", [])
 
-        const convertedTerms =  terms.map((term: any)=>({
+        const convertedTerms = terms.map((term: VisitItemInterface) => ({
             ...term,
-            date: dayjs(term.date).format('dddd, D MMMM YYYY')
+            date: formatStringToDayjsString(term.date)
         }))
-        console.log(convertedTerms)
 
-        // todo improve term reducer state to add also locations and think about stored date format in db
-
-
-        if (terms) {
-            dispatch(staticActions.setVisitItemsData(terms))
+        if (convertedTerms) {
+            dispatch(staticActions.setVisitItemsData(convertedTerms))
         }
     })
         .catch((error) => {
@@ -56,6 +75,7 @@ const createNewUserVisit = () => (dispatch: any) => {
 
 
 const asyncActions = {
+    fetchMonthAvailableTerms,
     fetchAvailableTerms,
     addNewAvailableTerms,
     deleteAvailableTerm,

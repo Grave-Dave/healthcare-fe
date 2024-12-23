@@ -56,6 +56,7 @@ const FormInput = ({
                 }}
                 endAdornment={endAdornment}
                 label={label}
+                spellCheck={false}
             />
         </FormControl>
     )

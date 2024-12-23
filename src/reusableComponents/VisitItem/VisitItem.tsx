@@ -65,7 +65,7 @@ const VisitItem = ({
                         <Typography variant="h4">{visitItem.date}</Typography>
                         <Typography variant="body1" className={classes.userItem}>
                             <FmdGoodOutlinedIcon sx={{width: 20, height: 20}}/>
-                            {visitItem.address}
+                            {visitItem.location.name}
                         </Typography>
                     </div>
                     {extended && user && <div className={classes.details}>
@@ -102,7 +102,6 @@ const VisitItem = ({
                     }
                 </div>
             </Paper>
-            {/*<Divider className={classes.divider}/>*/}
         </>
     )
 }

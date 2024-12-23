@@ -6,7 +6,7 @@ import {useStyles} from "./AddVisitDialog.style.ts";
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
 import MySelect from "../../../../reusableComponents/MySelect";
-import {LocationType} from "../../types.ts";
+import {LocationItemType} from "../../types.ts";
 import HourRangeSelect from "../../../../reusableComponents/HourRangeSelect";
 
 interface AddVisitDialogProps {
@@ -33,7 +33,7 @@ const AddVisitDialog = ({isOpen, onClose, title}: AddVisitDialogProps) => {
         },
     ]
 
-    const [selectedLocation, setSelectedLocation] = useState<LocationType | null>(null)
+    const [selectedLocation, setSelectedLocation] = useState<LocationItemType | null>(null)
 
     const handleClose = () => {
         onClose()

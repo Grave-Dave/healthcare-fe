@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Dayjs} from 'dayjs';
-import moment from "moment";
 
 import {Dialog} from "@mui/material";
 import EventRepeatIcon from '@mui/icons-material/EventRepeat';
@@ -12,10 +11,15 @@ import {useStyles} from "./MobileDatePicker.style.ts";
 
 interface MobileDatePickerProps {
     onCalendarChange: (value: any) => void
-    selectedDate: Dayjs | null
+    selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
 }
+
+const formatDayjsToString = (selectedDate: Dayjs) => {
+    return selectedDate?.locale('pl').format('dddd, D MMMM YYYY')
+}
+
 
 const MobileDatePicker = ({
                               onCalendarChange,
@@ -25,10 +29,11 @@ const MobileDatePicker = ({
                           }: MobileDatePickerProps) => {
     const classes = useStyles()
     const [isCalendarOpen, setIsCalendarOpen] = useState(false)
-    const [localDateFormat, setLocalDateFormat] = useState(moment(selectedDate?.toDate()).locale('pl').format('dddd, D MMMM YYYY'))
+    const [localDateFormat, setLocalDateFormat] = useState(formatDayjsToString(selectedDate))
 
     useEffect(() => {
-        setLocalDateFormat(moment(selectedDate?.toDate()).locale('pl').format('dddd, D MMMM YYYY'))
+        const formattedDate = formatDayjsToString(selectedDate)
+        setLocalDateFormat(formattedDate)
     }, [selectedDate])
 
     const onChange = (value: any) => {
