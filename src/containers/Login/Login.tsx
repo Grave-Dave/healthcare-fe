@@ -40,9 +40,10 @@ const Login = () => {
 
     useEffect(() => {
         const isFormFilled = Object.keys(loginForm).every(prop => {
-            return loginForm[prop] !== undefined
-                && loginForm[prop] !== ''
-                && loginFormError[prop] === false;
+            const key = prop as keyof LoginForm;
+            return loginForm[key] !== undefined
+                && loginForm[key] !== ''
+                && loginFormError[key] === false;
         });
 
         setIsSubmittable(isFormFilled);

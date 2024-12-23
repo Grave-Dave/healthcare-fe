@@ -5,7 +5,7 @@ import CircularLoader from "../CircularLoader";
 import {useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "../../auth/selectors.ts";
 import {ROUTES} from "../../constants.ts";
-import {ProtectedRouteEnum} from "./types.ts";
+import {ProtectedRouteEnum} from "./constants.ts";
 
 interface ProtectedRouteProps {
     children: React.ReactNode

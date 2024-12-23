@@ -7,6 +7,7 @@ import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import FormInput from "../FormInput";
 import VisitCalendar from "../VisitCalendar/VisitCalendar.tsx";
 import {useStyles} from "./MobileDatePicker.style.ts";
+import {formatDayjsToMyDateString} from "../../containers/VisitManager/utils/utils.ts";
 
 
 interface MobileDatePickerProps {
@@ -16,11 +17,6 @@ interface MobileDatePickerProps {
     shouldDisableFuture?: boolean
 }
 
-const formatDayjsToString = (selectedDate: Dayjs) => {
-    return selectedDate?.locale('pl').format('dddd, D MMMM YYYY')
-}
-
-
 const MobileDatePicker = ({
                               onCalendarChange,
                               selectedDate,
@@ -29,10 +25,10 @@ const MobileDatePicker = ({
                           }: MobileDatePickerProps) => {
     const classes = useStyles()
     const [isCalendarOpen, setIsCalendarOpen] = useState(false)
-    const [localDateFormat, setLocalDateFormat] = useState(formatDayjsToString(selectedDate))
+    const [localDateFormat, setLocalDateFormat] = useState(formatDayjsToMyDateString(selectedDate))
 
     useEffect(() => {
-        const formattedDate = formatDayjsToString(selectedDate)
+        const formattedDate = formatDayjsToMyDateString(selectedDate)
         setLocalDateFormat(formattedDate)
     }, [selectedDate])
 

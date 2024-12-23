@@ -1,4 +1,3 @@
-import {useState} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -12,11 +11,10 @@ import MyPaper from "../../reusableComponents/MyPaper";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {EmptyVisitsIcon} from "./icons/icons.tsx";
 import VisitItem from "../../reusableComponents/VisitItem";
-import DeleteVisitDialog from "./components/DeleteVisitDialog";
 import AtomButton from "../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
-import {visitItemsData} from "./constants.ts";
+import {VisitItemVariantEnum} from "./constants.ts";
 
 const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
@@ -25,20 +23,24 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
-    const [isDeleteVisitDialogOpen, setIsDeleteVisitDialogOpen] = useState(false)
 
+    const visitItemsData: any[] = []
 
-    const onDialogClose = () => {
-        setIsDeleteVisitDialogOpen(false)
+    const onVisitDelete = () => {
+
     }
 
-    const onDialogOpen = () => {
-        setIsDeleteVisitDialogOpen(true)
-    }
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`} visitItem={visitItem} withConfirm withDelete onDeleteIconClick={onDialogOpen} extended/>
+            <VisitItem key={`visit-item-${i}`}
+                       visitItem={visitItem}
+                       variant={VisitItemVariantEnum.UserVisit}
+                       withConfirm
+                       withDelete
+                       onDeleteIconClick={onVisitDelete}
+                       extended
+            />
         )
     })
 
@@ -48,7 +50,8 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.paperContainer]: !isSmall,
                 [classes.mobilePaperContainer]: isSmall
             })}>
-                <Typography className={classes.headerWithButton} variant="subtitle1">{isAdmin ? `Oczekujące na potwierdzenie (${0})` : `Nadchodzące (${0})`}</Typography>
+                <Typography className={classes.headerWithButton}
+                            variant="subtitle1">{isAdmin ? `Oczekujące na potwierdzenie (${0})` : `Nadchodzące (${0})`}</Typography>
                 <ShadowedScrollbar>
                     {visitItems.length
                         ? <div className={classes.paperContent}>
@@ -66,7 +69,8 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.paperContainer]: !isSmall,
                 [classes.mobilePaperContainer]: isSmall
             })}>
-                <Typography className={classes.header} variant="subtitle1">{isAdmin ? `Nadchodzące (${0})` : `Zakończone (${0})`}</Typography>
+                <Typography className={classes.header}
+                            variant="subtitle1">{isAdmin ? `Nadchodzące (${0})` : `Zakończone (${0})`}</Typography>
                 <ShadowedScrollbar style={{height: isAdmin ? '100%' : 'calc(100% - 120px)'}}>
                     {visitItems.length
                         ? <div className={classes.paperContent}>
@@ -80,9 +84,8 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                     }
                 </ShadowedScrollbar>
                 {!isAdmin && <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
-                    text={isSmall ? <AddIcon/> : "Umów nową wizytę"}/>}
+                                         text={isSmall ? <AddIcon/> : "Umów nową wizytę"}/>}
             </MyPaper>
-            <DeleteVisitDialog onClose={onDialogClose} open={isDeleteVisitDialogOpen}/>
         </div>
     )
 }

@@ -1,8 +1,7 @@
 import {CaseReducer, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import dayjs, {Dayjs} from "dayjs";
 
-import {VisitManagerPageReducerState} from "./types.ts";
-import {VisitItemInterface} from "../UserVisitOverview/types.ts";
+import {LocationInterface, VisitItemInterface, VisitManagerPageReducerState} from "./types.ts";
 
 export const REDUCER_KEY = 'VISIT_MANAGER_PAGE';
 
@@ -11,7 +10,9 @@ const initialState: VisitManagerPageReducerState = {
     selectedTermId: null,
     allTerms: [],
     visitItemsData: [],
+    locations: [],
     isCreateVisitDialogOpen: false,
+    isLocationsSelectorLoading: false,
     isLoading: false,
     isCalendarLoading: false
 }
@@ -26,7 +27,7 @@ const setFutureTerms: CaseReducer<VisitManagerPageReducerState, PayloadAction<Da
         state.allTerms = action.payload;
     };
 
-const setSelectedTermId: CaseReducer<VisitManagerPageReducerState, PayloadAction<number>> =
+const setSelectedTermId: CaseReducer<VisitManagerPageReducerState, PayloadAction<number | null>> =
     (state, action) => {
         state.selectedTermId = action.payload;
     };
@@ -46,9 +47,19 @@ const setIsCalendarLoading: CaseReducer<VisitManagerPageReducerState, PayloadAct
         state.isCalendarLoading = action.payload;
     };
 
+const setIsLocationSelectorLoading: CaseReducer<VisitManagerPageReducerState, PayloadAction<boolean>> =
+    (state, action) => {
+        state.isLocationsSelectorLoading = action.payload;
+    };
+
 const setVisitItemsData: CaseReducer<VisitManagerPageReducerState, PayloadAction<VisitItemInterface[]>> =
     (state, action) => {
         state.visitItemsData = action.payload;
+    };
+
+const setLocations: CaseReducer<VisitManagerPageReducerState, PayloadAction<LocationInterface[]>> =
+    (state, action) => {
+        state.locations = action.payload
     };
 
 
@@ -62,6 +73,8 @@ const slice = createSlice({
         setVisitItemsData,
         setIsLoading,
         setIsCalendarLoading,
+        setIsLocationSelectorLoading,
+        setLocations,
         setFutureTerms
     }
 })

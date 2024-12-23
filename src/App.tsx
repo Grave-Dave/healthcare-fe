@@ -9,7 +9,8 @@ import UserVisitOverview from "./containers/UserVisitOverview";
 import VisitManager from "./containers/VisitManager";
 import AdminPanel from "./containers/AdminPanel";
 import ProtectedRoute from "./reusableComponents/ProtectedRoutes";
-import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/types.ts";
+import UserAccount from "./containers/UserAccount";
+import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/constants.ts";
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
                                 <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
                                 <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
                                 <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
+                                <Route path={ROUTES.USER} element={<UserAccount/>}/>
                             </Routes>
                         </ProtectedRoute>
                     }

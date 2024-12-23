@@ -22,6 +22,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import authSelectors from "../../auth/selectors.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
+import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
 
 
 const VisitManager = () => {
@@ -37,8 +38,14 @@ const VisitManager = () => {
     const selectedDate = useAppSelector(selectors.getSelectedDate)
     const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
     const visitItemsData = useAppSelector(selectors.getVisitItemsData)
+    const locationsData = useAppSelector(selectors.getLocations)
     const isLoading = useAppSelector(selectors.getIsLoading)
 
+    useEffect(() => {
+        if (isAdmin) {
+            dispatch(actions.fetchLocations())
+        }
+    }, [])
 
     useEffect(() => {
         if (selectedDate) {
@@ -48,6 +55,12 @@ const VisitManager = () => {
 
     const onSelectTerm = (availableTermId: number) => {
         dispatch(actions.setSelectedTermId(availableTermId))
+    }
+
+    const onUnselectTerm = (availableTermId: number) => {
+        if (availableTermId === selectedTermId) {
+            dispatch(actions.setSelectedTermId(null))
+        }
     }
 
     const onCalendarChange = (value: any) => {
@@ -62,6 +75,10 @@ const VisitManager = () => {
         dispatch(actions.setIsCreateVisitDialogOpen(true))
     }
 
+    const onTermDelete = (termId: number) => {
+        dispatch(actions.deleteAvailableTerm(termId))
+    }
+
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
@@ -69,8 +86,11 @@ const VisitManager = () => {
                        visitItem={visitItem}
                        isClickable
                        onClick={onSelectTerm}
+                       onClickAway={onUnselectTerm}
                        isSelected={visitItem.id === selectedTermId}
                        withDelete={isAdmin}
+                       onDeleteIconClick={onTermDelete}
+                       variant={VisitItemVariantEnum.AvailableTerm}
             />
         )
     })
@@ -116,8 +136,12 @@ const VisitManager = () => {
                             text={isSmall ? <AddIcon/> : isAdmin ? "Dodaj terminy" : "Umów wizytę"}
                             onClick={onCreateVisitDialogOpen}/>
             </MyPaper>
-            {isAdmin && <AddVisitDialog title={selectedDate?.toDate()} onClose={onCreateVisitDialogClose}
-                                        isOpen={isCreateVisitDialogOpen}/>}
+            {isAdmin && <AddVisitDialog
+                selectedDate={selectedDate}
+                onClose={onCreateVisitDialogClose}
+                isOpen={isCreateVisitDialogOpen}
+                locationsData={locationsData}
+            />}
         </>
     )
 }

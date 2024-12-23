@@ -125,7 +125,7 @@ const VisitCalendar = ({
         return date.isAfter(dayjs(), 'day');
     };
 
-    const handleMonthChange = (value: any) => {
+    const handleMonthYearChange = (value: any) => {
         setCurrentMonthYear({
             month: value?.format('MM'),
             year: value?.format('YYYY')
@@ -167,7 +167,8 @@ const VisitCalendar = ({
                     isMobile={isMobile}
                     value={selectedDate}
                     onChange={(value) => onChange(value)}
-                    onMonthChange={handleMonthChange}
+                    onMonthChange={handleMonthYearChange}
+                    onYearChange={handleMonthYearChange}
                     slots={{
                         day: ServerDay,
                     }}

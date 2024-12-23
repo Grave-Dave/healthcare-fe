@@ -1,52 +1,70 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {Dayjs} from "dayjs";
+
 import {Dialog, DialogActions, DialogContent, DialogTitle, SelectChangeEvent, Typography} from "@mui/material";
-import moment from "moment/moment";
 
 import {useStyles} from "./AddVisitDialog.style.ts";
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
 import MySelect from "../../../../reusableComponents/MySelect";
-import {LocationItemType} from "../../types.ts";
 import HourRangeSelect from "../../../../reusableComponents/HourRangeSelect";
+import {formatDayjsToMyDateString} from "../../utils/utils.ts";
+import {LocationItemType} from "../../../UserVisitOverview/types.ts";
+import {LocationInterface} from "../../types.ts";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
+import actions from "../../actions.tsx";
+import selectors from "../../selectors.ts";
+import CircularLoader from "../../../../reusableComponents/CircularLoader";
 
 interface AddVisitDialogProps {
     isOpen: boolean,
     onClose: () => void,
-    title?: Date,
+    selectedDate: Dayjs,
+    locationsData: LocationInterface[]
 }
 
-const AddVisitDialog = ({isOpen, onClose, title}: AddVisitDialogProps) => {
+const AddVisitDialog = ({isOpen, onClose, selectedDate, locationsData}: AddVisitDialogProps) => {
     const classes = useStyles()
+    const dispatch = useAppDispatch();
 
-    const locations = [
-        {
-            value: 1,
-            name: 'Obornicka 77k/1b, 51-114 Wrocław',
-        },
-        {
-            value: 2,
-            name: 'Legnicka 55a/3, 54-234 Wrocław',
-        },
-        {
-            value: 3,
-            name: 'Otmuchowska 7/4, 50-505 Wrocław',
-        },
-    ]
+    const locations: LocationItemType[] = locationsData.map(location => ({
+        value: location.id,
+        name: location.name
+    }))
+
+    const isSelectorLoading = useAppSelector(selectors.getIsLocationsSelectorLoading)
+    const isLoading = useAppSelector(selectors.getIsLoading)
 
     const [selectedLocation, setSelectedLocation] = useState<LocationItemType | null>(null)
+    const [hourRange, setHourRange] = useState([8, 18]);
+    const [isSubmittable, setIsSubmittable] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkIsSubmittable = () => {
+            return !!hourRange && !!selectedLocation
+        }
+        setIsSubmittable(checkIsSubmittable())
+
+    }, [selectedLocation, hourRange])
+
 
     const handleClose = () => {
         onClose()
     }
 
     const handleCreate = () => {
-        onClose()
+        if (selectedLocation) {
+            dispatch(actions.addNewAvailableTerms(selectedDate, hourRange, selectedLocation))
+        }
     }
 
-    const handleChange = (e: SelectChangeEvent<number>) => {
+    const handleHourRangeChange = (value: number[]) => {
+        setHourRange(value)
+    }
+
+    const handleLocationChange = (e: SelectChangeEvent<number>) => {
         setSelectedLocation(locations.find(location => location.value === e.target.value) || null)
     }
-
 
     return (
         <Dialog
@@ -56,23 +74,36 @@ const AddVisitDialog = ({isOpen, onClose, title}: AddVisitDialogProps) => {
                 sx: {width: 800,},
             }}>
             <DialogTitle>
-                {moment(title).locale('pl').format('dddd, D MMMM YYYY')}
+                {formatDayjsToMyDateString(selectedDate)}
             </DialogTitle>
-            <DialogContent>
-                <div className={classes.selectContainer}>
-                    <Typography variant="body1">Wybierz gabinet:</Typography>
-                    <MySelect onChange={handleChange} value={selectedLocation?.value} label="Gabinet"
-                              menuItems={locations}/>
+            {isLoading ?
+                <div className={classes.loaderContainer}>
+                    <CircularLoader isLoading={isLoading}/>
                 </div>
-                <div className={classes.sliderContainer}>
-                    <Typography variant="body1">Wybierz nowe terminy (godziny):</Typography>
-                    <HourRangeSelect/>
-                </div>
-            </DialogContent>
+                : <DialogContent>
+                    <div className={classes.selectContainer}>
+                        <Typography variant="body1">Wybierz gabinet:</Typography>
+                        <MySelect
+                            onChange={handleLocationChange}
+                            value={selectedLocation?.value}
+                            label="Gabinet"
+                            menuItems={locations}
+                            disabled={isSelectorLoading}
+                        />
+                    </div>
+                    <div className={classes.sliderContainer}>
+                        <Typography variant="body1">Wybierz nowe terminy (godziny):</Typography>
+                        <HourRangeSelect range={hourRange} onChange={handleHourRangeChange}/>
+                    </div>
+                </DialogContent>}
             <DialogActions>
-                <AtomButton onClick={handleClose} buttonVariant={AtomButtonVariants.TEXT} text={'Anuluj'}/>
-                <AtomButton onClick={handleCreate} buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
-                            text={'Dodaj terminy'}/>
+                <AtomButton onClick={handleClose}
+                            buttonVariant={AtomButtonVariants.TEXT} text={'Anuluj'}/>
+                <AtomButton onClick={handleCreate}
+                            buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
+                            text={'Dodaj terminy'}
+                            disabled={!isSubmittable || isLoading}
+                />
             </DialogActions>
         </Dialog>
     )

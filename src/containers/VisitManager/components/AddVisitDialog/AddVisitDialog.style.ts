@@ -20,6 +20,10 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         flexDirection: 'column',
         gap: 16,
         paddingBottom: spacing(4)
+    },
+    loaderContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        minHeight: 370
     }
-
 }))

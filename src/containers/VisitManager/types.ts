@@ -1,5 +1,4 @@
 import {Dayjs} from "dayjs";
-import {VisitItemInterface} from "../UserVisitOverview/types.ts";
 
 export interface VisitManagerPageReducerState {
     selectedDate: Dayjs
@@ -7,11 +6,21 @@ export interface VisitManagerPageReducerState {
     allTerms: Dayjs[]
     visitItemsData: VisitItemInterface[]
     isCreateVisitDialogOpen: boolean
+    locations: LocationInterface[]
+    isLocationsSelectorLoading:boolean
     isLoading: boolean
     isCalendarLoading: boolean
 }
 
-export type LocationItemType = {
-    value: number,
+export interface VisitItemInterface {
+    id: number
+    location: LocationInterface,
+    date: string,
+    time: string,
+    status: boolean
+}
+
+export interface LocationInterface {
+    id: number,
     name: string
 }

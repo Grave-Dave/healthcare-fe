@@ -1,18 +1,11 @@
 import {User} from "../../layouts/Layout/types.ts";
-
-export interface VisitItemInterface {
-    id: number
-    location: Location,
-    date: string,
-    time: string,
-    status: boolean
-}
+import {VisitItemInterface} from "../VisitManager/types.ts";
 
 export interface VisitItemInterfaceWithUser extends VisitItemInterface {
     user: User
 }
 
-export interface Location {
-    id: number,
+export type LocationItemType = {
+    value: number,
     name: string
 }

@@ -14,8 +14,9 @@ import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import VisitItem from "../../reusableComponents/VisitItem/VisitItem.tsx";
 import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
 import VisitCalendar from "../../reusableComponents/VisitCalendar/VisitCalendar.tsx";
-import {visitItemsData} from "../UserVisitOverview/constants.ts";
 import PersonSelector from "../../reusableComponents/PersonSelector";
+import {VisitItemInterfaceWithUser} from "../UserVisitOverview/types.ts";
+import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
 
 const AdminPanel = () => {
     const {windowWidth} = useWindowSize();
@@ -26,7 +27,7 @@ const AdminPanel = () => {
 
     const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(new Date()));
 
-    // const visitItemsData: VisitItemInterfaceWithUser[] = []
+    const visitItemsData: VisitItemInterfaceWithUser[] = []
 
     const onCalendarChange = (value: any) => {
         setSelectedDate(value)
@@ -34,7 +35,11 @@ const AdminPanel = () => {
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`} visitItem={visitItem} extended/>
+            <VisitItem key={`visit-item-${i}`}
+                       variant={VisitItemVariantEnum.UserVisit}
+                       visitItem={visitItem}
+                       extended
+            />
         )
     })
 

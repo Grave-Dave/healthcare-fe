@@ -6,9 +6,15 @@ import Service from "./services/service.ts";
 import layoutActions from "../../layouts/Layout/actions.tsx";
 import {extractValidationMessages} from "../../utils/utils.ts";
 import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
-import {formatDayJsToString, formatStringToCertainDayString, formatStringToDayjsString} from "./utils/utils.ts";
-import {VisitItemInterface} from "../UserVisitOverview/types.ts";
+import {
+    formatDayJsToRegularString,
+    formatRegularStringToCertainDayString,
+    formatRegularStringToMyDateString
+} from "./utils/utils.ts";
 import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
+import {getVisitItemsData} from "./selectors.ts";
+import {VisitItemInterface} from "./types.ts";
+import {LocationItemType} from "../UserVisitOverview/types.ts";
 
 
 const service = new Service();
@@ -18,7 +24,7 @@ const fetchMonthAvailableTerms = (currentMonthYear: CurrentMonthYearType) => (di
     return service.getMonthTerms(currentMonthYear).then((response) => {
         const terms = get(response, "data", [])
 
-        const convertedTerms = terms.map((term: string) => Number(formatStringToCertainDayString(term)))
+        const convertedTerms = terms.map((term: string) => Number(formatRegularStringToCertainDayString(term)))
 
         if (convertedTerms) {
             dispatch(staticActions.setFutureTerms(convertedTerms))
@@ -38,12 +44,12 @@ const fetchMonthAvailableTerms = (currentMonthYear: CurrentMonthYearType) => (di
 const fetchAvailableTerms = (selectedDate: Dayjs) => (dispatch: any) => {
     dispatch(staticActions.setIsLoading(true))
 
-    return service.getTerms(formatDayJsToString(selectedDate)).then((response) => {
+    return service.getTerms(formatDayJsToRegularString(selectedDate)).then((response) => {
         const terms = get(response, "data", [])
 
         const convertedTerms = terms.map((term: VisitItemInterface) => ({
             ...term,
-            date: formatStringToDayjsString(term.date)
+            date: formatRegularStringToMyDateString(term.date)
         }))
 
         if (convertedTerms) {
@@ -61,16 +67,79 @@ const fetchAvailableTerms = (selectedDate: Dayjs) => (dispatch: any) => {
         )
 }
 
-const addNewAvailableTerms = () => (dispatch: any) => {
+const addNewAvailableTerms = (selectedDate: Dayjs, hourRange: number[], selectedLocation: LocationItemType) => (dispatch: any, getState: any) => {
+    dispatch(staticActions.setIsLoading(true))
+    const state = getState();
+    const visitItemsData = getVisitItemsData(state)
 
+    return service.addAvailableTerms(formatDayJsToRegularString(selectedDate), hourRange, selectedLocation).then((response) => {
+        const newTerms = get(response, "data", [])
+
+        const convertedNewTerms = newTerms.map((term: VisitItemInterface) => ({
+            ...term,
+            date: formatRegularStringToMyDateString(term.date)
+        }))
+
+        dispatch(staticActions.setVisitItemsData([...visitItemsData, ...convertedNewTerms]))
+        dispatch(staticActions.setIsCreateVisitDialogOpen(false))
+        dispatch(layoutActions.showSnackBar({
+            message: 'Dodano nowe terminy!',
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.SUCCESS
+        }))
+    })
+        .catch((error) => {
+            dispatch(layoutActions.showSnackBar({
+                message: extractValidationMessages(error)[0] ?? error.message,
+                autoHideDuration: 5000,
+                type: SmoothSnackbarEnum.ERROR
+            }))
+        }).finally(() =>
+            dispatch(staticActions.setIsLoading(false))
+        )
 }
 
-const deleteAvailableTerm = () => (dispatch: any) => {
+const deleteAvailableTerm = (termId: number) => (dispatch: any, getState: any) => {
+    dispatch(staticActions.setIsLoading(true))
+    const state = getState();
+    const visitItemsData = getVisitItemsData(state)
 
+    return service.deleteTerm(termId).then(() => {
+        dispatch(staticActions.setVisitItemsData(visitItemsData.filter(visitItem => visitItem.id !== termId)))
+    })
+        .catch((error) => {
+            dispatch(layoutActions.showSnackBar({
+                message: extractValidationMessages(error)[0] ?? error.message,
+                autoHideDuration: 5000,
+                type: SmoothSnackbarEnum.ERROR
+            }))
+        }).finally(() =>
+            dispatch(staticActions.setIsLoading(false))
+        )
 }
 
 const createNewUserVisit = () => (dispatch: any) => {
 
+}
+
+const fetchLocations = () => (dispatch: any) => {
+    dispatch(staticActions.setIsLocationSelectorLoading(true))
+    return service.getLocations().then((response) => {
+        const locations = get(response, "data", [])
+
+        if (locations) {
+            dispatch(staticActions.setLocations(locations))
+        }
+
+    }).catch((error) => {
+        dispatch(layoutActions.showSnackBar({
+            message: extractValidationMessages(error)[0] ?? error.message,
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.ERROR
+        }))
+    }).finally(() =>
+        dispatch(staticActions.setIsLocationSelectorLoading(false))
+    )
 }
 
 
@@ -80,6 +149,7 @@ const asyncActions = {
     addNewAvailableTerms,
     deleteAvailableTerm,
     createNewUserVisit,
+    fetchLocations
 }
 
 export default {

@@ -2,21 +2,51 @@ import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
+import {VisitItemVariantEnum} from "../../constants.ts";
 
 interface DeleteVisitDialogProps {
     open: boolean
+    variant: VisitItemVariantEnum
     onClose: () => void
+    onDelete: () => void
 }
 
-const DeleteVisitDialog = ({open, onClose}: DeleteVisitDialogProps) => {
+const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialogProps) => {
 
     const handleDelete = () => {
-        // todo delete visitItem action
+        onDelete()
     }
 
     const handleClose = () => {
         onClose()
     }
+
+    const getDialogTilte = () => {
+        switch (variant) {
+            case VisitItemVariantEnum.UserVisit: {
+                return "Usunąć wizytę?"
+            }
+            case VisitItemVariantEnum.AvailableTerm: {
+                return "Usunąć dostępny termin?"
+            }
+            default:
+                return
+        }
+    }
+
+    const getDialogHeader = () => {
+        switch (variant) {
+            case VisitItemVariantEnum.UserVisit: {
+                return "Czy napewno chcesz usunąć wybraną wizytę?"
+            }
+            case VisitItemVariantEnum.AvailableTerm: {
+                return "Czy napewno chcesz usunąć dostępny termin?"
+            }
+            default:
+                return
+        }
+    }
+
 
     return (
         <Dialog
@@ -24,10 +54,10 @@ const DeleteVisitDialog = ({open, onClose}: DeleteVisitDialogProps) => {
             onClose={onClose}
         >
             <DialogTitle>
-                {"Usunąć wizytę?"}
+                {getDialogTilte()}
             </DialogTitle>
             <DialogContent>
-                {"Czy napewno chcesz usunąć wybraną wizytę?"}
+                {getDialogHeader()}
             </DialogContent>
             <DialogActions>
                 <AtomButton onClick={handleClose} buttonVariant={AtomButtonVariants.TEXT} text={'Anuluj'}/>

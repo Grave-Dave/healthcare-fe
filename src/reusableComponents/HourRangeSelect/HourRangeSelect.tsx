@@ -1,28 +1,24 @@
-import {useState} from "react";
-
 import {WithStyles, withStyles} from "@mui/styles";
 import {Slider} from "@mui/material";
 
 import {styles} from "./HourRangeSelect.style.ts";
 
 interface HourRangeSelectProps extends WithStyles<typeof styles> {
-
+    onChange: (value: number[]) => void
+    range: number[]
 }
 
-const HourRangeSelect = ({classes}: HourRangeSelectProps) => {
-
-    const [range, setRange] = useState([8, 18]);
+const HourRangeSelect = ({classes, onChange, range}: HourRangeSelectProps) => {
 
     // @ts-ignore
     const handleChange = (event: Event, newValue: number | number[]) => {
-        setRange(newValue as number[]);
+        onChange(newValue as number[])
     };
 
     const formatHour = (hour: number) => {
 
         return `${hour}:00`;
     };
-
 
     return (
         <div className={classes.sliderContainer}>
