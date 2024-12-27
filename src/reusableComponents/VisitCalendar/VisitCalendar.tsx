@@ -39,8 +39,8 @@ const StyledDateCalendar = styled(DateCalendar, {
         margin: '0 16px',
         maxHeight: 'none',
         '@media (min-width:1280px)': {
-            height: '400px',
-            width: '400px',
+            height: '410px',
+            width: '410px',
         },
         '& .MuiDayCalendar-weekDayLabel': {
             fontSize: '1rem',

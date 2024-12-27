@@ -10,8 +10,8 @@ import CircularLoader from "../../reusableComponents/CircularLoader";
 import useWindowSize from "../../hooks/useWindowSize.ts";
 import {useStyles} from "./UserAccount.style.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
-import {RegisterForm, ShowPassword} from "../Register/types.ts";
-import {EMAIL_REGEX, REGISTER_FORM_KEYS} from "../Register/constants.ts";
+import {RegisterForm, RegisterFormError, ShowPassword} from "../Register/types.ts";
+import {DEFAULT_REGISTER_FORM, EMAIL_REGEX, REGISTER_FORM_KEYS} from "../Register/constants.ts";
 import FormInput from "../../reusableComponents/FormInput";
 import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
@@ -22,6 +22,7 @@ import actions from "./actions.tsx";
 import AtomButton from "../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import {checkFormStillKeepsInitialValues} from "./utils.ts";
+import DeleteAccountDialog from "./components/DeleteAccountDialog";
 
 const UserAccount = () => {
     const {windowWidth} = useWindowSize();
@@ -40,13 +41,14 @@ const UserAccount = () => {
         lastName: user.lastName,
         email: user.email,
         phone: user.phone,
-        password: '',
-        password_confirmation: ''
     }
 
-    const formDataToCheck = Object.keys(userDataForm)
+    const formDataToCheck = Object.keys(userDataForm).filter(prop => prop !== REGISTER_FORM_KEYS.PASSWORD && prop !== REGISTER_FORM_KEYS.CONFIRMATION)
+    const passwordToCheck = Object.keys(userDataForm)
+        .filter(prop => prop === REGISTER_FORM_KEYS.PASSWORD || prop === REGISTER_FORM_KEYS.CONFIRMATION)
 
     const [isSubmittable, setIsSubmittable] = useState(false);
+    const [isDeleteAccountDialogOpen, setIsDeleteAccountDialogOpen] = useState(false)
     const [showPassword, setShowPassword] = useState<ShowPassword>({
         password: false,
         password_confirmation: false
@@ -54,18 +56,26 @@ const UserAccount = () => {
 
     useEffect(() => {
         dispatch(actions.setUserDataForm(userBaseData))
+        return () => {
+            dispatch(actions.resetUserDataForm(DEFAULT_REGISTER_FORM))
+        }
     }, [])
 
     useEffect(() => {
-        const isFormFilled = formDataToCheck.every(prop => {
+        const isUserFormDataChanged = !checkFormStillKeepsInitialValues(formDataToCheck, userDataForm, userBaseData)
+
+        const isPasswordChanged = passwordToCheck.every(prop => {
             const key = prop as keyof RegisterForm;
             return userDataForm[key] !== undefined
                 && userDataForm[key] !== ''
-                && !checkFormStillKeepsInitialValues(formDataToCheck, userDataForm, userBaseData)
-                && userDataFormError[key] === false;
-        });
+        })
 
-        setIsSubmittable(isFormFilled);
+        const isFilledProperly = Object.keys(userDataFormError).every(prop => {
+            const key = prop as keyof RegisterFormError;
+            return userDataFormError[key] === false
+        })
+
+        setIsSubmittable(isFilledProperly && (isUserFormDataChanged || isPasswordChanged));
     }, [userDataForm, userDataFormError]);
 
     useEffect(() => {
@@ -106,12 +116,10 @@ const UserAccount = () => {
     }
 
     const validatePassword = () => {
-        if (userDataForm.password !== '' && userDataForm.password_confirmation !== '') {
-            if (userDataForm.password !== userDataForm.password_confirmation) {
-                dispatch(actions.setUserDataFormError({password: true, password_confirmation: true}))
-            } else {
-                dispatch(actions.setUserDataFormError({password: false, password_confirmation: false}))
-            }
+        if (userDataForm.password !== userDataForm.password_confirmation) {
+            dispatch(actions.setUserDataFormError({password: true, password_confirmation: true}))
+        } else {
+            dispatch(actions.setUserDataFormError({password: false, password_confirmation: false}))
         }
     }
 
@@ -120,9 +128,17 @@ const UserAccount = () => {
     }
 
     const handleAccountDelete = () => {
-
+        dispatch(actions.deleteAccount(navigate))
+        onDeleteDialogClose()
     }
 
+    const onDeleteDialogClose = () => {
+        setIsDeleteAccountDialogOpen(false)
+    }
+
+    const onDeleteDialogOpen = () => {
+        setIsDeleteAccountDialogOpen(true)
+    }
 
     const getInput = (field: keyof RegisterForm, fieldValue: string, label: string) => {
 
@@ -207,7 +223,7 @@ const UserAccount = () => {
             <div className={classNames(classes.actionsContainer, {[classes.mobileActionsContainer]: isSmall})}>
                 <AtomButton buttonVariant={AtomButtonVariants.CANCEL}
                             text={'USUŃ KONTO'}
-                            onClick={handleAccountDelete}/>
+                            onClick={onDeleteDialogOpen}/>
                 <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
                             text={'Zapisz zmiany'}
                             disabled={!isSubmittable || isLoading}
@@ -217,15 +233,21 @@ const UserAccount = () => {
     }
 
     return (
-        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
-            <Typography className={classes.userAccountHeader} variant="h2">Ustawienia konta</Typography>
-            <Scrollbars>
-                {isLoading
-                    ? <CircularLoader isLoading={isLoading}/>
-                    : inputsContainer()}
-            </Scrollbars>
-            {actionsContainer()}
-        </MyPaper>
+        <>
+            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+                <Typography className={classes.userAccountHeader} variant="h2">Ustawienia konta</Typography>
+                <Scrollbars>
+                    {isLoading
+                        ? <CircularLoader isLoading={isLoading}/>
+                        : inputsContainer()}
+                </Scrollbars>
+                {actionsContainer()}
+            </MyPaper>
+            <DeleteAccountDialog
+                open={isDeleteAccountDialogOpen}
+                onClose={onDeleteDialogClose}
+                onDelete={handleAccountDelete}/>
+        </>
     )
 }
 

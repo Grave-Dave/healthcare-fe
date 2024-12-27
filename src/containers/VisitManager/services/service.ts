@@ -26,4 +26,9 @@ export default class Service extends BaseService {
 
         return this.get('/locations');
     }
+
+    addNewVisit = (availableTermId: number): Promise<any> => {
+
+        return this.post('/new-visit', {availableTermId});
+    }
 }

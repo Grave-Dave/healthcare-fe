@@ -1,4 +1,4 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
 
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
@@ -37,10 +37,10 @@ const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialog
     const getDialogHeader = () => {
         switch (variant) {
             case VisitItemVariantEnum.UserVisit: {
-                return "Czy napewno chcesz usunąć wybraną wizytę?"
+                return "Czy na pewno chcesz usunąć wybraną wizytę?"
             }
             case VisitItemVariantEnum.AvailableTerm: {
-                return "Czy napewno chcesz usunąć dostępny termin?"
+                return "Czy na pewno chcesz usunąć dostępny termin?"
             }
             default:
                 return
@@ -57,7 +57,7 @@ const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialog
                 {getDialogTilte()}
             </DialogTitle>
             <DialogContent>
-                {getDialogHeader()}
+                <Typography variant="body1">{getDialogHeader()}</Typography>
             </DialogContent>
             <DialogActions>
                 <AtomButton onClick={handleClose} buttonVariant={AtomButtonVariants.TEXT} text={'Anuluj'}/>

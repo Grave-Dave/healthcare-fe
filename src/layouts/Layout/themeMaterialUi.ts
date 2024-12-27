@@ -119,6 +119,13 @@ const theme = createTheme({
                     },
                 },
             },
+            MuiPaper: {
+                styleOverrides: {
+                    root: {
+                        transition: 'padding 300ms ease-in-out, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                    },
+                },
+            },
             MuiLink: {
                 styleOverrides: {
                     root: {

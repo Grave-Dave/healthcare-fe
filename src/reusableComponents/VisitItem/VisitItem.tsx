@@ -24,12 +24,13 @@ interface VisitItemProps extends WithStyles<typeof styles> {
     variant: VisitItemVariantEnum
     onDeleteIconClick?: (value: number) => void
     onClick?: (value: number) => void
-    onClickAway?: (value: number) => void
+    onClickAway?: (e: MouseEvent | TouchEvent, value: number) => void
     withDelete?: boolean
     withConfirm?: boolean
     isClickable?: boolean
     isSelected?: boolean
     extended?: boolean
+    isExpanded?: boolean
 }
 
 const VisitItem = ({
@@ -40,6 +41,7 @@ const VisitItem = ({
                        isClickable = false,
                        isSelected = false,
                        extended = false,
+                       isExpanded = true,
                        onClick,
                        onClickAway,
                        onDeleteIconClick,
@@ -60,8 +62,8 @@ const VisitItem = ({
         onDeleteIconClick && onDeleteIconClick(visitItem.id)
     }
 
-    const handleClickAway = () => {
-        onClickAway && onClickAway(visitItem.id)
+    const handleClickAway = (e: MouseEvent | TouchEvent) => {
+        onClickAway && onClickAway(e, visitItem.id)
     }
 
     const onDeleteDialogClose = () => {
@@ -80,11 +82,12 @@ const VisitItem = ({
                        className={classNames(classes.visitItemContainer,
                            {
                                [classes.clickable]: isClickable,
+                               [classes.expanded]: isExpanded,
                                [classes.selected]: isSelected,
                                [classes.mobile]: isMobile
                            })}>
                     <div className={classes.detailsContainer}>
-                        <div className={classes.details}>
+                        <div className={classNames(classes.details, {[classes.detailsExpanded]: isExpanded})}>
                             <Typography variant="h3">{visitItem.time}</Typography>
                             <Typography variant="h4">{visitItem.date}</Typography>
                             <Typography variant="body1" className={classes.userItem}>

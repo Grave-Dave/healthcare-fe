@@ -2,8 +2,9 @@ import {get} from "lodash";
 import {Dayjs} from "dayjs";
 
 import {actions as staticActions} from './reducer';
-import Service from "./services/service.ts";
 import layoutActions from "../../layouts/Layout/actions.tsx";
+import visitActions from "../UserVisitOverview/actions.tsx";
+import Service from "./services/service.ts";
 import {extractValidationMessages} from "../../utils/utils.ts";
 import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 import {
@@ -15,6 +16,9 @@ import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types
 import {getVisitItemsData} from "./selectors.ts";
 import {VisitItemInterface} from "./types.ts";
 import {LocationItemType} from "../UserVisitOverview/types.ts";
+import {getUserIncomingVisitsData} from "../UserVisitOverview/selectors.ts";
+import {NavigateFunction} from "react-router-dom";
+import {ROUTES} from "../../constants.ts";
 
 
 const service = new Service();
@@ -118,8 +122,40 @@ const deleteAvailableTerm = (termId: number) => (dispatch: any, getState: any) =
         )
 }
 
-const createNewUserVisit = () => (dispatch: any) => {
+const createNewUserVisit = (availableTermId: number, navigate: NavigateFunction) => (dispatch: any, getState: any) => {
+    dispatch(staticActions.setIsLoading(true))
+    const state = getState();
+    const userIncomingVisitsData = getUserIncomingVisitsData(state)
 
+    return service.addNewVisit(availableTermId).then((response) => {
+        const newVisit = get(response, "data", [])
+
+        dispatch(visitActions.setUserIncomingVisits(
+            [...userIncomingVisitsData,
+                {
+                    ...newVisit,
+                    date: formatRegularStringToMyDateString(newVisit.availableTerm.date),
+                    time: newVisit.availableTerm.time,
+                    location: newVisit.availableTerm.location
+                }
+            ]))
+        dispatch(staticActions.setIsCreateVisitDialogOpen(false))
+        navigate(ROUTES.MY_VISITS)
+        dispatch(layoutActions.showSnackBar({
+            message: 'Dodano nową wizytę!',
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.SUCCESS
+        }))
+    })
+        .catch((error) => {
+            dispatch(layoutActions.showSnackBar({
+                message: extractValidationMessages(error)[0] ?? error.message,
+                autoHideDuration: 5000,
+                type: SmoothSnackbarEnum.ERROR
+            }))
+        }).finally(() =>
+            dispatch(staticActions.setIsLoading(false))
+        )
 }
 
 const fetchLocations = () => (dispatch: any) => {

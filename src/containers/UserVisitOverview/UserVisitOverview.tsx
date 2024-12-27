@@ -15,25 +15,42 @@ import AtomButton from "../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
 import {VisitItemVariantEnum} from "./constants.ts";
+import {useAppSelector} from "../../hooks/reduxHooks.ts";
+import authSelectors from "../../auth/selectors.ts";
+import selectors from "./selectors.ts";
 
 const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
 
-    const isAdmin = undefined // todo reducer
-
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
+    const isAdmin = useAppSelector(authSelectors.getIsAdmin)
+    const userIncomingVisitsData = useAppSelector(selectors.getUserIncomingVisitsData)
+    const userPastVisitsData = useAppSelector(selectors.getUserPastVisitsData)
+    const isLoading = useAppSelector(selectors.getIsLoading)
 
-    const visitItemsData: any[] = []
 
     const onVisitDelete = () => {
 
     }
 
 
-    const visitItems = visitItemsData.map((visitItem, i) => {
+    const userIncomingVisits = userIncomingVisitsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`}
+            <VisitItem key={`incoming-visit-item-${i}`}
+                       visitItem={visitItem}
+                       variant={VisitItemVariantEnum.UserVisit}
+                       withConfirm
+                       withDelete
+                       onDeleteIconClick={onVisitDelete}
+                       extended
+            />
+        )
+    })
+
+    const userPastVisits = userPastVisitsData.map((visitItem, i) => {
+        return (
+            <VisitItem key={`past-visit-item-${i}`}
                        visitItem={visitItem}
                        variant={VisitItemVariantEnum.UserVisit}
                        withConfirm
@@ -51,11 +68,13 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.mobilePaperContainer]: isSmall
             })}>
                 <Typography className={classes.headerWithButton}
-                            variant="subtitle1">{isAdmin ? `Oczekujące na potwierdzenie (${0})` : `Nadchodzące (${0})`}</Typography>
+                            variant="subtitle1">
+                    {isAdmin ? `Oczekujące na potwierdzenie (${0})` : `Nadchodzące (${userIncomingVisits.length})`}
+                </Typography>
                 <ShadowedScrollbar>
-                    {visitItems.length
+                    {userIncomingVisits.length
                         ? <div className={classes.paperContent}>
-                            {visitItems}
+                            {userIncomingVisits}
                         </div>
                         : <div className={classes.emptyContent}>
                             <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
@@ -70,11 +89,11 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 [classes.mobilePaperContainer]: isSmall
             })}>
                 <Typography className={classes.header}
-                            variant="subtitle1">{isAdmin ? `Nadchodzące (${0})` : `Zakończone (${0})`}</Typography>
+                            variant="subtitle1">{isAdmin ? `Nadchodzące (${0})` : `Zakończone (${userPastVisits.length})`}</Typography>
                 <ShadowedScrollbar style={{height: isAdmin ? '100%' : 'calc(100% - 120px)'}}>
-                    {visitItems.length
+                    {userPastVisits.length
                         ? <div className={classes.paperContent}>
-                            {visitItems}
+                            {userPastVisits}
                         </div>
                         : <div className={classes.emptyContent}>
                             <EmptyVisitsIcon sx={{width: 150, height: 150}}/>

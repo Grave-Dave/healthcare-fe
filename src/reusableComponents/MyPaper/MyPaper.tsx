@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-import {Paper} from "@mui/material";
+import {Paper, Switch, Tooltip} from "@mui/material";
 import {WithStyles, withStyles} from "@mui/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -15,9 +15,23 @@ interface MyPaperProps extends WithStyles<typeof styles> {
     children: React.ReactNode,
     paperClassName?: string,
     withBackButton?: boolean,
+    withActionSwitch?: boolean
+    isSwitchChecked?: boolean
+    handleSwitchChange?: () => void
+    switchTitle?: string
 }
 
-const MyPaper = ({children, paperClassName, withBackButton = false, classes, ...otherProps}: MyPaperProps) => {
+const MyPaper = ({
+                     children,
+                     paperClassName,
+                     withBackButton = false,
+                     withActionSwitch = false,
+                     isSwitchChecked = false,
+                     handleSwitchChange,
+                     switchTitle,
+                     classes,
+                     ...otherProps
+                 }: MyPaperProps) => {
     const {windowWidth} = useWindowSize();
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
@@ -25,15 +39,24 @@ const MyPaper = ({children, paperClassName, withBackButton = false, classes, ...
         <div className={classNames(classes.container, {[classes.mobileContainer]: isSmall})}>
             <Paper elevation={3} className={classNames(classes.paper, paperClassName, {[classes.mobilePaper]: isSmall})}
                    {...otherProps}>
-                {withBackButton && <AtomButton
-                    buttonVariant={AtomButtonVariants.LINK}
-                    className={classes.backButton}
-                >
+                <div className={classes.actionsContainer}>
+                    {withBackButton && <AtomButton
+                        buttonVariant={AtomButtonVariants.LINK}
+                        className={classes.backButton}
+                    >
                     <span className={classes.backButtonText}>
                         <ArrowBackIcon sx={{width: 24, height: 24}}/>
                         Home
                     </span>
-                </AtomButton>}
+                    </AtomButton>}
+                    {withActionSwitch &&
+                        <Tooltip title={switchTitle}>
+                            <Switch
+                                checked={isSwitchChecked}
+                                onChange={handleSwitchChange}>
+                            </Switch>
+                        </Tooltip>}
+                </div>
                 {children}
             </Paper>
         </div>

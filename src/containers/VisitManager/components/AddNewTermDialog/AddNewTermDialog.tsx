@@ -3,7 +3,7 @@ import {Dayjs} from "dayjs";
 
 import {Dialog, DialogActions, DialogContent, DialogTitle, SelectChangeEvent, Typography} from "@mui/material";
 
-import {useStyles} from "./AddVisitDialog.style.ts";
+import {useStyles} from "./AddNewTermDialog.style.ts";
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
 import MySelect from "../../../../reusableComponents/MySelect";
@@ -16,14 +16,14 @@ import actions from "../../actions.tsx";
 import selectors from "../../selectors.ts";
 import CircularLoader from "../../../../reusableComponents/CircularLoader";
 
-interface AddVisitDialogProps {
+interface AddNewTermDialogProps {
     isOpen: boolean,
     onClose: () => void,
     selectedDate: Dayjs,
     locationsData: LocationInterface[]
 }
 
-const AddVisitDialog = ({isOpen, onClose, selectedDate, locationsData}: AddVisitDialogProps) => {
+const AddNewTermDialog = ({isOpen, onClose, selectedDate, locationsData}: AddNewTermDialogProps) => {
     const classes = useStyles()
     const dispatch = useAppDispatch();
 
@@ -109,4 +109,4 @@ const AddVisitDialog = ({isOpen, onClose, selectedDate, locationsData}: AddVisit
     )
 }
 
-export default AddVisitDialog
+export default AddNewTermDialog

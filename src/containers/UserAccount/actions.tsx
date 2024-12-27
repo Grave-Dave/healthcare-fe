@@ -1,4 +1,5 @@
 import {NavigateFunction} from "react-router-dom";
+import {get} from "lodash";
 
 import {actions as staticActions} from './reducer';
 import layoutActions from '../../layouts/Layout/actions.tsx';
@@ -8,13 +9,16 @@ import {extractValidationMessages} from "../../utils/utils.ts";
 import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 import {RegisterForm} from "../Register/types.ts";
 import {ROUTES} from "../../constants.ts";
+import {DEFAULT_USER_DATA} from "../../layouts/Layout/constants.ts";
 
 const service = new Service();
 
 const updateAccount = (userDataForm: RegisterForm, navigate: NavigateFunction) => (dispatch: any) => {
     dispatch(staticActions.setIsLoading(true))
 
-    return service.updateUserAccount(userDataForm).then(() => {
+    return service.updateUserAccount(userDataForm).then((response) => {
+        const userData = get(response, "data.user", DEFAULT_USER_DATA)
+        dispatch(authActions.setUserData(userData))
         navigate(ROUTES.HOME)
         dispatch(layoutActions.showSnackBar({
             message: 'Zaktualizowano konto.',
@@ -31,11 +35,14 @@ const updateAccount = (userDataForm: RegisterForm, navigate: NavigateFunction) =
     )
 }
 
-const deleteAccount = (userId: number, navigate: NavigateFunction) => (dispatch: any) => {
+const deleteAccount = (navigate: NavigateFunction) => (dispatch: any) => {
     dispatch(staticActions.setIsLoading(true))
 
-    return service.deleteUserAccount(userId).then(() => {
-        dispatch(authActions.logout())
+    return service.deleteUserAccount().then(() => {
+        dispatch(authActions.setUserData(DEFAULT_USER_DATA))
+        dispatch(authActions.setIsAdmin(false))
+        dispatch(authActions.setIsAuthenticated(false))
+        dispatch(authActions.clearAccessToken())
         navigate(ROUTES.HOME)
         dispatch(layoutActions.showSnackBar({
             message: 'Usunięto konto.',

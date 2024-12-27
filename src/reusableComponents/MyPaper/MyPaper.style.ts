@@ -28,6 +28,15 @@ export const styles = ({spacing}: Theme) => createStyles({
     backButton: {
         alignSelf: 'flex-start',
     },
+    actionSwitch: {
+        alignSelf: 'flex-end',
+    },
+    actionsContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
+    },
     backButtonText: {
         display: 'flex',
         alignItems: 'center',

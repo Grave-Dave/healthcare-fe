@@ -3,10 +3,10 @@ import {RegisterForm} from "../../Register/types.ts";
 
 export default class Service extends BaseService {
     updateUserAccount(userAccountForm: RegisterForm): Promise<any> {
-        return this.post('/update-account', userAccountForm);
+        return this.post('/user-update', userAccountForm);
     }
 
-    deleteUserAccount(userId: number): Promise<any> {
-        return this.delete(`/delete-account/${userId}`);
+    deleteUserAccount(): Promise<any> {
+        return this.delete(`/user-delete`);
     }
 }

@@ -1,6 +1,7 @@
 import {combineReducers} from "@reduxjs/toolkit";
 
 import {reducer as layoutReducer, REDUCER_KEY as LAYOUT_REDUCER_KEY} from "../layouts/Layout/reducer.js";
+import {reducer as visitReducer, REDUCER_KEY as VISIT_REDUCER_KEY} from "../containers/UserVisitOverview/reducer.ts";
 import {reducer as loginPageReducer, REDUCER_KEY as LOGIN_PAGE_REDUCER_KEY} from "../containers/Login/reducer.ts";
 import {reducer as authReducer, REDUCER_KEY as AUTH_REDUCER_KEY} from "../auth/reducer.ts";
 import {reducer as userDataReducer, REDUCER_KEY as USER_DATA_REDUCER_KEY} from "../containers/UserAccount/reducer.ts";
@@ -21,4 +22,5 @@ export const rootReducer = combineReducers({
     [LOGIN_PAGE_REDUCER_KEY]: loginPageReducer,
     [VISIT_MANAGER_REDUCER_KEY]: visitManagerReducer,
     [USER_DATA_REDUCER_KEY]: userDataReducer,
+    [VISIT_REDUCER_KEY]: visitReducer,
 })

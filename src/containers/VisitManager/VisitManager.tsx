@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -16,13 +16,14 @@ import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import AtomButton from "../../atoms/AtomButton";
 import VisitCalendar from "../../reusableComponents/VisitCalendar";
 import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
+import AddNewTermDialog from "./components/AddNewTermDialog";
 import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
-import AddVisitDialog from "./components/AddVisitDialog";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import authSelectors from "../../auth/selectors.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
+import AddNewVisitDialog from "./components/AddNewVisitDialog";
 
 
 const VisitManager = () => {
@@ -41,6 +42,8 @@ const VisitManager = () => {
     const locationsData = useAppSelector(selectors.getLocations)
     const isLoading = useAppSelector(selectors.getIsLoading)
 
+    const [isExpanded, setIsExpanded] = useState<boolean>(true)
+
     useEffect(() => {
         if (isAdmin) {
             dispatch(actions.fetchLocations())
@@ -57,14 +60,19 @@ const VisitManager = () => {
         dispatch(actions.setSelectedTermId(availableTermId))
     }
 
-    const onUnselectTerm = (availableTermId: number) => {
-        if (availableTermId === selectedTermId) {
-            dispatch(actions.setSelectedTermId(null))
+    const onUnselectTerm = (e: MouseEvent | TouchEvent, availableTermId: number) => {
+        const target = e.target as HTMLElement;
+
+        if (target?.tagName.toLowerCase() !== 'button' && !isMobile) {
+            if (availableTermId === selectedTermId) {
+                dispatch(actions.setSelectedTermId(null))
+            }
         }
     }
 
     const onCalendarChange = (value: any) => {
         dispatch(actions.setSelectedDate(value))
+        dispatch(actions.setSelectedTermId(null))
     }
 
     const onCreateVisitDialogClose = () => {
@@ -79,12 +87,38 @@ const VisitManager = () => {
         dispatch(actions.deleteAvailableTerm(termId))
     }
 
+    const handleSwitchChange = () => {
+        setIsExpanded(prevState => !prevState)
+    }
+
+    const getActionDialog = () => {
+        switch (true) {
+            case isAdmin: {
+                return <AddNewTermDialog
+                    selectedDate={selectedDate}
+                    onClose={onCreateVisitDialogClose}
+                    isOpen={isCreateVisitDialogOpen}
+                    locationsData={locationsData}
+                />
+            }
+            case !isAdmin: {
+                return <AddNewVisitDialog
+                    onClose={onCreateVisitDialogClose}
+                    isOpen={isCreateVisitDialogOpen}
+                    selectedTerm={visitItemsData.find(item => item.id === selectedTermId)}/>
+            }
+            default:
+                break;
+        }
+    }
+
 
     const visitItems = visitItemsData.map((visitItem, i) => {
         return (
             <VisitItem key={`visit-item-${i}`}
                        visitItem={visitItem}
                        isClickable
+                       isExpanded={isExpanded}
                        onClick={onSelectTerm}
                        onClickAway={onUnselectTerm}
                        isSelected={visitItem.id === selectedTermId}
@@ -97,10 +131,16 @@ const VisitManager = () => {
 
     return (
         <>
-            <MyPaper withBackButton paperClassName={classNames({
-                [classes.paperContainer]: !isSmall,
-                [classes.mobilePaperContainer]: isSmall
-            })}>
+            <MyPaper
+                withBackButton
+                withActionSwitch
+                isSwitchChecked={isExpanded}
+                handleSwitchChange={handleSwitchChange}
+                switchTitle={isExpanded ? "Zwiń" : 'Rozwiń'}
+                paperClassName={classNames({
+                    [classes.paperContainer]: !isSmall,
+                    [classes.mobilePaperContainer]: isSmall
+                })}>
                 <Typography className={classes.headerWithButton}
                             variant="subtitle1">{isAdmin ? "Dodaj terminy" : "Umów wizytę"}</Typography>
                 <div className={classes.contentContainer}>
@@ -134,14 +174,11 @@ const VisitManager = () => {
                 </div>
                 <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
                             text={isSmall ? <AddIcon/> : isAdmin ? "Dodaj terminy" : "Umów wizytę"}
-                            onClick={onCreateVisitDialogOpen}/>
+                            onClick={onCreateVisitDialogOpen}
+                            disabled={!isAdmin && !selectedTermId}
+                />
             </MyPaper>
-            {isAdmin && <AddVisitDialog
-                selectedDate={selectedDate}
-                onClose={onCreateVisitDialogClose}
-                isOpen={isCreateVisitDialogOpen}
-                locationsData={locationsData}
-            />}
+            {getActionDialog()}
         </>
     )
 }
