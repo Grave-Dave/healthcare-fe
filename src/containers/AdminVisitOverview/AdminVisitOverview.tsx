@@ -1,75 +1,92 @@
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
 import {WithStyles, withStyles} from "@mui/styles";
-import AddIcon from '@mui/icons-material/Add';
 
 import useWindowSize from "../../hooks/useWindowSize.ts";
-import {styles} from "./UserVisitOverview.style.ts";
+import {styles} from "./AdminVisitOverview.style.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {EmptyVisitsIcon} from "./icons/icons.tsx";
 import VisitItem from "../../reusableComponents/VisitItem";
-import AtomButton from "../../atoms/AtomButton";
-import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
-import {VisitItemVariantEnum} from "./constants.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import authSelectors from "../../auth/selectors.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
-import {ROUTES} from "../../constants.ts";
+import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
 
-const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
+const AdminVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
-    const userIncomingVisitsData = useAppSelector(selectors.getUserIncomingVisitsData)
-    const userPastVisitsData = useAppSelector(selectors.getUserPastVisitsData)
+    const isAdmin = useAppSelector(authSelectors.getIsAdmin)
+
     const isLoading = useAppSelector(selectors.getIsLoading)
+    const incomingConfirmedVisitsData = useAppSelector(selectors.getIncomingConfirmedVisitsData)
+    const incomingPendingVisitsData = useAppSelector(selectors.getIncomingPendingVisitsData)
+
+    const [deleteWithAvailableTerm, setDeleteWithAvailableTerm] = useState<boolean>(false)
 
     useEffect(() => {
-        dispatch(actions.fetchUserVisits())
+        if (isAdmin) {
+            dispatch(actions.fetchAdminVisits())
+        }
     }, [])
 
     const onVisitDelete = (visitId: number) => {
         if (visitId) {
-            dispatch(actions.deleteUserVisit(visitId))
+            dispatch(actions.deleteVisit(visitId, deleteWithAvailableTerm))
         }
     }
 
-    const userIncomingVisits = userIncomingVisitsData.map((visitItem, i) => {
+    const onVisitConfirm = (visitId: number) => {
+        if (visitId) {
+            dispatch(actions.updateVisit(visitId))
+        }
+    }
+
+    const onSwitchChange = () => {
+        setDeleteWithAvailableTerm(prevState => !prevState)
+    }
+
+    const incomingPendingVisits = incomingPendingVisitsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`incoming-visit-item-${i}`}
+            <VisitItem key={`incoming-pending-visit-item-${i}`}
                        visitItem={visitItem}
                        variant={VisitItemVariantEnum.UserVisit}
                        withBadge
                        withDelete
+                       withConfirm
+                       onCheckIconClick={onVisitConfirm}
+                       onDialogSwitchChange={onSwitchChange}
+                       dialogChecked={deleteWithAvailableTerm}
                        onDeleteIconClick={onVisitDelete}
+                       extended
             />
         )
     })
 
-    const userPastVisits = userPastVisitsData.map((visitItem, i) => {
+    const incomingConfirmedVisits = incomingConfirmedVisitsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`past-visit-item-${i}`}
+            <VisitItem key={`incoming-confirmed-visit-item-${i}`}
                        visitItem={visitItem}
                        variant={VisitItemVariantEnum.UserVisit}
                        onDeleteIconClick={onVisitDelete}
+                       withBadge
+                       extended
             />
         )
     })
 
     return (
-        <div
-            className={classNames(classes.papersContainer,
-                {[classes.mobilePapersContainer]: isSmall})}>
+        <div className={classNames(classes.papersContainer,
+            {[classes.mobilePapersContainer]: isSmall})}>
             <MyPaper
                 withBackButton
                 paperClassName={classNames({
@@ -78,22 +95,23 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 })}>
                 <Typography
                     className={classes.headerWithButton}
+
                     variant="subtitle1">
-                    {`Nadchodzące (${userIncomingVisits.length})`}
+                    {`Oczekujące na potwierdzenie (${incomingPendingVisits.length})`}
                 </Typography>
                 <ShadowedScrollbar>
                     {isLoading
                         ? <div className={classes.paperContent}>
                             {<VisitSkeleton/>}
                         </div>
-                        : userIncomingVisits.length
+                        : incomingPendingVisits.length
                             ? <div className={classes.paperContent}>
-                                {userIncomingVisits}
+                                {incomingPendingVisits}
                             </div>
                             : <div className={classes.emptyContent}>
                                 <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
                                 <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak nadchodzących wizyt</Typography>
+                                >Brak wizyt oczekujących na zatwierdzenie</Typography>
                             </div>
                     }
                 </ShadowedScrollbar>
@@ -106,32 +124,27 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 <Typography
                     className={classes.header}
                     variant="subtitle1">
-                    {`Zakończone (${userPastVisits.length})`}
+                    {`Nadchodzące (${incomingConfirmedVisits.length})`}
                 </Typography>
-                <ShadowedScrollbar style={{height: 'calc(100% - 120px)'}}>
+                <ShadowedScrollbar style={{height: '100%'}}>
                     {isLoading
                         ? <div className={classes.paperContent}>
                             {<VisitSkeleton/>}
                         </div>
-                        : userPastVisits.length
+                        : incomingConfirmedVisits.length
                             ? <div className={classes.paperContent}>
-                                {userPastVisits}
+                                {incomingConfirmedVisits}
                             </div>
                             : <div className={classes.emptyContent}>
                                 <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
                                 <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak zakończonych wizyt</Typography>
+                                >Brak nadchodzących wizyt</Typography>
                             </div>
                     }
                 </ShadowedScrollbar>
-                <AtomButton
-                    buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
-                    text={isSmall ? <AddIcon/> : "Umów nową wizytę"}
-                    onClick={() => navigate(ROUTES.MAKE_VISIT)}
-                />
             </MyPaper>
         </div>
     )
 }
 
-export default withStyles(styles)(UserVisitOverview);
+export default withStyles(styles)(AdminVisitOverview);

@@ -6,6 +6,10 @@ import {reducer as loginPageReducer, REDUCER_KEY as LOGIN_PAGE_REDUCER_KEY} from
 import {reducer as authReducer, REDUCER_KEY as AUTH_REDUCER_KEY} from "../auth/reducer.ts";
 import {reducer as userDataReducer, REDUCER_KEY as USER_DATA_REDUCER_KEY} from "../containers/UserAccount/reducer.ts";
 import {
+    reducer as adminVisitReducer,
+    REDUCER_KEY as ADMIN_VISIT_REDUCER_KEY
+} from "../containers/AdminVisitOverview/reducer.ts";
+import {
     reducer as visitManagerReducer,
     REDUCER_KEY as VISIT_MANAGER_REDUCER_KEY
 } from "../containers/VisitManager/reducer.ts";
@@ -23,4 +27,5 @@ export const rootReducer = combineReducers({
     [VISIT_MANAGER_REDUCER_KEY]: visitManagerReducer,
     [USER_DATA_REDUCER_KEY]: userDataReducer,
     [VISIT_REDUCER_KEY]: visitReducer,
+    [ADMIN_VISIT_REDUCER_KEY]: adminVisitReducer,
 })

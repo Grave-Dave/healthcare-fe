@@ -145,15 +145,17 @@ const VisitManager = () => {
                             variant="subtitle1">{isAdmin ? "Dodaj terminy" : "Umów wizytę"}</Typography>
                 <div className={classes.contentContainer}>
                     {isMobile
-                        ? < MobileDatePicker
-                            onCalendarChange={onCalendarChange}
-                            selectedDate={selectedDate}
-                            shouldDisablePast
-                        />
+                        ? <div style={{height: 30}}>
+                            < MobileDatePicker
+                                onCalendarChange={onCalendarChange}
+                                selectedDate={selectedDate}
+                                shouldDisablePast
+                            />
+                        </div>
                         : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisablePast/>}
                     <ShadowedScrollbar
                         style={{
-                            height: isMobile ? 'calc(100% - 150px)' : 'calc(100% - 100px)',
+                            height: isSmall ? 'calc(100% - 100px)' : isMobile ? 'calc(100% - 150px)' : 'calc(100% - 70px)',
                             flex: isMobile ? '1 0 auto' : '1 0 610px'
                         }}>
                         {isLoading

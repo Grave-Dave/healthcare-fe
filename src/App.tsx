@@ -11,6 +11,7 @@ import AdminPanel from "./containers/AdminPanel";
 import ProtectedRoute from "./reusableComponents/ProtectedRoutes";
 import UserAccount from "./containers/UserAccount";
 import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/constants.ts";
+import AdminVisitOverview from "./containers/AdminVisitOverview";
 
 function App() {
 
@@ -43,6 +44,14 @@ function App() {
                     }
                 />
                 <Route
+                    path={ROUTES.VISITS}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AdminRoute}>
+                            <AdminVisitOverview/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
                     path="*"
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
@@ -50,7 +59,6 @@ function App() {
                                 <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
                                 <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
                                 <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
-                                <Route path={ROUTES.VISITS} element={<UserVisitOverview/>}/>
                                 <Route path={ROUTES.USER} element={<UserAccount/>}/>
                             </Routes>
                         </ProtectedRoute>

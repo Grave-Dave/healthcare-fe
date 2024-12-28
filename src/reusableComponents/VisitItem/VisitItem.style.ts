@@ -6,7 +6,7 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
     visitItemContainer: {
         display: 'flex',
         justifyContent: 'space-between',
-        padding: spacing(1,4),
+        padding: spacing(1, 4),
     },
     detailsContainer: {
         display: 'flex',
@@ -15,15 +15,16 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
     actionsContainer: {
         display: 'flex',
         gap: 16,
+        padding: spacing(1.5, 0)
     },
     details: {
         display: 'flex',
         flexDirection: "column",
         gap: 16,
         padding: spacing(1, 0),
-        transition:' gap 300ms ease'
+        transition: ' gap 300ms ease'
     },
-    detailsExpanded:{
+    detailsExpanded: {
         gap: 24,
     },
     userItem: {
@@ -46,7 +47,7 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
         backgroundColor: `${palette.action.selected} !important`
     },
     expanded: {
-        padding: spacing(3,4),
+        padding: spacing(3, 2,3,4),
     },
     mobile: {
         gap: 16,

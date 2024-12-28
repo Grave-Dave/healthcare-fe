@@ -1,3 +1,4 @@
+import {NavigateFunction} from "react-router-dom";
 import {get} from "lodash";
 import {Dayjs} from "dayjs";
 
@@ -17,7 +18,6 @@ import {getVisitItemsData} from "./selectors.ts";
 import {VisitItemInterface} from "./types.ts";
 import {LocationItemType} from "../UserVisitOverview/types.ts";
 import {getUserIncomingVisitsData} from "../UserVisitOverview/selectors.ts";
-import {NavigateFunction} from "react-router-dom";
 import {ROUTES} from "../../constants.ts";
 
 
@@ -110,6 +110,12 @@ const deleteAvailableTerm = (termId: number) => (dispatch: any, getState: any) =
 
     return service.deleteTerm(termId).then(() => {
         dispatch(staticActions.setVisitItemsData(visitItemsData.filter(visitItem => visitItem.id !== termId)))
+
+        dispatch(layoutActions.showSnackBar({
+            message: 'Termin został usunięty!',
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.SUCCESS
+        }))
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({

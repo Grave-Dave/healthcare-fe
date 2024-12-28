@@ -5,8 +5,6 @@ import createStyles from "@mui/styles/createStyles";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "../../layouts/Layout/selectors.ts";
 import {actions} from "../../layouts/Layout/reducer.ts";
-import theme from "../../layouts/Layout/themeMaterialUi.ts";
-import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 
 export const useStyles = makeStyles(() => createStyles({
     snackBarText: {
@@ -38,12 +36,7 @@ const SmoothSnackbar = () => {
             <Alert
                 onClose={onClose}
                 severity={type}
-                variant="filled"
-                sx={{
-                    width: '100%',
-                    backgroundColor: type === SmoothSnackbarEnum.INFO ? theme.palette.primary.main : undefined,
-                    color: type === SmoothSnackbarEnum.INFO ? theme.palette.primary.contrastText : undefined
-                }}
+                sx={{width: '100%'}}
             >
                 <span className={classes.snackBarText}>{message}</span>
             </Alert>

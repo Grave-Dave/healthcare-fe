@@ -39,24 +39,25 @@ const MyPaper = ({
         <div className={classNames(classes.container, {[classes.mobileContainer]: isSmall})}>
             <Paper elevation={3} className={classNames(classes.paper, paperClassName, {[classes.mobilePaper]: isSmall})}
                    {...otherProps}>
-                <div className={classes.actionsContainer}>
-                    {withBackButton && <AtomButton
-                        buttonVariant={AtomButtonVariants.LINK}
-                        className={classes.backButton}
-                    >
+                {(withActionSwitch || withBackButton) &&
+                    <div className={classes.actionsContainer}>
+                        {withBackButton && <AtomButton
+                            buttonVariant={AtomButtonVariants.LINK}
+                            className={classes.backButton}
+                        >
                     <span className={classes.backButtonText}>
                         <ArrowBackIcon sx={{width: 24, height: 24}}/>
                         Home
                     </span>
-                    </AtomButton>}
-                    {withActionSwitch &&
-                        <Tooltip title={switchTitle}>
-                            <Switch
-                                checked={isSwitchChecked}
-                                onChange={handleSwitchChange}>
-                            </Switch>
-                        </Tooltip>}
-                </div>
+                        </AtomButton>}
+                        {withActionSwitch &&
+                            <Tooltip title={switchTitle}>
+                                <Switch
+                                    checked={isSwitchChecked}
+                                    onChange={handleSwitchChange}>
+                                </Switch>
+                            </Tooltip>}
+                    </div>}
                 {children}
             </Paper>
         </div>

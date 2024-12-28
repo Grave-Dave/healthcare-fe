@@ -1,4 +1,5 @@
 import {Dayjs} from "dayjs";
+import {AvailableTermStatusEnum} from "./constants.ts";
 
 export interface VisitManagerPageReducerState {
     selectedDate: Dayjs
@@ -17,7 +18,7 @@ export interface VisitItemInterface {
     location: LocationInterface,
     date: string,
     time: string,
-    status: boolean
+    status: AvailableTermStatusEnum
 }
 
 export interface LocationInterface {

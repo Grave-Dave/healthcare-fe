@@ -1,17 +1,29 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Switch, Typography} from "@mui/material";
 
 import AtomButton from "../../../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../../../atoms/AtomButton/constants.ts";
 import {VisitItemVariantEnum} from "../../constants.ts";
+import theme from "../../../../layouts/Layout/themeMaterialUi.ts";
 
 interface DeleteVisitDialogProps {
     open: boolean
     variant: VisitItemVariantEnum
     onClose: () => void
     onDelete: () => void
+    onChange?: () => void
+    checked?: boolean
+    withSwitch?: boolean
 }
 
-const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialogProps) => {
+const DeleteVisitDialog = ({
+                               open,
+                               onClose,
+                               onDelete,
+                               variant,
+                               onChange,
+                               checked,
+                               withSwitch = false
+                           }: DeleteVisitDialogProps) => {
 
     const handleDelete = () => {
         onDelete()
@@ -21,7 +33,11 @@ const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialog
         onClose()
     }
 
-    const getDialogTilte = () => {
+    const handleCheck = () => {
+        onChange && onChange()
+    }
+
+    const getDialogTitle = () => {
         switch (variant) {
             case VisitItemVariantEnum.UserVisit: {
                 return "Usunąć wizytę?"
@@ -47,6 +63,18 @@ const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialog
         }
     }
 
+    const getSwitch = () => {
+        return (
+            <div style={{paddingTop: theme.spacing(3)}}>
+                <FormControlLabel
+                    control={<Switch checked={checked} onChange={handleCheck} sx={{marginLeft: 1}}/>}
+                    label={<Typography variant="body2">Usunąc także termin?</Typography>}
+                    labelPlacement="start"
+                    sx={{margin: 0}}
+                />
+            </div>
+        )
+    }
 
     return (
         <Dialog
@@ -54,10 +82,11 @@ const DeleteVisitDialog = ({open, onClose, onDelete, variant}: DeleteVisitDialog
             onClose={onClose}
         >
             <DialogTitle>
-                {getDialogTilte()}
+                {getDialogTitle()}
             </DialogTitle>
             <DialogContent>
                 <Typography variant="body1">{getDialogHeader()}</Typography>
+                {withSwitch && variant === VisitItemVariantEnum.UserVisit && getSwitch()}
             </DialogContent>
             <DialogActions>
                 <AtomButton onClick={handleClose} buttonVariant={AtomButtonVariants.TEXT} text={'Anuluj'}/>
