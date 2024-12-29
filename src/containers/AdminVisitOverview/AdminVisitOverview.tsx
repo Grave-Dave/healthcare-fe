@@ -78,6 +78,9 @@ const AdminVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                        visitItem={visitItem}
                        variant={VisitItemVariantEnum.UserVisit}
                        onDeleteIconClick={onVisitDelete}
+                       onDialogSwitchChange={onSwitchChange}
+                       dialogChecked={deleteWithAvailableTerm}
+                       withDelete
                        withBadge
                        extended
             />

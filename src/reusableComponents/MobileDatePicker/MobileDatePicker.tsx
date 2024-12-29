@@ -11,17 +11,23 @@ import {formatDayjsToMyDateString} from "../../containers/VisitManager/utils/uti
 
 
 interface MobileDatePickerProps {
-    onCalendarChange: (value: any) => void
+    onDateChange: (value: any) => void
     selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
+    onMonthChange: (value: any) => void
+    highlightedDays: number[]
+    isLoading: boolean
 }
 
 const MobileDatePicker = ({
-                              onCalendarChange,
+                              onDateChange,
                               selectedDate,
                               shouldDisablePast = false,
-                              shouldDisableFuture = false
+                              shouldDisableFuture = false,
+                              onMonthChange,
+                              highlightedDays,
+                              isLoading
                           }: MobileDatePickerProps) => {
     const classes = useStyles()
     const [isCalendarOpen, setIsCalendarOpen] = useState(false)
@@ -33,7 +39,7 @@ const MobileDatePicker = ({
     }, [selectedDate])
 
     const onChange = (value: any) => {
-        onCalendarChange(value)
+        onDateChange(value)
         onClose()
     }
 
@@ -58,7 +64,11 @@ const MobileDatePicker = ({
                     onChange={onChange}
                     selectedDate={selectedDate}
                     shouldDisablePast={shouldDisablePast}
-                    shouldDisableFuture={shouldDisableFuture}/>
+                    shouldDisableFuture={shouldDisableFuture}
+                    onMonthChange={onMonthChange}
+                    highlightedDays={highlightedDays}
+                    isLoading={isLoading}
+                />
             </Dialog>
         </>
     )

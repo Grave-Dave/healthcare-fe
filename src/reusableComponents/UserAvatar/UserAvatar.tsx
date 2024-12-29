@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 import {Avatar, Badge} from "@mui/material";
 import {WithStyles, withStyles} from "@mui/styles";
 import {styled} from '@mui/material/styles';
@@ -38,11 +40,13 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 interface UserAvatarProps extends WithStyles<typeof styles> {
     user: User
     userAvatar?: string
+    onClick?: () => void
+    isLoading?: boolean
 }
 
-const UserAvatar = ({user, userAvatar, classes}: UserAvatarProps) => {
+const UserAvatar = ({user, userAvatar, onClick, isLoading, classes}: UserAvatarProps) => {
     return (
-        <div className={classes.avatar}>
+        <div className={classNames(classes.avatar, {[classes.disabled]: isLoading})} onClick={onClick}>
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}

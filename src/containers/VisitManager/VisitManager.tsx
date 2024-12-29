@@ -24,6 +24,7 @@ import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
 import AddNewVisitDialog from "./components/AddNewVisitDialog";
+import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
 
 
 const VisitManager = () => {
@@ -40,7 +41,9 @@ const VisitManager = () => {
     const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
     const visitItemsData = useAppSelector(selectors.getVisitItemsData)
     const locationsData = useAppSelector(selectors.getLocations)
+    const highlightedCalendarDays = useAppSelector(selectors.getFutureTerms)
     const isLoading = useAppSelector(selectors.getIsLoading)
+    const isCalendarLoading = useAppSelector(selectors.getIsCalendarLoading)
 
     const [isExpanded, setIsExpanded] = useState<boolean>(true)
 
@@ -63,16 +66,20 @@ const VisitManager = () => {
     const onUnselectTerm = (e: MouseEvent | TouchEvent, availableTermId: number) => {
         const target = e.target as HTMLElement;
 
-        if (target?.tagName.toLowerCase() !== 'button' && !isMobile) {
+        if (target?.tagName.toLowerCase() !== 'button' && !isCreateVisitDialogOpen) {
             if (availableTermId === selectedTermId) {
                 dispatch(actions.setSelectedTermId(null))
             }
         }
     }
 
-    const onCalendarChange = (value: any) => {
+    const onDateChange = (value: any) => {
         dispatch(actions.setSelectedDate(value))
         dispatch(actions.setSelectedTermId(null))
+    }
+
+    const onMonthChange = (currentMonthYear: CurrentMonthYearType) => {
+        dispatch((actions.fetchMonthAvailableTerms(currentMonthYear)))
     }
 
     const onCreateVisitDialogClose = () => {
@@ -147,12 +154,22 @@ const VisitManager = () => {
                     {isMobile
                         ? <div style={{height: 30}}>
                             < MobileDatePicker
-                                onCalendarChange={onCalendarChange}
+                                onDateChange={onDateChange}
                                 selectedDate={selectedDate}
                                 shouldDisablePast
+                                onMonthChange={onMonthChange}
+                                highlightedDays={highlightedCalendarDays}
+                                isLoading={isCalendarLoading}
                             />
                         </div>
-                        : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisablePast/>}
+                        : < VisitCalendar
+                            selectedDate={selectedDate}
+                            onChange={onDateChange}
+                            onMonthChange={onMonthChange}
+                            highlightedDays={highlightedCalendarDays}
+                            isLoading={isCalendarLoading}
+                            shouldDisablePast
+                        />}
                     <ShadowedScrollbar
                         style={{
                             height: isSmall ? 'calc(100% - 100px)' : isMobile ? 'calc(100% - 150px)' : 'calc(100% - 70px)',

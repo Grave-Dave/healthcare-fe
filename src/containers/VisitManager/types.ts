@@ -4,7 +4,7 @@ import {AvailableTermStatusEnum} from "./constants.ts";
 export interface VisitManagerPageReducerState {
     selectedDate: Dayjs
     selectedTermId: number | null
-    allTerms: Dayjs[]
+    allTerms: number[]
     visitItemsData: VisitItemInterface[]
     isCreateVisitDialogOpen: boolean
     locations: LocationInterface[]

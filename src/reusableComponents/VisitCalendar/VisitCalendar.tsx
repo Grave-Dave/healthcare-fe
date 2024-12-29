@@ -13,14 +13,14 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 
 import {styles} from "./VisitCalendar.style.ts";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
-import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
-import actions from "../../containers/VisitManager/actions.tsx";
-import selectors from "../../containers/VisitManager/selectors.ts";
 import {CurrentMonthYearType} from "./types.ts";
 
 interface CalendarProps extends WithStyles<typeof styles> {
     isMobile?: boolean
     onChange: (value: any) => void
+    onMonthChange: (value: any) => void
+    highlightedDays: number[]
+    isLoading: boolean
     selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
@@ -102,18 +102,18 @@ const VisitCalendar = ({
                            selectedDate,
                            shouldDisablePast = false,
                            shouldDisableFuture = false,
+                           onMonthChange,
+                           highlightedDays,
+                           isLoading
                        }: CalendarProps) => {
-    const dispatch = useAppDispatch();
 
     const [currentMonthYear, setCurrentMonthYear] = useState<CurrentMonthYearType>({
         month: selectedDate?.format('MM'),
         year: selectedDate?.format('YYYY')
     })
-    const highlightedDays = useAppSelector(selectors.getFutureTerms)
-    const isLoading = useAppSelector(selectors.getIsCalendarLoading)
 
     useEffect(() => {
-        currentMonthYear && dispatch((actions.fetchMonthAvailableTerms(currentMonthYear)))
+        onMonthChange(currentMonthYear)
     }, [currentMonthYear])
 
 
@@ -143,11 +143,12 @@ const VisitCalendar = ({
                 key={props.day.toString()}
                 overlap="circular"
                 badgeContent={isSelected ? <EventAvailableIcon
-                    sx={{width: 16,
+                    sx={{
+                        width: 16,
                         height: 16,
                         backgroundColor: theme.palette.background.paper,
-                        borderRadius:1
-                }}/> : undefined}
+                        borderRadius: 1
+                    }}/> : undefined}
             >
                 <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day}/>
             </Badge>

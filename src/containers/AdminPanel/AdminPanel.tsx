@@ -1,41 +1,75 @@
-import {useState} from "react";
-import dayjs, {Dayjs} from "dayjs";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
 
 import useWindowSize from "../../hooks/useWindowSize.ts";
+import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {useStyles} from "./AdminPanel.style.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
-import MyPaper from "../../reusableComponents/MyPaper/MyPaper.tsx";
-import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar/ShadowedScrollbar.tsx";
+import MyPaper from "../../reusableComponents/MyPaper";
+import ShadowedScrollbar from "../../reusableComponents/ShadowedScrollbar";
+import VisitItem from "../../reusableComponents/VisitItem";
+import VisitCalendar from "../../reusableComponents/VisitCalendar";
 import {EmptyVisitsIcon} from "../UserVisitOverview/icons/icons.tsx";
-import theme from "../../layouts/Layout/themeMaterialUi.ts";
-import VisitItem from "../../reusableComponents/VisitItem/VisitItem.tsx";
-import MobileDatePicker from "../../reusableComponents/MobileDatePicker/MobileDatePicker.tsx";
-import VisitCalendar from "../../reusableComponents/VisitCalendar/VisitCalendar.tsx";
+import MobileDatePicker from "../../reusableComponents/MobileDatePicker";
 import PersonSelector from "../../reusableComponents/PersonSelector";
-import {VisitItemInterfaceWithUser} from "../UserVisitOverview/types.ts";
+import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
 import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
+import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
+import selectors from "./selectors.ts";
+import actions from "./actions.tsx";
 
 const AdminPanel = () => {
     const {windowWidth} = useWindowSize();
     const classes = useStyles()
+    const dispatch = useAppDispatch();
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
-    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs(new Date()));
+    const selectedDate = useAppSelector(selectors.getAdminSelectedDate)
+    const pastVisitsData = useAppSelector(selectors.getPastVisitsData)
+    const userVisitsData = useAppSelector(selectors.getUserVisitsData)
+    const highlightedCalendarDays = useAppSelector(selectors.getPastTerms)
+    const isLoading = useAppSelector(selectors.getIsLoading)
+    const isCalendarLoading = useAppSelector(selectors.getIsAdminCalendarLoading)
 
-    const visitItemsData: VisitItemInterfaceWithUser[] = []
+    const [isExpanded, setIsExpanded] = useState<boolean>(true)
 
-    const onCalendarChange = (value: any) => {
-        setSelectedDate(value)
+    useEffect(() => {
+        if (selectedDate) {
+            dispatch(actions.fetchPastVisits(selectedDate))
+        }
+    }, [selectedDate])
+
+    const onMonthChange = (currentMonthYear: CurrentMonthYearType) => {
+        dispatch((actions.fetchMonthPastTerms(currentMonthYear)))
     }
 
-    const visitItems = visitItemsData.map((visitItem, i) => {
+    const onDateChange = (value: any) => {
+        dispatch(actions.setSelectedDate(value))
+    }
+
+    const handleSwitchChange = () => {
+        setIsExpanded(prevState => !prevState)
+    }
+
+    const pastVisitItems = pastVisitsData.map((visitItem, i) => {
         return (
-            <VisitItem key={`visit-item-${i}`}
+            <VisitItem key={`past-visit-item-${i}`}
+                       variant={VisitItemVariantEnum.UserVisit}
+                       visitItem={visitItem}
+                       isExpanded={isExpanded}
+                       extended
+            />
+        )
+    })
+
+    const userVisitItems = userVisitsData.map((visitItem, i) => {
+        return (
+            <VisitItem key={`user-visit-item-${i}`}
                        variant={VisitItemVariantEnum.UserVisit}
                        visitItem={visitItem}
                        extended
@@ -45,32 +79,53 @@ const AdminPanel = () => {
 
     return (
         <div className={classNames(classes.papersContainer, {[classes.mobilePapersContainer]: isSmall})}>
-            <MyPaper withBackButton paperClassName={classNames({
-                [classes.paperContainer]: !isSmall,
-                [classes.mobilePaperContainer]: isSmall
-            })}>
+            <MyPaper
+                withBackButton
+                withActionSwitch
+                isSwitchChecked={isExpanded}
+                handleSwitchChange={handleSwitchChange}
+                switchTitle={isExpanded ? "Zwiń" : 'Rozwiń'}
+                paperClassName={classNames({
+                    [classes.paperContainer]: !isSmall,
+                    [classes.mobilePaperContainer]: isSmall
+                })}>
                 <Typography className={classes.headerWithButton} variant="subtitle1">{"Historia"}</Typography>
                 <div className={classes.contentContainer}>
                     {isMobile
-                        ? < MobileDatePicker
-                            onCalendarChange={onCalendarChange}
+                        ? <div style={{height: 30}}>
+                            < MobileDatePicker
+                                onDateChange={onDateChange}
+                                selectedDate={selectedDate}
+                                shouldDisableFuture
+                                onMonthChange={onMonthChange}
+                                highlightedDays={highlightedCalendarDays}
+                                isLoading={isCalendarLoading}
+                            />
+                        </div>
+                        : < VisitCalendar
                             selectedDate={selectedDate}
-                            shouldDisableFuture
-                        />
-                        : < VisitCalendar selectedDate={selectedDate} onChange={onCalendarChange} shouldDisableFuture/>}
+                            onChange={onDateChange}
+                            onMonthChange={onMonthChange}
+                            highlightedDays={highlightedCalendarDays}
+                            isLoading={isCalendarLoading}
+                            shouldDisableFuture/>}
                     <ShadowedScrollbar style={{
-                        height: isMobile ? 'calc(100% - 150px)' :'100%',
+                        height: isSmall ? 'calc(100% - 100px)' : isMobile ? 'calc(100% - 150px)' : 'calc(100% - 70px)',
                         flex: isMobile ? '1 0 auto' : '1 0 610px'
                     }}>
-                        {visitItems.length
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {visitItems}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak odbytych wizyt dla tego dnia</Typography>
-                            </div>
+                            : pastVisitItems.length
+                                ? <div className={classes.paperContent}>
+                                    {pastVisitItems}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak odbytych wizyt dla tego dnia</Typography>
+                                </div>
                         }
                     </ShadowedScrollbar>
                 </div>
@@ -82,15 +137,19 @@ const AdminPanel = () => {
                 <Typography className={classes.header} variant="subtitle1">{"Znajdź pacjenta"}</Typography>
                 <PersonSelector/>
                 <ShadowedScrollbar style={{height: '100%'}}>
-                    {visitItems.length
+                    {isLoading
                         ? <div className={classes.paperContent}>
-                            {visitItems}
+                            {<VisitSkeleton/>}
                         </div>
-                        : <div className={classes.emptyContent}>
-                            <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                            <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                            >Brak odbytych wizyt dla tego pacjenta</Typography>
-                        </div>
+                        : userVisitItems.length
+                            ? <div className={classes.paperContent}>
+                                {userVisitItems}
+                            </div>
+                            : <div className={classes.emptyContent}>
+                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                >Brak odbytych wizyt dla tego pacjenta</Typography>
+                            </div>
                     }
                 </ShadowedScrollbar>
             </MyPaper>

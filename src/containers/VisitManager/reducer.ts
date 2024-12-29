@@ -1,5 +1,5 @@
 import {CaseReducer, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import dayjs, {Dayjs} from "dayjs";
+import dayjs from "dayjs";
 
 import {LocationInterface, VisitItemInterface, VisitManagerPageReducerState} from "./types.ts";
 
@@ -22,7 +22,7 @@ const setSelectedDate: CaseReducer<VisitManagerPageReducerState, PayloadAction<a
         state.selectedDate = action.payload;
     };
 
-const setFutureTerms: CaseReducer<VisitManagerPageReducerState, PayloadAction<Dayjs[]>> =
+const setFutureTerms: CaseReducer<VisitManagerPageReducerState, PayloadAction<number[]>> =
     (state, action) => {
         state.allTerms = action.payload;
     };

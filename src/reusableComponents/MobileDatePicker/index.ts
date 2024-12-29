@@ -1,1 +1,1 @@
-export {default} from './MoblieDatePicker';
+export {default} from './MobileDatePicker';

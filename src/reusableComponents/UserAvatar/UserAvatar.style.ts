@@ -5,6 +5,10 @@ export const styles = (theme: Theme) => createStyles({
     avatar: {
         padding: theme.spacing(.5),
         borderRadius: '50%',
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: theme.palette.background.paper,
+        cursor: 'pointer'
+    },
+    disabled: {
+        cursor: 'default'
     },
 })

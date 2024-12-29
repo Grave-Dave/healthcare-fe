@@ -43,16 +43,16 @@ export const customStyles = {
     }),
     placeholder: (provided: Object) => ({
         ...provided,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 400
     }),
     singleValue: (provided: Object) => ({
         ...provided,
         color: '#333',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 400,
         [theme.breakpoints.up('md')]: {
-            fontSize: 18,
+            fontSize: 16,
         },
     }),
 };

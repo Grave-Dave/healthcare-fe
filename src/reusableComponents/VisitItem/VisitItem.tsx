@@ -152,31 +152,32 @@ const VisitItem = ({
                                    [classes.selected]: isSelected,
                                    [classes.mobile]: isMobile
                                })}>
-                        <div className={classes.detailsContainer}>
+                        <div className={classNames(classes.detailsContainer, {[classes.detailsExpanded]: isExpanded})}>
                             <div className={classNames(classes.details, {[classes.detailsExpanded]: isExpanded})}>
-                                <Typography variant="h3">{visitItem.time}</Typography>
-                                <Typography variant="h4">{visitItem.date}</Typography>
-                                <Typography variant="body1" className={classes.userItem}>
+                                <Typography variant="h4">{visitItem.time}</Typography>
+                                <Typography variant="h5">{visitItem.date}</Typography>
+                                <Typography variant="body2" className={classes.userItem}>
                                     <FmdGoodOutlinedIcon sx={{width: 20, height: 20}}/>
                                     {visitItem.location.name}
                                 </Typography>
                             </div>
-                            {extended && user && <div className={classes.details}>
-                                <Typography
-                                    variant="body1"
-                                    className={classes.userItem}>
-                                    <PersonOutlineIcon sx={{width: 20, height: 20}}/>
-                                    {`${user.firstName} ${user.lastName}`}
-                                </Typography>
-                                <Typography variant="body1">
-                                    <a href={`tel:${user.phone}`}
-                                       className={classes.userItem}
-                                       style={{textDecoration: 'none', color: 'inherit'}}>
-                                        <CallOutlinedIcon sx={{width: 20, height: 20}}/>
-                                        {user.phone}
-                                    </a>
-                                </Typography>
-                            </div>}
+                            {extended && user &&
+                                <div className={classNames(classes.details, {[classes.detailsExpanded]: isExpanded})}>
+                                    <Typography
+                                        variant="body2"
+                                        className={classes.userItem}>
+                                        <PersonOutlineIcon sx={{width: 20, height: 20}}/>
+                                        {`${user.firstName} ${user.lastName}`}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <a href={`tel:${user.phone}`}
+                                           className={classNames(classes.userItem, classes.phoneItem)}
+                                           style={{textDecoration: 'none', color: 'inherit'}}>
+                                            <CallOutlinedIcon sx={{width: 20, height: 20}}/>
+                                            {user.phone}
+                                        </a>
+                                    </Typography>
+                                </div>}
                         </div>
                         <div className={classes.actionsContainer}>
                             {withConfirm &&

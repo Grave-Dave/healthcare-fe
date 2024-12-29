@@ -29,7 +29,7 @@ const Header = () => {
         dispatch(actions.setMobileMenuOpen(!isMobileMenuOpen))
     }
 
-    const onUserArrowClick = () => {
+    const onUserMenuClick = () => {
         !isLoading && dispatch(actions.setUserMenuOpen(!isUserMenuOpen))
     }
 
@@ -48,7 +48,7 @@ const Header = () => {
                     <MenuIcon sx={{height: 40, width: 40}} className={classes.burgerMenu} onClick={onMenuClick}/>}
                 <HeaderTitle/>
                 <Nav isMobile={isMobile} isMobileMenuOpen={isMobileMenuOpen} isUserMenuOpen={isUserMenuOpen}/>
-                <HeaderAvatar onArrowClick={onUserArrowClick} isUserMenuOpen={isUserMenuOpen} isLoading={isLoading}/>
+                <HeaderAvatar onUserMenuClick={onUserMenuClick} isUserMenuOpen={isUserMenuOpen} isLoading={isLoading}/>
             </div>
         </ClickAwayListener>
     )

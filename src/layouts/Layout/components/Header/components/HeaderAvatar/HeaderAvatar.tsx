@@ -9,12 +9,12 @@ import {useAppSelector} from "../../../../../../hooks/reduxHooks.ts";
 import selectors from "../../../../../../auth/selectors.ts";
 
 interface HeaderAvatarProps {
-    onArrowClick: () => void,
+    onUserMenuClick: () => void,
     isUserMenuOpen: boolean
     isLoading: boolean
 }
 
-const HeaderAvatar = ({onArrowClick, isUserMenuOpen, isLoading}: HeaderAvatarProps) => {
+const HeaderAvatar = ({onUserMenuClick, isUserMenuOpen, isLoading}: HeaderAvatarProps) => {
     const classes = useStyles()
 
     const user = useAppSelector(selectors.getUser)
@@ -28,14 +28,14 @@ const HeaderAvatar = ({onArrowClick, isUserMenuOpen, isLoading}: HeaderAvatarPro
     return (
         <div className={classes.headerAvatarContainer}>
             <Typography variant="body1" className={classes.headerAvatarText}>{getHeaderAvatarText()}</Typography>
-            <UserAvatar user={user}/>
+            <UserAvatar user={user} onClick={onUserMenuClick} isLoading={isLoading}/>
             <ArrowForwardIosIcon
                 sx={{height: 24, width: 24}}
                 className={classNames(classes.arrow, {
                     [classes.arrowRotated]: isUserMenuOpen && !isLoading,
                     [classes.disabledArrow]: isLoading
                 })}
-                onClick={onArrowClick}
+                onClick={onUserMenuClick}
             />
         </div>
     )

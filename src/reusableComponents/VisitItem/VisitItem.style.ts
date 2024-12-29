@@ -1,16 +1,19 @@
 import {Theme} from '@mui/material/styles';
 
 import createStyles from '@mui/styles/createStyles';
+import theme from "../../layouts/Layout/themeMaterialUi.ts";
 
 export const styles = ({palette, spacing}: Theme) => createStyles({
     visitItemContainer: {
         display: 'flex',
         justifyContent: 'space-between',
-        padding: spacing(1, 4),
+        padding: spacing(1, 2, 1, 4),
     },
     detailsContainer: {
         display: 'flex',
         flexDirection: 'column',
+        gap: 8,
+        transition: 'gap 300ms ease'
     },
     actionsContainer: {
         display: 'flex',
@@ -20,17 +23,21 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
     details: {
         display: 'flex',
         flexDirection: "column",
-        gap: 16,
-        padding: spacing(1, 0),
-        transition: ' gap 300ms ease'
+        gap: 8,
+        transition: 'gap 300ms ease'
     },
     detailsExpanded: {
-        gap: 24,
+        gap: 16,
     },
     userItem: {
         display: 'flex',
         alignItems: "center",
         gap: 8,
+    },
+    phoneItem: {
+        '&:hover': {
+            color: `${theme.palette.secondary.light} !important`
+        }
     },
     divider: {
         width: '100%',
@@ -47,7 +54,7 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
         backgroundColor: `${palette.action.selected} !important`
     },
     expanded: {
-        padding: spacing(3, 2,3,4),
+        padding: spacing(3, 2, 3, 4),
     },
     mobile: {
         gap: 16,
