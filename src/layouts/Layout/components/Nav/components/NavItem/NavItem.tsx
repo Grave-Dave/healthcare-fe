@@ -31,7 +31,7 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
         } else {
             setIsActive(false)
         }
-    }, [location])
+    }, [location, navItemData.path])
 
     const getNavIcon = (icon: string) => {
         return (

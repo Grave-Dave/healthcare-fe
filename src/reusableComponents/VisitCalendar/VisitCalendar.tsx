@@ -24,6 +24,7 @@ interface CalendarProps extends WithStyles<typeof styles> {
     selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
+    shouldDisableAllExceptAvailable?: boolean
 }
 
 interface StyledCalendarProps extends WithStyles<typeof styles> {
@@ -102,6 +103,7 @@ const VisitCalendar = ({
                            selectedDate,
                            shouldDisablePast = false,
                            shouldDisableFuture = false,
+                           shouldDisableAllExceptAvailable = false,
                            onMonthChange,
                            highlightedDays,
                            isLoading
@@ -132,6 +134,10 @@ const VisitCalendar = ({
         })
     }
 
+    const disableUnavailable = (date: Dayjs) => {
+        return !highlightedDays.some((allowedDays) => date.date() === allowedDays);
+    };
+
     function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }) {
         const {highlightedDays = [], day, outsideCurrentMonth, ...other} = props;
 
@@ -159,12 +165,16 @@ const VisitCalendar = ({
         <div className={classes.calendarContainer}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'pl'}>
                 <StyledDateCalendar
-                    shouldDisableDate={shouldDisablePast
-                        ? disablePastDates
-                        : shouldDisableFuture
-                            ? disableFutureDates
-                            : undefined}
+                    shouldDisableDate={shouldDisableAllExceptAvailable
+                        ? disableUnavailable
+                        : shouldDisablePast
+                            ? disablePastDates
+                            : shouldDisableFuture
+                                ? disableFutureDates
+                                : undefined}
                     classes={classes}
+                    disableFuture={isLoading}
+                    disablePast={isLoading}
                     isMobile={isMobile}
                     value={selectedDate}
                     onChange={(value) => onChange(value)}

@@ -157,6 +157,7 @@ const VisitManager = () => {
                                 onDateChange={onDateChange}
                                 selectedDate={selectedDate}
                                 shouldDisablePast
+                                shouldDisableAllExceptAvailable={!isAdmin}
                                 onMonthChange={onMonthChange}
                                 highlightedDays={highlightedCalendarDays}
                                 isLoading={isCalendarLoading}
@@ -169,6 +170,7 @@ const VisitManager = () => {
                             highlightedDays={highlightedCalendarDays}
                             isLoading={isCalendarLoading}
                             shouldDisablePast
+                            shouldDisableAllExceptAvailable={!isAdmin}
                         />}
                     <ShadowedScrollbar
                         style={{

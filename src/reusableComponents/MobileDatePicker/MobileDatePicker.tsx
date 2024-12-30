@@ -15,6 +15,7 @@ interface MobileDatePickerProps {
     selectedDate: Dayjs
     shouldDisablePast?: boolean
     shouldDisableFuture?: boolean
+    shouldDisableAllExceptAvailable?: boolean
     onMonthChange: (value: any) => void
     highlightedDays: number[]
     isLoading: boolean
@@ -25,6 +26,7 @@ const MobileDatePicker = ({
                               selectedDate,
                               shouldDisablePast = false,
                               shouldDisableFuture = false,
+                              shouldDisableAllExceptAvailable = false,
                               onMonthChange,
                               highlightedDays,
                               isLoading
@@ -65,6 +67,7 @@ const MobileDatePicker = ({
                     selectedDate={selectedDate}
                     shouldDisablePast={shouldDisablePast}
                     shouldDisableFuture={shouldDisableFuture}
+                    shouldDisableAllExceptAvailable={shouldDisableAllExceptAvailable}
                     onMonthChange={onMonthChange}
                     highlightedDays={highlightedDays}
                     isLoading={isLoading}

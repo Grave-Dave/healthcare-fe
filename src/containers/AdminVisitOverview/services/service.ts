@@ -10,6 +10,6 @@ export default class Service extends BaseService {
     }
 
     deleteVisit = (visitId: number, withTerm: boolean): Promise<any> => {
-        return this.delete(`/delete-visit/${visitId}`, {withTerm});
+        return this.delete(`/admin-delete-visit/${visitId}`, {withTerm});
     }
 }
