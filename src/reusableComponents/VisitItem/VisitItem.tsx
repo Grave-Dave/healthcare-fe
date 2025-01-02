@@ -113,14 +113,14 @@ const VisitItem = ({
             switch (visitItem.status) {
                 case UserVisitStatusEnum.Pending: {
                     return (
-                        <Tooltip title="Oczekuje na zatwierdzenie">
+                        <Tooltip title="Oczekuje na zatwierdzenie" enterTouchDelay={0} >
                             <PendingActionsIcon sx={{width: 32, height: 32}}/>
                         </Tooltip>
                     )
                 }
                 case UserVisitStatusEnum.Confirmed: {
                     return (
-                        <Tooltip title="Wizyta została potwierdzona">
+                        <Tooltip title="Wizyta została potwierdzona" enterTouchDelay={0}>
                             <CheckBoxIcon sx={{width: 32, height: 32, color: theme.palette.success.main}}/>
                         </Tooltip>
                     )

@@ -69,7 +69,7 @@ const getStylesForVariant = (buttonVariant: AtomButtonVariants, isMobile: boolea
             break;
         case AtomButtonVariants.CTA_BUTTON_VARIANT:
             stylesForVariant = {
-                position: 'fixed',
+                position: 'absolute',
                 padding: theme.spacing(2, 3),
                 textTransform: 'uppercase',
                 width: 250,
@@ -129,7 +129,7 @@ const AtomButton = ({
                 <Link style={{
                     textDecoration: 'none',
                     color: 'inherit',
-                    padding: theme.spacing(1, 2),
+                    padding: theme.spacing(1),
                     width: '100%'
                 }}
                       to={link}>{text ?? children}</Link>

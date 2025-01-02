@@ -17,18 +17,26 @@ interface HeaderAvatarProps {
 const HeaderAvatar = ({onUserMenuClick, isUserMenuOpen, isLoading}: HeaderAvatarProps) => {
     const classes = useStyles()
 
+    const isAdmin = useAppSelector(selectors.getIsAdmin)
     const user = useAppSelector(selectors.getUser)
 
     const getHeaderAvatarText = () => <>
-        <span>Witaj,</span><br/>
-        <span>{user.firstName || null}</span>
+        <span style={{fontWeight: 300}}>Witaj,</span><br/>
+        <span style={{
+            display: 'flow',
+            fontWeight: 300,
+            maxWidth: 115,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+        }}>{user.firstName || null}</span>
     </>
 
 
     return (
         <div className={classes.headerAvatarContainer}>
             <Typography variant="body1" className={classes.headerAvatarText}>{getHeaderAvatarText()}</Typography>
-            <UserAvatar user={user} onClick={onUserMenuClick} isLoading={isLoading}/>
+            <UserAvatar user={user} onClick={onUserMenuClick} isLoading={isLoading} isAdmin={isAdmin}/>
             <ArrowForwardIosIcon
                 sx={{height: 24, width: 24}}
                 className={classNames(classes.arrow, {

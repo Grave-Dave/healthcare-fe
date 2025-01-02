@@ -35,12 +35,16 @@ const StyledDateCalendar = styled(DateCalendar, {
     shouldForwardProp: (prop) => prop !== 'isMobile',
 })((prop: StyledCalendarProps) => ({
     '&.MuiDateCalendar-root': {
-        height: prop.isMobile ? '420px' : '350px',
-        width: prop.isMobile ? '420px' : '350px',
+        height: '400px',
+        width: '310px',
         margin: '0 16px',
         maxHeight: 'none',
+        '@media (min-width:540px)': {
+            height: prop.isMobile ? '420px' : '350px',
+            width: prop.isMobile ? '420px' : '350px',
+        },
         '@media (min-width:1280px)': {
-            height: '410px',
+            height: '430px',
             width: '410px',
         },
         '& .MuiDayCalendar-weekDayLabel': {
@@ -53,8 +57,9 @@ const StyledDateCalendar = styled(DateCalendar, {
             minHeight: '500px',
         },
         '& .MuiPickersDay-root': {
-            height: '50px',
-            width: '50px',
+            height: prop.isMobile ? '36px' : '50px',
+            width: prop.isMobile ? '36px' : '50px',
+            margin: prop.isMobile ? '8px 0' : '3px 0',
             fontSize: '.87rem',
             '@media (min-width:1280px)': {
                 fontSize: '1rem',
@@ -64,15 +69,18 @@ const StyledDateCalendar = styled(DateCalendar, {
             }
         },
         '& .MuiYearCalendar-root': {
-            width: 420,
+            width: 310,
             height: 400,
             maxHeight: 400,
+            '@media (min-width:540px)': {
+                width: 420,
+                height: 400,
+            },
             '.MuiPickersYear-yearButton': {
                 "&.Mui-selected": {
                     backgroundColor: theme.palette.secondary.main,
                 }
             }
-
         }
     },
 }));
@@ -88,9 +96,12 @@ const StyledDayCalendarSkeleton = styled(DayCalendarSkeleton)({
             }
         },
         ".MuiDayCalendarSkeleton-daySkeleton": {
-            margin: 10,
+            margin: '8px 4px',
+            '@media (min-width:540px)': {
+                margin: '8px 12px',
+            },
             '@media (min-width:1280px)': {
-                margin: '5px 10px',
+                margin: '5px 11px',
             }
         }
     },

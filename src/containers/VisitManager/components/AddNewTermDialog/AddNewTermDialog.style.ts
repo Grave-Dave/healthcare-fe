@@ -18,12 +18,11 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     sliderContainer: {
         display: 'flex',
         flexDirection: 'column',
-        gap: 16,
         paddingBottom: spacing(4)
     },
     loaderContainer: {
         display: 'flex',
         alignItems: 'center',
-        minHeight: 370
+        minHeight: 353
     }
 }))

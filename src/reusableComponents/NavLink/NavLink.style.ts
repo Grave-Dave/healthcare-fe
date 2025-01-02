@@ -6,7 +6,8 @@ export const styles = (theme: Theme) => createStyles({
     navLink: {
         padding: theme.spacing(1, 2),
         fontSize: 16,
-        fontWeight: 400,
+        fontWeight: 300,
+        textTransform: 'uppercase',
         color: theme.palette.primary.contrastText,
         textDecoration: 'none',
         height: '100%',
@@ -18,7 +19,7 @@ export const styles = (theme: Theme) => createStyles({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width:'100%',
+        width: '100%',
         gap: 24,
         color: theme.palette.secondary.contrastText,
         padding: theme.spacing(0, 6),

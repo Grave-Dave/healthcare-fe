@@ -3,7 +3,7 @@ import {Theme} from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 
-export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
+export const useStyles = makeStyles(({spacing, breakpoints}: Theme) => createStyles({
     papersContainer: {
         display: 'flex',
         justifyContent: 'center',
@@ -21,8 +21,11 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
-        padding: spacing(1, 4, 3, 1),
-        gap: 32
+        padding: spacing(1, 3, 3, 1),
+        gap: 32,
+        [breakpoints.down('xs')]: {
+            padding: spacing(1, 1, 2),
+        },
     },
     contentContainer: {
         display: 'flex',
@@ -38,7 +41,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     },
     headerWithButton: {
         position: 'absolute',
-        top: 32,
+        top: 24,
         left: '50%',
         transform: 'translate(-50%)',
         textAlign: 'center',

@@ -5,6 +5,7 @@ import {WithStyles, withStyles} from "@mui/styles";
 import {styled} from '@mui/material/styles';
 
 import defaultAvatar from '../../public/images/default-avatar.svg'
+import adminAvatar from '../../public/images/user-shield-alt-1-svgrepo-com.svg'
 import {styles} from "./UserAvatar.style.ts";
 import {User} from "../../layouts/Layout/types.ts";
 
@@ -20,14 +21,14 @@ const StyledBadge = styled(Badge)(({theme}) => ({
             width: '100%',
             height: '100%',
             borderRadius: '50%',
-            animation: 'ripple 1.2s infinite ease-in-out',
+            animation: 'ripple 2.2s infinite ease-in-out',
             border: '1px solid currentColor',
             content: '""',
         },
     },
     '@keyframes ripple': {
         '0%': {
-            transform: 'scale(.8)',
+            transform: 'scale(.5)',
             opacity: 1,
         },
         '100%': {
@@ -39,12 +40,12 @@ const StyledBadge = styled(Badge)(({theme}) => ({
 
 interface UserAvatarProps extends WithStyles<typeof styles> {
     user: User
-    userAvatar?: string
+    isAdmin?: boolean
     onClick?: () => void
     isLoading?: boolean
 }
 
-const UserAvatar = ({user, userAvatar, onClick, isLoading, classes}: UserAvatarProps) => {
+const UserAvatar = ({user, isAdmin, onClick, isLoading, classes}: UserAvatarProps) => {
     return (
         <div className={classNames(classes.avatar, {[classes.disabled]: isLoading})} onClick={onClick}>
             <StyledBadge
@@ -52,7 +53,7 @@ const UserAvatar = ({user, userAvatar, onClick, isLoading, classes}: UserAvatarP
                 anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                 variant={user.id ? "dot" : undefined}
             >
-                <Avatar alt="user avatar" src={userAvatar ?? defaultAvatar}/>
+                <Avatar alt="user avatar" src={isAdmin ? adminAvatar : defaultAvatar}/>
             </StyledBadge>
         </div>
     )

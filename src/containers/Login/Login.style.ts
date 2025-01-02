@@ -8,7 +8,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         width: 600,
     },
     loginHeader: {
-        padding: spacing(3, 2, 4),
+        padding: spacing(4, 2, 3),
         textAlign: 'center',
     },
     actionsContainer: {

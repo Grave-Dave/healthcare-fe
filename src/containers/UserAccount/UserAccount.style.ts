@@ -8,7 +8,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
         width: 600
     },
     userAccountHeader:{
-        padding: spacing(3, 2, 4),
+        padding: spacing(1.5, 2, 3),
         textAlign: 'center',
     },
     inputsContainer: {

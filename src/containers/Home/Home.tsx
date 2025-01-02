@@ -16,18 +16,20 @@ const Home = () => {
     const [isButtonHovered, setIsButtonHovered] = useState(false)
 
     const getHeaderText = () => <>
-        <span>Gabinet Psychoterapii</span><br/>
-        <span>Katarzyna Trzeciakiewicz</span>
+        <Typography variant="h1">Gabinet Psychoterapii</Typography><br/>
+        <Typography variant="h6" sx={{marginTop: 2, fontWeight: 300}}>Katarzyna Trzeciakiewicz</Typography>
     </>
 
     return (
         <div className={classes.container}>
             <img src={background} alt="background" className={classes.hero}/>
             <div className={classNames(classes.shadow, {[classes.buttonHovered]: isButtonHovered})}></div>
-            <Typography className={classes.header} variant="h2">{getHeaderText()}</Typography>
+            <Typography className={classes.header}>{getHeaderText()}</Typography>
             <AtomButton
                 onMouseEnter={() => setIsButtonHovered(true)}
                 onMouseLeave={() => setIsButtonHovered(false)}
+                onTouchStart={() => setIsButtonHovered(true)}
+                onTouchEnd={() => setIsButtonHovered(false)}
                 buttonVariant={AtomButtonVariants.CTA_BUTTON_VARIANT}
                 buttonClassName={classes.heroButton}
                 text={'Uzyskaj pomoc'}

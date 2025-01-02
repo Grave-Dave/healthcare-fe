@@ -5,11 +5,13 @@ import makeStyles from '@mui/styles/makeStyles';
 
 export const useStyles = makeStyles(({palette}: Theme) => createStyles({
     container: {
-        position: 'relative',
+        position: 'absolute',
+        top:0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '100%',
+        height: '100vh',
+        width: '100%',
         zIndex: 0
     },
     hero: {
@@ -27,7 +29,7 @@ export const useStyles = makeStyles(({palette}: Theme) => createStyles({
     },
     header: {
         position: "absolute",
-        top: '18%',
+        top: '25%',
         left: '50%',
         transform: 'translate(-50%)',
         textAlign: 'center',

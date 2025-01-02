@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -66,7 +66,7 @@ const VisitManager = () => {
     const onUnselectTerm = (e: MouseEvent | TouchEvent, availableTermId: number) => {
         const target = e.target as HTMLElement;
 
-        if (target?.tagName.toLowerCase() !== 'button' && !isCreateVisitDialogOpen) {
+        if (target?.tagName.toLowerCase() !== 'button' && target?.tagName.toLowerCase() !== 'path' && !isCreateVisitDialogOpen) {
             if (availableTermId === selectedTermId) {
                 dispatch(actions.setSelectedTermId(null))
             }
@@ -86,7 +86,8 @@ const VisitManager = () => {
         dispatch(actions.setIsCreateVisitDialogOpen(false))
     }
 
-    const onCreateVisitDialogOpen = () => {
+    const onCreateVisitDialogOpen = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
         dispatch(actions.setIsCreateVisitDialogOpen(true))
     }
 

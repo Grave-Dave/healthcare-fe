@@ -98,7 +98,6 @@ const AdminVisitOverview = ({classes}: WithStyles<typeof styles>) => {
                 })}>
                 <Typography
                     className={classes.headerWithButton}
-
                     variant="subtitle1">
                     {`Oczekujące na potwierdzenie (${incomingPendingVisits.length})`}
                 </Typography>

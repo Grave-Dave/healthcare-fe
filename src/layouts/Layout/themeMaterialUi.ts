@@ -1,6 +1,6 @@
 import {createTheme} from '@mui/material/styles';
 import {plPL} from "@mui/material/locale";
-import { plPL as corePlPL } from '@mui/material/locale';
+import {plPL as corePlPL} from '@mui/material/locale';
 
 //primary
 const STEEL_BLUE = "#56809E";
@@ -63,10 +63,10 @@ const theme = createTheme({
                 fontWeight: 700,
             },
             h2: {
-                fontSize: '2rem',
+                fontSize: '1.5rem',
                 fontWeight: 500,
                 '@media (min-width:800px)': {
-                    fontSize: '2.5rem',
+                    fontSize: '2rem',
                 },
             },
             h3: {
@@ -81,11 +81,24 @@ const theme = createTheme({
                     fontSize: '2rem',
                 },
             },
+            h5: {
+                fontSize: '1rem',
+                '@media (min-width:540px)': {
+                    fontSize: '1.5rem',
+                },
+            },
             body1: {
                 fontSize: '.87rem',
                 lineHeight: 1.5,
                 '@media (min-width:1280px)': {
                     fontSize: '1rem',
+                },
+            },
+            body2: {
+                fontSize: '.75rem',
+                lineHeight: 1.5,
+                '@media (min-width:540px)': {
+                    fontSize: '.87rem',
                 },
             },
             button: {
@@ -183,6 +196,7 @@ const theme = createTheme({
                     paper: {
                         borderRadius: 8,
                         padding: '16px 0',
+                        margin: 8,
                     },
                 },
             },

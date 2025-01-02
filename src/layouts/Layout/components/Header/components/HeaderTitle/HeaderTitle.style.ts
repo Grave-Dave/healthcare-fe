@@ -12,6 +12,9 @@ export const useStyles = makeStyles(({spacing, palette, breakpoints}: Theme) => 
         fontSize: 18,
         fontFamily: "Marck Script !important",
         color: palette.primary.contrastText,
+        [breakpoints.down('xs')]: {
+            display: 'none',
+        },
         [breakpoints.up('sm')]: {
             padding: spacing(.5, 0, .5, 4),
             fontSize: 24,
