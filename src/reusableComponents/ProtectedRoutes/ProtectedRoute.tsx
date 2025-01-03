@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Navigate} from "react-router-dom";
 
 import CircularLoader from "../CircularLoader";
-import {useAppSelector} from "../../hooks/reduxHooks.ts";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "../../auth/selectors.ts";
 import {ROUTES} from "../../constants.ts";
 import {ProtectedRouteEnum} from "./constants.ts";
+import layoutActions from "../../layouts/Layout/actions.tsx";
+import authActions from "../../auth/actions.tsx";
+import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 
 interface ProtectedRouteProps {
     children: React.ReactNode
@@ -14,10 +17,33 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({children, routeType}: ProtectedRouteProps) => {
 
+    const dispatch = useAppDispatch();
+
     const isLogged = useAppSelector(selectors.getIsAuthenticated)
     const isAdmin = useAppSelector(selectors.getIsAdmin)
+    const hasToken = !!useAppSelector(selectors.getAccessToken)
     const isLoading = useAppSelector(selectors.getIsLoading)
 
+    useEffect(()=>{
+        if(!isLogged && hasToken){
+            displayNotification()
+        }
+    },[isLogged])
+
+    const resendMail = () => {
+        dispatch(authActions.resendMail())
+    }
+
+    const displayNotification = () => {
+        dispatch(layoutActions.showSnackBar({
+            message: 'Należy najpierw zweryfikować adres email. Link nie dotarł?',
+            type: SmoothSnackbarEnum.WARNING,
+            autoHideDuration: 10000,
+            withButton: true,
+            buttonText: 'Wyślij ponownie',
+            onButtonClick: resendMail
+        }))
+    }
 
     switch (routeType) {
         case ProtectedRouteEnum.AdminRoute: {

@@ -18,6 +18,7 @@ interface FormInputProps extends WithStyles<typeof styles> {
     error?: boolean,
     required?: boolean,
     type?: string,
+    readonly?: boolean,
     endAdornment?: React.ReactNode,
 }
 
@@ -32,6 +33,7 @@ const FormInput = ({
                        error,
                        required,
                        inputClassName,
+                       readonly = false,
                        endAdornment,
                        classes
                    }: FormInputProps) => {
@@ -47,6 +49,7 @@ const FormInput = ({
             <InputLabel>{label}</InputLabel>
             <OutlinedInput
                 autoFocus={autoFocus}
+                readOnly={readonly}
                 onClick={onClick}
                 onBlur={onBlur}
                 type={type}

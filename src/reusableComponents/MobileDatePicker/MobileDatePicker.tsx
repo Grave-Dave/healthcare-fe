@@ -53,6 +53,7 @@ const MobileDatePicker = ({
         <>
             <FormInput
                 inputClassName={classes.mobileDatePicker}
+                readonly
                 onChange={() => {
                 }}
                 onClick={() => setIsCalendarOpen(true)}

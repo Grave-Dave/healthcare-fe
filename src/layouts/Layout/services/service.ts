@@ -12,4 +12,8 @@ export default class Service extends BaseService {
     logout(): Promise<boolean> {
         return this.post('/logout');
     }
+
+    resendMail(): Promise<boolean> {
+        return this.post('/email/resend');
+    }
 }

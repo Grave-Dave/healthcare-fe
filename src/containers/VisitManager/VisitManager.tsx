@@ -66,7 +66,10 @@ const VisitManager = () => {
     const onUnselectTerm = (e: MouseEvent | TouchEvent, availableTermId: number) => {
         const target = e.target as HTMLElement;
 
-        if (target?.tagName.toLowerCase() !== 'button' && target?.tagName.toLowerCase() !== 'path' && !isCreateVisitDialogOpen) {
+        if (target?.tagName.toLowerCase() !== 'button'
+            && target?.tagName.toLowerCase() !== 'path'
+            && target?.tagName.toLowerCase() !== 'svg'
+            && !isCreateVisitDialogOpen) {
             if (availableTermId === selectedTermId) {
                 dispatch(actions.setSelectedTermId(null))
             }

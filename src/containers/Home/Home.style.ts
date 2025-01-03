@@ -3,10 +3,10 @@ import {Theme} from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 
-export const useStyles = makeStyles(({palette}: Theme) => createStyles({
+export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles({
     container: {
         position: 'absolute',
-        top:0,
+        top: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -29,12 +29,13 @@ export const useStyles = makeStyles(({palette}: Theme) => createStyles({
     },
     header: {
         position: "absolute",
-        top: '25%',
+        top: '33%',
         left: '50%',
         transform: 'translate(-50%)',
         textAlign: 'center',
         color: palette.primary.contrastText,
-        width: '100%'
+        width: '100%',
+        padding: spacing(2)
 
     },
     heroButton: {

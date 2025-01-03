@@ -87,6 +87,12 @@ const theme = createTheme({
                     fontSize: '1.5rem',
                 },
             },
+            h6: {
+                fontSize: '1.2rem',
+                '@media (min-width:540px)': {
+                    fontSize: '1.5rem',
+                },
+            },
             body1: {
                 fontSize: '.87rem',
                 lineHeight: 1.5,

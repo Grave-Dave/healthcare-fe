@@ -18,7 +18,10 @@ export const DEFAULT_SNACKBAR = {
     isSnackBarOpen: false,
     autoHideDuration: 5000,
     message: '',
-    type: SmoothSnackbarEnum.INFO
+    type: SmoothSnackbarEnum.INFO,
+    withButton: false,
+    buttonText: '',
+    onButtonClick: undefined
 }
 
 export const DEFAULT_USER_DATA: User = {

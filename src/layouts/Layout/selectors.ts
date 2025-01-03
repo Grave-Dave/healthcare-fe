@@ -3,10 +3,10 @@ import {RootState} from "../../main.tsx";
 
 export const getIsMobileMenuOpen = (state: RootState) => state[REDUCER_KEY].isMobileMenuOpen;
 export const getIsUserMenuOpen = (state: RootState) => state[REDUCER_KEY].isUserMenuOpen;
-export const getSnackBar = (state: RootState) => state[REDUCER_KEY].snackBarState;
+export const getSnackBars = (state: RootState) => state[REDUCER_KEY].snackBarStack;
 
 export default {
     getIsMobileMenuOpen,
     getIsUserMenuOpen,
-    getSnackBar,
+    getSnackBars,
 }

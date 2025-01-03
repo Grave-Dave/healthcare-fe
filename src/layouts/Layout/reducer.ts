@@ -1,16 +1,12 @@
+import {v4 as uuidv4} from 'uuid';
 import {CaseReducer, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {LayoutReducerState, SmoothSnackbarEnum, SmoothSnackbarState} from "./types.ts";
+import {LayoutReducerState, SmoothSnackbarState} from "./types.ts";
 import {DEFAULT_SNACKBAR} from "./constants.ts";
 
 export const REDUCER_KEY = 'LAYOUT';
 
 const initialState: LayoutReducerState = {
-    snackBarState: {
-        isSnackBarOpen: false,
-        message: '',
-        autoHideDuration: 5000,
-        type: SmoothSnackbarEnum.INFO
-    },
+    snackBarStack: [],
     isMobileMenuOpen: false,
     isUserMenuOpen: false,
 }
@@ -27,16 +23,28 @@ const setUserMenuOpen: CaseReducer<LayoutReducerState, PayloadAction<boolean>> =
 
 const showSnackBar: CaseReducer<LayoutReducerState, PayloadAction<Partial<SmoothSnackbarState>>> =
     (state, action) => {
-        state.snackBarState = {
-            ...state.snackBarState,
-            isSnackBarOpen: true,
-            ...action.payload
-        }
+        state.snackBarStack = [...state.snackBarStack,
+            {
+                ...DEFAULT_SNACKBAR,
+                ...action.payload,
+                id: uuidv4(),
+                isSnackBarOpen: true
+            }]
     };
 
-const closeSnackBar: CaseReducer<LayoutReducerState> =
-    (state) => {
-        state.snackBarState = DEFAULT_SNACKBAR
+const closeSnackBar: CaseReducer<LayoutReducerState, PayloadAction<string>> =
+    (state, action) => {
+        state.snackBarStack = state.snackBarStack.map(snackBar =>
+            snackBar.id === action.payload
+                ? {
+                    ...snackBar,
+                    isSnackBarOpen: false
+                } : snackBar)
+    };
+
+const deleteSnackBar: CaseReducer<LayoutReducerState, PayloadAction<string>> =
+    (state, action) => {
+        state.snackBarStack = state.snackBarStack.filter(snackBar => snackBar.id !== action.payload)
     };
 
 
@@ -48,6 +56,7 @@ const slice = createSlice({
         setUserMenuOpen,
         showSnackBar,
         closeSnackBar,
+        deleteSnackBar
     }
 })
 

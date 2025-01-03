@@ -1,7 +1,7 @@
 export interface LayoutReducerState {
     isMobileMenuOpen: boolean
     isUserMenuOpen: boolean
-    snackBarState: SmoothSnackbarState
+    snackBarStack: SmoothSnackbarState[]
 }
 
 export interface User {
@@ -13,10 +13,14 @@ export interface User {
 }
 
 export interface SmoothSnackbarState {
+    id: string
     isSnackBarOpen: boolean
-    message: string
+    message?: string
     autoHideDuration?: number,
     type?: SmoothSnackbarEnum
+    withButton?: boolean,
+    buttonText?: string
+    onButtonClick?: () => void
 }
 
 export enum SmoothSnackbarEnum {

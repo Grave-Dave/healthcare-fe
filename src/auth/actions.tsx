@@ -5,6 +5,7 @@ import layoutActions from '../layouts/Layout/actions.tsx';
 import {DEFAULT_USER_DATA} from "../layouts/Layout/constants.ts";
 import {extractValidationMessages} from "../utils/utils.ts";
 import Service from "../layouts/Layout/services/service.ts";
+import {SmoothSnackbarEnum} from "../layouts/Layout/types.ts";
 
 const service = new Service();
 
@@ -25,6 +26,23 @@ const checkAuth = () => (dispatch: any) => {
         dispatch(staticActions.setIsAuthenticated(false))
         dispatch(staticActions.setIsAdmin(false))
         dispatch(staticActions.setUserData(DEFAULT_USER_DATA))
+    }).finally(() => dispatch(staticActions.setIsLoading(false)))
+}
+
+const resendMail = () => (dispatch: any) => {
+    dispatch(staticActions.setIsLoading(true))
+
+    return service.resendMail().then(() => {
+        dispatch(layoutActions.showSnackBar({
+            message: 'Wysłano link weryfikacyjny na adres email!',
+            autoHideDuration: 5000
+        }))
+    }).catch((error) => {
+        dispatch(layoutActions.showSnackBar({
+            message: extractValidationMessages(error)[0] ?? error.message,
+            autoHideDuration: 5000,
+            type: SmoothSnackbarEnum.ERROR
+        }))
     }).finally(() => dispatch(staticActions.setIsLoading(false)))
 }
 
@@ -49,7 +67,8 @@ const logout = () => (dispatch: any) => {
 
 const asyncActions = {
     checkAuth,
-    logout
+    logout,
+    resendMail
 }
 
 export default {
