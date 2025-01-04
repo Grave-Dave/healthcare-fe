@@ -26,5 +26,10 @@ export const styles = (theme: Theme) => createStyles({
     },
     hovered: {
         color: `${theme.palette.secondary.light} !important`,
+    },
+    disabled: {
+        pointerEvents: 'none',
+        color: `${theme.palette.action.disabled} !important`,
+        cursor: 'default'
     }
 })

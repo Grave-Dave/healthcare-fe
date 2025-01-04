@@ -78,6 +78,17 @@ const Login = () => {
         dispatch(actions.login(loginForm, navigate))
     }
 
+    const getForgotPasswordButton = () => {
+        return (
+            <AtomButton
+                buttonVariant={AtomButtonVariants.LINK}
+                text={'Nie pamiętasz hasła?'}
+                link={ROUTES.PASSWORD_LINK}
+                buttonClassName={classes.forgotPasswordBtn}
+            />
+        )
+    }
+
     const getInput = (field: keyof LoginForm, fieldValue: string, label: string) => {
         return (
             field !== LOGIN_FORM_KEYS.PASSWORD
@@ -109,7 +120,10 @@ const Login = () => {
         return (
             <div className={classes.inputsContainer}>
                 {getInput(LOGIN_FORM_KEYS.EMAIL, loginForm.email, 'Adres e-mail')}
-                {getInput(LOGIN_FORM_KEYS.PASSWORD, loginForm.password, 'Hasło')}
+                <div className={classes.passwordContainer}>
+                    {getInput(LOGIN_FORM_KEYS.PASSWORD, loginForm.password, 'Hasło')}
+                    {getForgotPasswordButton()}
+                </div>
             </div>
         )
     }

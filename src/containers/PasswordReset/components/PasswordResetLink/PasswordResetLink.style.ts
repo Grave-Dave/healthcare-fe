@@ -7,35 +7,24 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     paperContainer: {
         width: 600,
     },
-    loginHeader: {
+    resetHeader: {
         padding: spacing(4, 2, 3),
         textAlign: 'center',
     },
-    actionsContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spacing(2),
-        padding: spacing(3),
-    },
-    mobileActionsContainer: {
-        gap: spacing(1),
-        padding: spacing(2),
-    },
-    inputsContainer: {
+    inputContainer: {
         display: 'flex',
         flexDirection: 'column',
         gap: spacing(4),
         padding: spacing(2),
     },
-    passwordContainer: {
+    buttonContainer: {
         display: 'flex',
         flexDirection: 'column',
+        gap: spacing(2),
+        padding: spacing(3,3,8),
     },
-    forgotPasswordBtn: {
-        alignSelf: 'flex-end',
-        fontSize: '12px !important',
-        '& a': {
-            paddingRight: '0px !important'
-        }
-    }
+    mobileButtonContainer: {
+        gap: spacing(1),
+        padding: spacing(2,2,4),
+    },
 }))

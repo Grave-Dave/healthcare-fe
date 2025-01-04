@@ -9,7 +9,7 @@ export const formatRegularStringToMyDateString = (dateString: string) => {
 }
 
 export const formatDayJsToRegularString = (date: Dayjs) => {
-    return date.toDate().toISOString().split('T')[0]
+    return date.locale('pl').format('YYYY-MM-DD')
 }
 
 export const formatDayjsToMyDateString = (selectedDate: Dayjs) => {

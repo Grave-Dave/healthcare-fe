@@ -10,18 +10,20 @@ interface NavLinkProps extends WithStyles<typeof styles> {
     children: React.ReactNode,
     href: string,
     navLinkClassName?: string,
+    disabled?: boolean,
     isMobile?: boolean,
     isHovered?: boolean
 }
 
-const NavLink = ({children, href, classes, navLinkClassName, isMobile = false, isHovered = false, ...otherProps}: NavLinkProps) => {
+const NavLink = ({children, href, classes, navLinkClassName, disabled = false, isMobile = false, isHovered = false, ...otherProps}: NavLinkProps) => {
 
     return (
         <Link
             to={href}
             className={classNames(`${classes.navLink} ${navLinkClassName ?? ''}`, {
                 [classes.hovered]: isHovered,
-                [classes.mobileLink]: isMobile
+                [classes.mobileLink]: isMobile,
+                [classes.disabled]: disabled
             })}
             {...otherProps}>
             {children}

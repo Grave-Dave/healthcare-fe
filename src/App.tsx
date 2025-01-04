@@ -12,6 +12,8 @@ import ProtectedRoute from "./reusableComponents/ProtectedRoutes";
 import UserAccount from "./containers/UserAccount";
 import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/constants.ts";
 import AdminVisitOverview from "./containers/AdminVisitOverview";
+import PasswordResetLink from "./containers/PasswordReset/components/PasswordResetLink";
+import ChangePassword from "./containers/PasswordReset/components/ChangePassword";
 
 function App() {
 
@@ -32,6 +34,22 @@ function App() {
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
                             <Register/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.PASSWORD_LINK}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
+                            <PasswordResetLink/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.PASSWORD_RESET}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
+                            <ChangePassword/>
                         </ProtectedRoute>
                     }
                 />

@@ -35,7 +35,6 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
     const classes = useStyles()
 
     useEffect(() => {
-        console.log('work')
         setTimeout(() => {
             onClose(id)
         }, autoHideDuration)
@@ -43,9 +42,6 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
 
     const handleClose = (e: React.SyntheticEvent<any> | Event) => {
         const target = e?.target as HTMLElement;
-
-        console.log(autoHideDuration)
-
 
         if (target?.tagName.toLowerCase() !== 'button'
             && target?.tagName.toLowerCase() !== 'path'

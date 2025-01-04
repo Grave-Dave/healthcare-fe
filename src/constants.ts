@@ -11,4 +11,6 @@ export enum ROUTES {
     REGISTER = '/register',
     LOGIN = '/login',
     USER = '/user',
+    PASSWORD_LINK = '/password/reset/link',
+    PASSWORD_RESET = '/password/reset/:token',
 }

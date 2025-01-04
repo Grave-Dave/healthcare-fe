@@ -14,5 +14,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
         width: '100%',
         height: 2,
         backgroundColor: theme.palette.divider
+    },
+    disabled: {
+        cursor: 'default'
     }
 }))

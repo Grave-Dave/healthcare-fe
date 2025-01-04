@@ -8,8 +8,9 @@ import NavLink from "../../../../../../reusableComponents/NavLink/NavLink.tsx";
 import {useStyles} from "./NavItem.style.ts";
 import {NavType} from "../../types.ts";
 import {ROUTES} from "../../../../../../constants.ts";
-import {useAppDispatch} from "../../../../../../hooks/reduxHooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../../../hooks/reduxHooks.ts";
 import actions from "../../../../../../auth/actions.tsx";
+import authSelectors from "../../../../../../auth/selectors.ts";
 
 interface NavItemProps {
     navItemData: NavType
@@ -21,6 +22,8 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
     const classes = useStyles()
     const location = useLocation();
     const dispatch = useAppDispatch();
+
+    const isLoading = useAppSelector(authSelectors.getIsLoading);
 
     const [isHovered, setIsHovered] = useState<boolean>(false)
     const [isActive, setIsActive] = useState<boolean>(false)
@@ -52,13 +55,14 @@ const NavItem = ({navItemData, isDropDownView, onClick}: NavItemProps) => {
 
     return (
         <>
-            <div className={classNames(classes.navItemContainer)}
+            <div className={classNames(classes.navItemContainer, {[classes.disabled]: isLoading})}
                  onMouseEnter={() => setIsHovered(true)}
                  onMouseLeave={() => setIsHovered(false)}
                  onClick={handleClick}
             >
                 <NavLink isMobile={isDropDownView}
                          isHovered={isHovered || isActive}
+                         disabled={isLoading}
                          href={navItemData.path}>
                     {isDropDownView && getNavIcon(navItemData.icon)}
                     {navItemData.name}
