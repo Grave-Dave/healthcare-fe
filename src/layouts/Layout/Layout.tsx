@@ -1,4 +1,4 @@
-import {useEffect, useState, CSSProperties} from "react";
+import {useEffect, useState} from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import {Outlet, useLocation} from "react-router-dom";
 
@@ -9,6 +9,8 @@ import Header from "./components/Header/Header.tsx";
 import {useAppDispatch} from "../../hooks/reduxHooks.ts";
 import actions from "../../auth/actions.tsx";
 import SmoothSnackbarRoot from "../../reusableComponents/SmoothSnackbar/SmoothSnackBarRoot";
+import Home from "../../containers/Home";
+import {getHomePageWrapperStyle, getOutletWrapperStyle} from "./utils/utils.ts";
 import {ROUTES} from "../../constants.ts";
 
 const Layout = () => {
@@ -29,34 +31,28 @@ const Layout = () => {
         }
     }, [location.pathname])
 
-    const getOutletWrapperStyle = (): CSSProperties => {
+    const getPageContent = () => {
         switch (true) {
             case isHomePage: {
-                return {
-                    position: 'absolute',
-                    top: 0,
-                    display: 'flex',
-                    height: '100%',
-                    overflow: 'clip',
-                }
+                return (
+                    <div style={getHomePageWrapperStyle()}>
+                        <Home/>
+                    </div>
+                )
             }
             default:
-                return {
-                    position: 'relative',
-                    top: 'auto',
-                    display: 'flex',
-                    height: 'calc(100vh - 96px)',
-                    overflow: 'clip',
-                }
+                return (
+                    <Scrollbars style={getOutletWrapperStyle()}>
+                        <Outlet/>
+                    </Scrollbars>
+                )
         }
     }
 
     return (
         <ThemeProvider theme={theme}>
             <Header/>
-            <Scrollbars style={getOutletWrapperStyle()}>
-                <Outlet/>
-            </Scrollbars>
+            {getPageContent()}
             <SmoothSnackbarRoot/>
         </ThemeProvider>
     )

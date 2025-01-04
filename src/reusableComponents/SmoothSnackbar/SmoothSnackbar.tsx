@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Alert, Button, Grow, Snackbar, Typography} from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import createStyles from "@mui/styles/createStyles";
@@ -34,10 +34,20 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
 
     const classes = useStyles()
 
-    const handleClose = (e: React.SyntheticEvent<any> | Event) => {
-        const target = e.target as HTMLElement;
+    useEffect(() => {
+        console.log('work')
+        setTimeout(() => {
+            onClose(id)
+        }, autoHideDuration)
+    }, [])
 
-        if (target.tagName.toLowerCase() !== 'button'
+    const handleClose = (e: React.SyntheticEvent<any> | Event) => {
+        const target = e?.target as HTMLElement;
+
+        console.log(autoHideDuration)
+
+
+        if (target?.tagName.toLowerCase() !== 'button'
             && target?.tagName.toLowerCase() !== 'path'
             && target?.tagName.toLowerCase() !== 'svg') {
             onClose(firstSnackbarId)
