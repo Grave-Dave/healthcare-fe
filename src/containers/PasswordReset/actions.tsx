@@ -1,4 +1,5 @@
 import {NavigateFunction} from "react-router-dom";
+import {t} from "i18next";
 
 import Service from "./services/service.ts";
 import layoutActions from '../../layouts/Layout/actions.tsx';
@@ -21,7 +22,7 @@ const sendPasswordResetLink = (email: string) => (dispatch: any) => {
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
@@ -41,7 +42,7 @@ const resetPassword = (passwordForm: PasswordForm, email: string, token: string,
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))

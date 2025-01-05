@@ -1,4 +1,5 @@
 import {Route, Routes} from "react-router-dom";
+import './locales/i18n.ts';
 
 import {ROUTES} from "./constants.ts";
 import Layout from "./layouts/Layout/Layout.tsx";

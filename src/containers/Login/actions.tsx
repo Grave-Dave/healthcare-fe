@@ -1,5 +1,6 @@
 import {NavigateFunction} from "react-router-dom";
 import {get} from "lodash";
+import {t} from "i18next";
 
 import {actions as staticActions} from './reducer';
 import layoutActions from '../../layouts/Layout/actions.tsx';
@@ -35,13 +36,12 @@ const login = (loginForm: LoginForm, navigate: NavigateFunction) => (dispatch: a
         dispatch(staticActions.resetLoginFormError(DEFAULT_LOGIN_FORM_ERROR))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
-    }).finally(() =>
         dispatch(authActions.setIsLoading(false))
-    )
+    })
 }
 
 const asyncActions = {

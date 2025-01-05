@@ -18,7 +18,7 @@ export const styles = ({palette, spacing}: Theme) => createStyles({
     actionsContainer: {
         display: 'flex',
         gap: 16,
-        padding: spacing(1.5, 0)
+        padding: spacing(.5, 0)
     },
     details: {
         display: 'flex',

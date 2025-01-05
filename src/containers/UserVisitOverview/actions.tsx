@@ -1,4 +1,5 @@
 import {get} from "lodash";
+import {t} from "i18next";
 
 import {actions as staticActions} from './reducer';
 import Service from "./services/service.ts";
@@ -26,7 +27,7 @@ const fetchUserVisits = () => (dispatch: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -52,7 +53,7 @@ const deleteUserVisit = (visitId: number) => (dispatch: any, getState: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))

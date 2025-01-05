@@ -1,5 +1,6 @@
 import {Dayjs} from "dayjs";
 import {get} from "lodash";
+import {t} from "i18next";
 
 import {actions as staticActions} from './reducer';
 import Service from "./services/service.ts";
@@ -28,7 +29,7 @@ const fetchMonthPastTerms = (currentMonthYear: CurrentMonthYearType) => (dispatc
 
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
@@ -49,7 +50,7 @@ const fetchPastVisits = (selectedDate: Dayjs) => (dispatch: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -68,7 +69,7 @@ const fetchUsers = (query: string) => (dispatch: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -88,7 +89,7 @@ const fetchUserVisits = (userId: number) => (dispatch: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))

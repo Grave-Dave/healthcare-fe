@@ -1,4 +1,5 @@
 import {get} from "lodash";
+import {t} from "i18next";
 
 import {actions as staticActions} from "./reducer.ts";
 import layoutActions from '../layouts/Layout/actions.tsx';
@@ -39,7 +40,7 @@ const resendMail = () => (dispatch: any) => {
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
@@ -59,7 +60,7 @@ const logout = () => (dispatch: any) => {
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000
         }))
     }).finally(() => dispatch(staticActions.setIsLoading(false)))

@@ -1,5 +1,6 @@
 import {NavigateFunction} from "react-router-dom";
 import {get} from "lodash";
+import {t} from "i18next";
 
 import {actions as staticActions} from './reducer';
 import layoutActions from '../../layouts/Layout/actions.tsx';
@@ -26,7 +27,7 @@ const updateAccount = (userDataForm: RegisterForm, navigate: NavigateFunction) =
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
@@ -50,7 +51,7 @@ const deleteAccount = (navigate: NavigateFunction) => (dispatch: any) => {
         }))
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))

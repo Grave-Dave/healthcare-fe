@@ -30,6 +30,7 @@ const AddNewVisitDialog = ({isOpen, onClose, selectedTerm}: AddNewVisitDialogPro
     const handleCreate = () => {
         if (selectedTerm) {
             dispatch(actions.createNewUserVisit(selectedTerm.id, navigate))
+            dispatch(actions.setSelectedTermId(null))
         }
     }
 

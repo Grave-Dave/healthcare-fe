@@ -13,7 +13,7 @@ export const extractValidationMessages = (response: any) => {
     if (responseValidationErrors) {
         {
             Object.values(responseValidationErrors).map((message) => {
-                messages.push(message as string)
+                messages.push(...message as string)
             })
         }
     } else if (responseValidationError) {

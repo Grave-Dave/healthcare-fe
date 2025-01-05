@@ -1,0 +1,12 @@
+{
+  "The email field must be a valid email address." : "Pole e-mail musi zawierać prawidłowy adres e-mail",
+  "The phone field must be at least 9 characters." : "Pole telefon musi zawierać co najmniej 9 znaków.",
+  "The phone field must not be greater than 15 characters." : "Pole telefon nie może zawierać więcej niż 15 znaków.",
+  "The email has already been taken." : "Ten adres e-mail jest już zajęty.",
+  "The password field must be at least 8 characters." : "Pole hasło musi zawierać co najmniej 8 znaków.",
+  "Too Many Attempts." : "Zbyt wiele prób.",
+  "Visit not found." : "Wizyta nie została znaleziona.",
+  "Your email address is not verified." : "Twój adres e-mail nie został zweryfikowany.",
+  "The selected email is invalid." : "Podany adres e-mail jest nieprawidłowy lub nie istnieje.",
+  "Password reset failed." : "Nie udało się zresetować hasła."
+}

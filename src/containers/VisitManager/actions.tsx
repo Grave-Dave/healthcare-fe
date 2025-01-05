@@ -1,6 +1,7 @@
 import {NavigateFunction} from "react-router-dom";
 import {get} from "lodash";
 import {Dayjs} from "dayjs";
+import {t} from "i18next";
 
 import {actions as staticActions} from './reducer';
 import layoutActions from "../../layouts/Layout/actions.tsx";
@@ -36,7 +37,7 @@ const fetchMonthAvailableTerms = (currentMonthYear: CurrentMonthYearType) => (di
 
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
@@ -62,7 +63,7 @@ const fetchAvailableTerms = (selectedDate: Dayjs) => (dispatch: any) => {
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -94,7 +95,7 @@ const addNewAvailableTerms = (selectedDate: Dayjs, hourRange: number[], selected
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -119,7 +120,7 @@ const deleteAvailableTerm = (termId: number) => (dispatch: any, getState: any) =
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -155,7 +156,7 @@ const createNewUserVisit = (availableTermId: number, navigate: NavigateFunction)
     })
         .catch((error) => {
             dispatch(layoutActions.showSnackBar({
-                message: extractValidationMessages(error)[0] ?? error.message,
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
@@ -175,7 +176,7 @@ const fetchLocations = () => (dispatch: any) => {
 
     }).catch((error) => {
         dispatch(layoutActions.showSnackBar({
-            message: extractValidationMessages(error)[0] ?? error.message,
+            message: t(extractValidationMessages(error)[0]) ?? error.message,
             autoHideDuration: 5000,
             type: SmoothSnackbarEnum.ERROR
         }))
