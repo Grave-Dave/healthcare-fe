@@ -113,7 +113,7 @@ const VisitItem = ({
             switch (visitItem.status) {
                 case UserVisitStatusEnum.Pending: {
                     return (
-                        <Tooltip title="Oczekuje na zatwierdzenie" enterTouchDelay={0} >
+                        <Tooltip title="Oczekuje na zatwierdzenie" enterTouchDelay={0}>
                             <PendingActionsIcon sx={{width: 32, height: 32}}/>
                         </Tooltip>
                     )
@@ -181,27 +181,32 @@ const VisitItem = ({
                         </div>
                         <div className={classes.actionsContainer}>
                             {withConfirm &&
-                                <CheckIcon
-                                    onClick={onConfirmDialogOpen}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: theme.palette.grey["500"],
-                                        '&:hover': {
-                                            color: theme.palette.success.main,
-                                        },
-                                    }}
-                                />}
+                                <Tooltip title="Potwierdź wizytę" enterTouchDelay={0}>
+                                    <CheckIcon
+                                        onClick={onConfirmDialogOpen}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: theme.palette.grey["500"],
+                                            '&:hover': {
+                                                color: theme.palette.success.main,
+                                            },
+                                        }}
+                                    />
+                                </Tooltip>
+                            }
                             {withDelete &&
-                                <DeleteOutlineIcon
-                                    onClick={onDeleteDialogOpen}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        color: theme.palette.error.main,
-                                        '&:hover': {
-                                            color: theme.palette.error.light,
-                                        },
-                                    }}
-                                />
+                                <Tooltip title="Usuń" enterTouchDelay={0}>
+                                    <DeleteOutlineIcon
+                                        onClick={onDeleteDialogOpen}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: theme.palette.error.main,
+                                            '&:hover': {
+                                                color: theme.palette.error.light,
+                                            },
+                                        }}
+                                    />
+                                </Tooltip>
                             }
                         </div>
                     </Paper>

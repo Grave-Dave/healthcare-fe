@@ -131,7 +131,7 @@ const VisitCalendar = ({
 
 
     const disablePastDates = (date: Dayjs) => {
-        return date.isBefore(dayjs(), 'day');
+        return date.isBefore(dayjs().add(1, 'day'), 'day');
     };
 
     const disableFutureDates = (date: Dayjs) => {

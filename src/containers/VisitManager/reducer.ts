@@ -6,7 +6,7 @@ import {LocationInterface, VisitItemInterface, VisitManagerPageReducerState} fro
 export const REDUCER_KEY = 'VISIT_MANAGER_PAGE';
 
 const initialState: VisitManagerPageReducerState = {
-    selectedDate: dayjs(new Date()),
+    selectedDate: dayjs().add(1, 'day'),
     selectedTermId: null,
     allTerms: [],
     visitItemsData: [],

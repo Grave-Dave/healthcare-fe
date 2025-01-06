@@ -160,6 +160,7 @@ const createNewUserVisit = (availableTermId: number, navigate: NavigateFunction)
                 autoHideDuration: 5000,
                 type: SmoothSnackbarEnum.ERROR
             }))
+            dispatch(staticActions.setIsCreateVisitDialogOpen(false))
         }).finally(() =>
             dispatch(staticActions.setIsLoading(false))
         )

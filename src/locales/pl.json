@@ -8,5 +8,7 @@
   "Visit not found." : "Wizyta nie została znaleziona.",
   "Your email address is not verified." : "Twój adres e-mail nie został zweryfikowany.",
   "The selected email is invalid." : "Podany adres e-mail jest nieprawidłowy lub nie istnieje.",
-  "Password reset failed." : "Nie udało się zresetować hasła."
+  "Password reset failed." : "Nie udało się zresetować hasła.",
+  "The selected term is not available." : "Wybrany termin jest niedostępny.",
+  "Only available visits can be deleted." : "Można usunąć tylko dostępne wizyty."
 }
