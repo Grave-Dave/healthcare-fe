@@ -15,6 +15,8 @@ import {ProtectedRouteEnum} from "./reusableComponents/ProtectedRoutes/constants
 import AdminVisitOverview from "./containers/AdminVisitOverview";
 import PasswordResetLink from "./containers/PasswordReset/components/PasswordResetLink";
 import ChangePassword from "./containers/PasswordReset/components/ChangePassword";
+import AboutMe from "./containers/AboutMe";
+import Contact from "./containers/Contact";
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
         <Routes>
             <Route path={ROUTES.HOME} element={<Layout/>}>
                 <Route index element={<Home/>}/>
+                <Route path={ROUTES.ABOUT_ME} element={<AboutMe/>}/>
+                <Route path={ROUTES.CONTACT} element={<Contact/>}/>
                 <Route
                     path={ROUTES.LOGIN}
                     element={
