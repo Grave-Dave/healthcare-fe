@@ -10,5 +10,6 @@
   "The selected email is invalid." : "Podany adres e-mail jest nieprawidłowy lub nie istnieje.",
   "Password reset failed." : "Nie udało się zresetować hasła.",
   "The selected term is not available." : "Wybrany termin jest niedostępny.",
-  "Only available visits can be deleted." : "Można usunąć tylko dostępne wizyty."
+  "Only available visits can be deleted." : "Można usunąć tylko dostępne wizyty.",
+  "Visit status can only be updated from pending to confirmed." : "Status wizyty można zmienić jedynie z oczekującej na potwierdzoną."
 }
