@@ -33,7 +33,7 @@ const Home = () => {
                 buttonVariant={AtomButtonVariants.CTA_BUTTON_VARIANT}
                 buttonClassName={classes.heroButton}
                 text={'Uzyskaj pomoc'}
-                onClick={() => navigate(ROUTES.MAKE_VISIT)}
+                onClick={() => navigate(ROUTES.ABOUT_ME)}
             />
         </div>
     )

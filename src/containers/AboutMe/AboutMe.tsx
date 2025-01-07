@@ -51,9 +51,9 @@ const AboutMe = () => {
                             <Typography variant="h5" className={classes.descriptionHeader}>
                                 Kilka słów o mnie
                             </Typography>
-                            <Typography variant="body1" className={classes.description}>{FIRST_PARAGRAPH}</Typography>
-                            <Typography variant="body1" className={classes.description}>{SECOND_PARAGRAPH}</Typography>
-                            <Typography variant="body1" className={classes.description}>{THIRD_PARAGRAPH}</Typography>
+                            <Typography variant="body2" className={classes.description}>{FIRST_PARAGRAPH}</Typography>
+                            <Typography variant="body2" className={classes.description}>{SECOND_PARAGRAPH}</Typography>
+                            <Typography variant="body2" className={classes.description}>{THIRD_PARAGRAPH}</Typography>
                         </div>
                         {isSmall && <div className={classes.mobileContainer}>
                             <img className={classes.picture} src={photo} alt={'Katarzyna Trzeciakiewicz'}/>

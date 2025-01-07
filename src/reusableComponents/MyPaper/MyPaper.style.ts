@@ -17,12 +17,12 @@ export const styles = ({spacing}: Theme) => createStyles({
         justifyContent: 'center',
         alignItems: 'center',
         padding: spacing(1),
-        height: 'calc(100vh - 144px)'
+        height: 'calc(100vh - 128px)'
     },
     mobilePaper: {
         flex: '1 0 auto',
         width: 'auto',
-        height: 'calc(100vh - 96px)',
+        height: 'calc(100vh - 80px)',
         alignItems: 'stretch',
     },
     backButton: {

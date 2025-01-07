@@ -28,6 +28,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     descriptionContainer: {
         margin: spacing(1),
+        height: '100%'
     },
     descriptionHeader: {
         textTransform: 'uppercase',

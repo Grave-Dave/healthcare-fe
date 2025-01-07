@@ -12,12 +12,14 @@ import SmoothSnackbarRoot from "../../reusableComponents/SmoothSnackbar/SmoothSn
 import Home from "../../containers/Home";
 import {getHomePageWrapperStyle, getOutletWrapperStyle} from "./utils/utils.ts";
 import {ROUTES} from "../../constants.ts";
+import CookieConsent from "../../reusableComponents/CookieConsent";
 
 const Layout = () => {
     const dispatch = useAppDispatch();
     const location = useLocation();
 
     const [isHomePage, setIsHomePage] = useState(true)
+    const cookieAccepted = localStorage.getItem('cookieConsent');
 
     useEffect(() => {
         dispatch(actions.checkAuth())
@@ -54,6 +56,7 @@ const Layout = () => {
             <Header/>
             {getPageContent()}
             <SmoothSnackbarRoot/>
+            <CookieConsent isAccepted={!!cookieAccepted}/>
         </ThemeProvider>
     )
 }

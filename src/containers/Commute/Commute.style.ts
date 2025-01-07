@@ -13,63 +13,51 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),
+        flex: 'auto',
         gap: 24,
         [breakpoints.down('xs')]: {
             padding: spacing(1, 1, 2),
         },
     },
-    content: {
+    commuteWrapper: {
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        gap: 24,
         height: '100%',
         width: '100%',
-        padding: spacing(0, 2),
-        [breakpoints.down('xs')]: {
-            padding: spacing(0, 1),
-        },
-    },
-    descriptionWrapper: {
-        flex: '1 0 200px',
     },
     descriptionContainer: {
-        margin: spacing(0, 2, 2, 0)
+        margin: spacing(1),
     },
     descriptionHeader: {
         textTransform: 'uppercase',
         borderBottom: `2px solid ${palette.secondary.light}`,
     },
     description: {
-        paddingTop: spacing(3),
+        display: 'flex',
+        justifyContent: 'center',
+        padding: spacing(3, 0),
         textAlign: 'justify',
     },
-    infoItemWrapper: {
-        paddingTop: spacing(3),
-        margin: spacing(0, 2, 2, 0)
+    mapWrapper: {
+        flex: '1 0 200px',
     },
-    infoItemContainer: {
+    mapContainer: {
         display: 'flex',
+        flexWrap: 'wrap',
         gap: 24,
-        flexWrap:'wrap',
-        padding:spacing(4,1),
-        justifyContent:'space-between'
+        padding: spacing(2),
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '85%'
     },
-    desktopContainer: {
-        position: 'relative',
-        maxHeight: 470
-    },
-    mobileContainer: {
+    mapItem: {
         display: 'flex',
-        margin: spacing(4, 0,2)
+        flexDirection: 'column',
+        gap: 16
     },
-    picture: {
-        maxWidth: 350,
-        maxHeight: 350,
-        borderRadius: 8,
-        margin: 'auto',
-        [breakpoints.down('xs')]: {
-            maxWidth: 250,
-            maxHeight: 250,
-        },
-    },
+    footer: {
+        paddingTop: spacing(3),
+        width: '100%'
+    }
 }))

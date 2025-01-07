@@ -10,7 +10,7 @@ export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles(
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '100vh',
+        height: '100dvh',
         width: '100%',
         zIndex: 0
     },

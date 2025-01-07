@@ -7,7 +7,7 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     paperContainer: {
         width: 600
     },
-    registerHeader:{
+    registerHeader: {
         padding: spacing(1.5, 2, 3),
         textAlign: 'center',
     },
@@ -24,5 +24,10 @@ export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     mobileActionsContainer: {
         gap: spacing(1),
         padding: spacing(2),
+    },
+    conditionsBtn: {
+        fontSize: '.75rem !important',
+        width: '130px !important',
+        padding: '0px !important',
     },
 }))

@@ -26,9 +26,9 @@ const Contact = () => {
                         kontakt
                     </Typography>
                     <Typography variant="body1" className={classes.description}>
-                        {'Jeżeli chcesz dopytać o szczegóły, skontaktuj się ze mną pod numer:'}
+                        {'Jeżeli jesteś zainteresowany konsultacją, zapraszam do kontaktu pod numerem:'}
                     </Typography>
-                    <Typography variant="h2" sx={{height: '100%'}} className={classes.description}>
+                    <Typography variant="h2" sx={{height: '60%'}} className={classes.description}>
                         <a href={`tel:+48535355406`}
                            className={classes.phone}
                            style={{textDecoration: 'none', color: 'inherit'}}>
@@ -41,7 +41,7 @@ const Contact = () => {
                 <div className={classes.footer}>
                     <Divider sx={{marginBottom: 2}}/>
                     <Typography variant="caption" sx={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
-                        © 2025 Psychoterapia Trzeciakiewicz. Wszelkie prawa zastrzeżone.
+                        &copy; {`${new Date().getFullYear()} Psychoterapia Trzeciakiewicz. Wszelkie prawa zastrzeżone.`}
                     </Typography>
                 </div>
             </div>

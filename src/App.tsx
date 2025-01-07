@@ -17,15 +17,23 @@ import PasswordResetLink from "./containers/PasswordReset/components/PasswordRes
 import ChangePassword from "./containers/PasswordReset/components/ChangePassword";
 import AboutMe from "./containers/AboutMe";
 import Contact from "./containers/Contact";
+import Commute from "./containers/Commute";
+import ErrorPage from "./containers/ErrorPage";
 
 function App() {
 
     return (
         <Routes>
             <Route path={ROUTES.HOME} element={<Layout/>}>
+
+                {/*GENERAL ROUTES*/}
                 <Route index element={<Home/>}/>
                 <Route path={ROUTES.ABOUT_ME} element={<AboutMe/>}/>
                 <Route path={ROUTES.CONTACT} element={<Contact/>}/>
+                <Route path={ROUTES.COMMUTE} element={<Commute/>}/>
+
+                {/*GUEST ONLY ROUTES*/}
+
                 <Route
                     path={ROUTES.LOGIN}
                     element={
@@ -58,6 +66,9 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                {/*ADMIN ROUTES*/}
+
                 <Route
                     path={ROUTES.ADMIN}
                     element={
@@ -74,19 +85,45 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                {/*AUTH ROUTES*/}
+
                 <Route
-                    path="*"
+                    path={ROUTES.MY_VISITS}
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
-                            <Routes>
-                                <Route path={ROUTES.MY_VISITS} element={<UserVisitOverview/>}/>
-                                <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
-                                <Route path={ROUTES.CALENDAR} element={<VisitManager/>}/>
-                                <Route path={ROUTES.USER} element={<UserAccount/>}/>
-                            </Routes>
+                            <UserVisitOverview/>
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path={ROUTES.MAKE_VISIT}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
+                            <VisitManager/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.CALENDAR}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
+                            <VisitManager/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.USER}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
+                            <UserAccount/>
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/*FALLBACK*/}
+
+                <Route path="*" index element={<ErrorPage/>}/>
             </Route>
         </Routes>
     )

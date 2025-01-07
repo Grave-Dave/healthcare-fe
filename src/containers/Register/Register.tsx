@@ -3,12 +3,13 @@ import {useNavigate} from "react-router-dom";
 import classNames from "classnames";
 import Scrollbars from "react-custom-scrollbars-2";
 
-import {Typography} from "@mui/material";
+import {Checkbox, FormControlLabel, Typography} from "@mui/material";
 
 import MyPaper from "../../reusableComponents/MyPaper";
 import FormInput from "../../reusableComponents/FormInput";
 import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
 import CircularLoader from "../../reusableComponents/CircularLoader";
+import TermsAndConditions from "../../reusableComponents/TermsAndConditions";
 import AtomButton from "../../atoms/AtomButton";
 import {EMAIL_REGEX, REGISTER_FORM_KEYS} from "./constants.ts";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
@@ -35,6 +36,8 @@ const Register = () => {
     const isLoading = useAppSelector(authSelectors.getIsLoading)
 
     const [isSubmittable, setIsSubmittable] = useState(false);
+    const [isConditionChecked, setIsConditionChecked] = useState(false);
+    const [isTermsDialogOpen, setIsTermsDialogOpen] = useState(false);
     const [showPassword, setShowPassword] = useState<ShowPassword>({
         password: false,
         password_confirmation: false
@@ -48,8 +51,8 @@ const Register = () => {
                 && registerFormError[key] === false;
         });
 
-        setIsSubmittable(isFormFilled);
-    }, [registerForm, registerFormError]);
+        setIsSubmittable(isFormFilled && isConditionChecked);
+    }, [registerForm, registerFormError, isConditionChecked]);
 
     useEffect(() => {
         const callBackFn = (event: KeyboardEvent) => {
@@ -79,6 +82,10 @@ const Register = () => {
         }
     }
 
+    const handleCheckboxChange = () => {
+        setIsConditionChecked(prevState => !prevState)
+    }
+
     const validateEmail = () => {
         const emailRegEx = EMAIL_REGEX
         const emailText = registerForm.email || '';
@@ -99,7 +106,7 @@ const Register = () => {
     }
 
     const handleOnSubmit = () => {
-            dispatch(actions.register(registerForm, navigate))
+        dispatch(actions.register(registerForm, navigate))
     }
 
     const getInput = (field: keyof RegisterForm, fieldValue: string, label: string) => {
@@ -167,6 +174,20 @@ const Register = () => {
         }
     }
 
+    const getConditionsCheckbox = () => {
+        return (
+            <FormControlLabel
+                required
+                control={<Checkbox checked={isConditionChecked} onChange={handleCheckboxChange} color="secondary"/>}
+                label={<AtomButton
+                    onClick={() => setIsTermsDialogOpen(true)}
+                    buttonVariant={AtomButtonVariants.TEXT}
+                    buttonClassName={classes.conditionsBtn}
+                    text={'Warunki korzystania'}/>
+                }/>
+        )
+    }
+
     const inputsContainer = () => {
         return (
             <div className={classes.inputsContainer}>
@@ -176,6 +197,7 @@ const Register = () => {
                 {getInput(REGISTER_FORM_KEYS.PHONE, registerForm.phone, 'Telefon')}
                 {getInput(REGISTER_FORM_KEYS.PASSWORD, registerForm.password, 'Hasło')}
                 {getInput(REGISTER_FORM_KEYS.CONFIRMATION, registerForm.password_confirmation, 'Powtórz hasło')}
+                {getConditionsCheckbox()}
             </div>
         )
     }
@@ -200,6 +222,7 @@ const Register = () => {
                     : inputsContainer()}
             </Scrollbars>
             {actionsContainer()}
+            <TermsAndConditions isOpen={isTermsDialogOpen} onClose={() => setIsTermsDialogOpen(false)}/>
         </MyPaper>
     )
 }
