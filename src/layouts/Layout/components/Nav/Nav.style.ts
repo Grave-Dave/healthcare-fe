@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
         left: -300,
         display: 'flex',
         flexDirection: 'column',
-        height: 'calc(100vh - 80px)',
+        height: 'calc(100dvh - 80px)',
         justifyContent: "space-between",
         gap: 0,
         backgroundColor: theme.palette.background.default,
