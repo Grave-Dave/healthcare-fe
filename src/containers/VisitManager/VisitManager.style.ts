@@ -10,6 +10,7 @@ export const useStyles = makeStyles(({spacing, breakpoints}: Theme) => createSty
         padding: spacing(3, 2),
         gap: 16,
         justifyContent: 'flex-start',
+        minHeight: 460
     },
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),

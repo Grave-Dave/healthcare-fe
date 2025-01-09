@@ -5,7 +5,8 @@ import makeStyles from '@mui/styles/makeStyles';
 
 export const useStyles = makeStyles(({spacing}: Theme) => createStyles({
     paperContainer: {
-        width: 600
+        width: 600,
+        minHeight: 550
     },
     registerHeader: {
         padding: spacing(1.5, 2, 3),

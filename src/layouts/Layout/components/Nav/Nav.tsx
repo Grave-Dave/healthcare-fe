@@ -2,12 +2,13 @@ import {useState, useEffect} from "react";
 import classNames from "classnames";
 
 import {NavType} from "./types.ts";
-import {adminNav, defaultNav, loginItem, userItems} from "./constants.ts";
+import {adminNav, defaultNav, homeNavItem, loginItem, userItems} from "./constants.ts";
 import {useStyles} from "./Nav.style.ts";
 import NavItem from "./components/NavItem";
 import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import actions from "../../actions.tsx";
 import selectors from "../../../../auth/selectors.ts";
+import {ROUTES} from "../../../../constants.ts";
 
 interface NavProps {
     isMobile: boolean;
@@ -44,8 +45,17 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
             }
                 break;
         }
-
     }, [isAdmin, isLogged])
+
+    useEffect(() => {
+        if (isMobile) {
+            if (!navItemsData.find(navItem => navItem.path === ROUTES.HOME)) {
+                setNavItemsData(navItems => [homeNavItem, ...navItems])
+            }
+        } else {
+            setNavItemsData(navItems => navItems.filter(navItem => navItem.path !== ROUTES.HOME))
+        }
+    }, [navItemsData, isMobile])
 
     const onNavItemClick = () => {
         dispatch(actions.setMobileMenuOpen(false))

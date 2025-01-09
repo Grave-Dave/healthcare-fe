@@ -17,7 +17,10 @@ export const styles = ({spacing}: Theme) => createStyles({
         justifyContent: 'center',
         alignItems: 'center',
         padding: spacing(1),
-        height: 'calc(100vh - 128px)'
+        height: 'calc(100vh - 128px)',
+        '@media screen and (max-height: 700px)': {
+            height: 'auto',
+        },
     },
     mobilePaper: {
         flex: '1 0 auto',

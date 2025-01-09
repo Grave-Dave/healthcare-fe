@@ -24,6 +24,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         justifyContent: 'space-between',
         height: '100%',
         width: '100%',
+        minHeight: 460
     },
     descriptionContainer: {
         margin: spacing(1),

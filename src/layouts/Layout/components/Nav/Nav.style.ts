@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     navMobileContainer: {
         position: 'absolute',
         top: 81,
-        left: -300,
+        left: -310,
         display: 'flex',
         flexDirection: 'column',
         height: 'calc(100dvh - 80px)',

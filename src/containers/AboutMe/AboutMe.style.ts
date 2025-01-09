@@ -8,7 +8,6 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         position: 'relative',
         width: 1100,
         padding: spacing(3, 2),
-        gap: 16,
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
@@ -25,7 +24,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         gap: 24,
         height: '100%',
         width: '100%',
-        padding: spacing(0, 2),
+        padding: spacing(1, 2,0),
         [breakpoints.down('xs')]: {
             padding: spacing(0, 1),
         },
@@ -57,15 +56,15 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     desktopContainer: {
         position: 'relative',
-        maxHeight: 470
+        height: 430
     },
     mobileContainer: {
         display: 'flex',
         margin: spacing(4, 0, 2)
     },
     picture: {
-        maxWidth: 350,
-        maxHeight: 350,
+        maxWidth: 330,
+        maxHeight: 330,
         borderRadius: 8,
         margin: 'auto',
         [breakpoints.down('xs')]: {

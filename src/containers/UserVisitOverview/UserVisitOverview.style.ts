@@ -18,6 +18,7 @@ export const styles = ({spacing, breakpoints}: Theme) => createStyles({
         padding: spacing(3, 1),
         gap: 16,
         justifyContent: 'flex-start',
+        minHeight: 460
     },
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),

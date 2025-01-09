@@ -8,6 +8,7 @@ import phoneIcon from '../../../../public/images/phone-office-svgrepo-com.svg'
 import adminIcon from '../../../../public/images/user-shield-alt-1-svgrepo-com.svg'
 import userIcon from '../../../../public/images/default-avatar.svg'
 import logIcon from '../../../../public/images/logout-svgrepo-com.svg'
+import homeIcon from '../../../../public/images/home-alt-svgrepo-com.svg'
 
 export const defaultNav: NavType[] = [
     {
@@ -89,3 +90,9 @@ export const loginItem: NavType[] = [
         icon: logIcon
     }
 ]
+
+export const homeNavItem = {
+    path: ROUTES.HOME,
+    name: 'Strona główna',
+    icon: homeIcon
+}
