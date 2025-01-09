@@ -9,7 +9,6 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         position: 'relative',
         width: 1100,
         padding: spacing(3, 2),
-        gap: 16,
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
@@ -38,7 +37,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     description: {
         display: 'flex',
         justifyContent: 'center',
-        paddingTop: spacing(3),
+        paddingTop: spacing(2),
         textAlign: 'justify',
     },
     phone: {

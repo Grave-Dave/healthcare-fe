@@ -8,7 +8,6 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         position: 'relative',
         width: 1100,
         padding: spacing(3, 2),
-        gap: 16,
         justifyContent: 'flex-start',
     },
     mobilePaperContainer: {
@@ -36,7 +35,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     description: {
         display: 'flex',
         justifyContent: 'center',
-        padding: spacing(3, 0, 1),
+        padding: spacing(2, 0, 1),
         textAlign: 'justify',
     },
     mapWrapper: {
@@ -59,7 +58,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: spacing(3),
+        paddingBottom: spacing(2),
         [breakpoints.down('xs')]: {
             paddingBottom: spacing(1),
         },

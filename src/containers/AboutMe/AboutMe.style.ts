@@ -42,6 +42,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     description: {
         paddingTop: spacing(3),
         textAlign: 'justify',
+        fontSize: '0.875rem !important'
     },
     infoItemWrapper: {
         paddingTop: spacing(3),
