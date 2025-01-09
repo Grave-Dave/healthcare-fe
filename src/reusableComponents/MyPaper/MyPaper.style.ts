@@ -18,7 +18,7 @@ export const styles = ({spacing}: Theme) => createStyles({
         alignItems: 'center',
         padding: spacing(1),
         height: 'calc(100vh - 128px)',
-        '@media screen and (max-height: 700px)': {
+        '@media screen and (max-height: 690px)': {
             height: 'auto',
         },
     },

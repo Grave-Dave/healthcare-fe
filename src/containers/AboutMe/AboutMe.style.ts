@@ -57,7 +57,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     desktopContainer: {
         position: 'relative',
-        height: 430
+        height: 420
     },
     mobileContainer: {
         display: 'flex',
