@@ -53,7 +53,9 @@ const Nav = ({isMobile, isMobileMenuOpen, isUserMenuOpen}: NavProps) => {
                 setNavItemsData(navItems => [homeNavItem, ...navItems])
             }
         } else {
-            setNavItemsData(navItems => navItems.filter(navItem => navItem.path !== ROUTES.HOME))
+            if (navItemsData.find(navItem => navItem.path === ROUTES.HOME)) {
+                setNavItemsData(navItems => navItems.filter(navItem => navItem.path !== ROUTES.HOME))
+            }
         }
     }, [navItemsData, isMobile])
 
