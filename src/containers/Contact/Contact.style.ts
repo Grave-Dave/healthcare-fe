@@ -15,7 +15,6 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),
         flex: 'auto',
-        gap: 24,
         [breakpoints.down('xs')]: {
             padding: spacing(1, 1, 2),
         },
@@ -25,6 +24,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         flexDirection: 'column',
         justifyContent: 'space-between',
         height: '100%',
+        width:'100%'
     },
     descriptionContainer: {
         margin: spacing(1),

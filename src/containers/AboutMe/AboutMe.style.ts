@@ -13,7 +13,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),
-        gap: 24,
+        gap: 8,
         [breakpoints.down('xs')]: {
             padding: spacing(1, 1, 2),
         },

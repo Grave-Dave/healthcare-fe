@@ -34,7 +34,7 @@ const Commute = () => {
                     <Scrollbars>
                         <div className={classes.mapContainer}>
                             <div className={classes.mapItem}>
-                                <Typography variant="body2" className={classes.description}>
+                                <Typography variant="body2" className={classes.mapDescription}>
                                     <FmdGoodOutlinedIcon sx={{width: 20, height: 20}}/>
                                     {'Obornicka 77k/1b, 51-114 Wrocław:'}
                                 </Typography>
@@ -49,7 +49,7 @@ const Commute = () => {
                                 </iframe>
                             </div>
                             <div className={classes.mapItem}>
-                                <Typography variant="body2" className={classes.description}>
+                                <Typography variant="body2" className={classes.mapDescription}>
                                     <FmdGoodOutlinedIcon sx={{width: 20, height: 20}}/>
                                     {'Legnicka 55a/3, 54-234 Wrocław:'}
                                 </Typography>
@@ -64,7 +64,7 @@ const Commute = () => {
                                 </iframe>
                             </div>
                             <div className={classes.mapItem}>
-                                <Typography variant="body2" className={classes.description}>
+                                <Typography variant="body2" className={classes.mapDescription}>
                                     <FmdGoodOutlinedIcon sx={{width: 20, height: 20}}/>
                                     {'Otmuchowska 7/4, 50-505 Wrocław:'}
                                 </Typography>

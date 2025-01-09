@@ -14,7 +14,6 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),
         flex: 'auto',
-        gap: 24,
         [breakpoints.down('xs')]: {
             padding: spacing(1, 1, 2),
         },
@@ -36,7 +35,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     description: {
         display: 'flex',
         justifyContent: 'center',
-        padding: spacing(3, 0),
+        padding: spacing(3,0,1),
         textAlign: 'justify',
     },
     mapWrapper: {
@@ -54,10 +53,15 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     mapItem: {
         display: 'flex',
         flexDirection: 'column',
-        gap: 16
+    },
+    mapDescription:{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:'center',
+        paddingBottom: spacing(1),
     },
     footer: {
-        paddingTop: spacing(3),
+        paddingTop: spacing(2),
         width: '100%'
     }
 }))
