@@ -35,7 +35,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     description: {
         display: 'flex',
         justifyContent: 'center',
-        padding: spacing(3,0,1),
+        padding: spacing(3, 0, 1),
         textAlign: 'justify',
     },
     mapWrapper: {
@@ -54,11 +54,14 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         display: 'flex',
         flexDirection: 'column',
     },
-    mapDescription:{
+    mapDescription: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems:'center',
-        paddingBottom: spacing(1),
+        alignItems: 'center',
+        paddingBottom: spacing(3),
+        [breakpoints.down('xs')]: {
+            paddingBottom: spacing(1),
+        },
     },
     footer: {
         paddingTop: spacing(2),

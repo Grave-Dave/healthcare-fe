@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import classNames from "classnames";
 
 import AddIcon from "@mui/icons-material/Add";
-import {Typography} from "@mui/material";
+import {Divider, Typography} from "@mui/material";
 
 import MyPaper from "../../reusableComponents/MyPaper";
 import useWindowSize from "../../hooks/useWindowSize.ts";
@@ -69,9 +69,23 @@ const AboutMe = () => {
                                 {getInfoItems()}
                             </div>
                         </div>
+                        {isSmall && <div className={classes.footer}>
+                            <Divider sx={{marginBottom: 2}}/>
+                            <Typography variant="caption"
+                                        sx={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
+                                &copy; {`${new Date().getFullYear()} Psychoterapia Trzeciakiewicz. Wszelkie prawa zastrzeżone.`}
+                            </Typography>
+                        </div>}
                     </ShadowedScrollbar>
                 </div>
             </div>
+            {!isSmall && <div className={classes.footer}>
+                <Divider sx={{marginBottom: 2}}/>
+                <Typography variant="caption"
+                            sx={{display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
+                    &copy; {`${new Date().getFullYear()} Psychoterapia Trzeciakiewicz. Wszelkie prawa zastrzeżone.`}
+                </Typography>
+            </div>}
         </MyPaper>
     )
 }

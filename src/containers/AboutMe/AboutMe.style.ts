@@ -16,6 +16,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         gap: 8,
         [breakpoints.down('xs')]: {
             padding: spacing(1, 1, 2),
+            flex: 'auto'
         },
     },
     content: {
@@ -50,9 +51,9 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     infoItemContainer: {
         display: 'flex',
         gap: 24,
-        flexWrap:'wrap',
-        padding:spacing(4,1),
-        justifyContent:'space-between'
+        flexWrap: 'wrap',
+        padding: spacing(4, 1),
+        justifyContent: 'space-between'
     },
     desktopContainer: {
         position: 'relative',
@@ -60,7 +61,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     },
     mobileContainer: {
         display: 'flex',
-        margin: spacing(4, 0,2)
+        margin: spacing(4, 0, 2)
     },
     picture: {
         maxWidth: 350,
@@ -72,4 +73,7 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
             maxHeight: 250,
         },
     },
+    footer: {
+        width: '100%'
+    }
 }))
