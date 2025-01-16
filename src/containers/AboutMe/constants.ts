@@ -10,3 +10,7 @@ export const INFO_ITEMS = [
     'trudności adaptacyjne',
     'trudności w relacjach',
 ]
+
+export const TITLE = 'Katarzyna Trzeciakiewicz Gabinet Psychoterapii | O mnie'
+export const DESCRIPTION = 'Poznaj Katarzynę Trzeciakiewicz, psychoterapeutę psychodynamicznego. Dowiedz się o jej doświadczeniu, metodach pracy i podejściu do terapii.'
+export const KEYWORDS = 'Katarzyna Trzeciakiewicz, psychoterapeuta psychodynamiczny, doświadczenie terapeutyczne, podejście psychodynamiczne, psychoterapia Wrocław'

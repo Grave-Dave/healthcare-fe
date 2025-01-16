@@ -20,6 +20,8 @@ import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 const AdminPanel = () => {
     const {windowWidth} = useWindowSize();
@@ -78,82 +80,85 @@ const AdminPanel = () => {
     })
 
     return (
-        <div className={classNames(classes.papersContainer, {[classes.mobilePapersContainer]: isSmall})}>
-            <MyPaper
-                withBackButton
-                withActionSwitch
-                isSwitchChecked={isExpanded}
-                handleSwitchChange={handleSwitchChange}
-                switchTitle={isExpanded ? "Zwiń" : 'Rozwiń'}
-                paperClassName={classNames({
-                    [classes.paperContainer]: !isSmall,
-                    [classes.mobilePaperContainer]: isSmall
-                })}>
-                <Typography className={classes.headerWithButton} variant="subtitle1">{"Historia"}</Typography>
-                <div className={classes.contentContainer}>
-                    {isMobile
-                        ? <div style={{height: 30}}>
-                            < MobileDatePicker
-                                onDateChange={onDateChange}
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <div className={classNames(classes.papersContainer, {[classes.mobilePapersContainer]: isSmall})}>
+                <MyPaper
+                    withBackButton
+                    withActionSwitch
+                    isSwitchChecked={isExpanded}
+                    handleSwitchChange={handleSwitchChange}
+                    switchTitle={isExpanded ? "Zwiń" : 'Rozwiń'}
+                    paperClassName={classNames({
+                        [classes.paperContainer]: !isSmall,
+                        [classes.mobilePaperContainer]: isSmall
+                    })}>
+                    <Typography className={classes.headerWithButton} variant="subtitle1">{"Historia"}</Typography>
+                    <div className={classes.contentContainer}>
+                        {isMobile
+                            ? <div style={{height: 30}}>
+                                < MobileDatePicker
+                                    onDateChange={onDateChange}
+                                    selectedDate={selectedDate}
+                                    shouldDisableFuture
+                                    onMonthChange={onMonthChange}
+                                    highlightedDays={highlightedCalendarDays}
+                                    isLoading={isCalendarLoading}
+                                />
+                            </div>
+                            : < VisitCalendar
                                 selectedDate={selectedDate}
-                                shouldDisableFuture
+                                onChange={onDateChange}
                                 onMonthChange={onMonthChange}
                                 highlightedDays={highlightedCalendarDays}
                                 isLoading={isCalendarLoading}
-                            />
-                        </div>
-                        : < VisitCalendar
-                            selectedDate={selectedDate}
-                            onChange={onDateChange}
-                            onMonthChange={onMonthChange}
-                            highlightedDays={highlightedCalendarDays}
-                            isLoading={isCalendarLoading}
-                            shouldDisableFuture/>}
-                    <ShadowedScrollbar style={{
-                        height: isSmall ? 'calc(100% - 100px)' : isMobile ? 'calc(100% - 150px)' : 'calc(100% - 70px)',
-                        flex: isMobile ? '1 0 auto' : '1 0 610px'
-                    }}>
+                                shouldDisableFuture/>}
+                        <ShadowedScrollbar style={{
+                            height: isSmall ? 'calc(100% - 100px)' : isMobile ? 'calc(100% - 150px)' : 'calc(100% - 70px)',
+                            flex: isMobile ? '1 0 auto' : '1 0 610px'
+                        }}>
+                            {isLoading
+                                ? <div className={classes.paperContent}>
+                                    {<VisitSkeleton/>}
+                                </div>
+                                : pastVisitItems.length
+                                    ? <div className={classes.paperContent}>
+                                        {pastVisitItems}
+                                    </div>
+                                    : <div className={classes.emptyContent}>
+                                        <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                        <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                        >Brak odbytych wizyt dla tego dnia</Typography>
+                                    </div>
+                            }
+                        </ShadowedScrollbar>
+                    </div>
+                </MyPaper>
+                <MyPaper paperClassName={classNames({
+                    [classes.paperContainer]: !isSmall,
+                    [classes.mobilePaperContainer]: isSmall
+                })}>
+                    <Typography className={classes.header} variant="subtitle1">{"Znajdź pacjenta"}</Typography>
+                    <PersonSelector/>
+                    <ShadowedScrollbar style={{height: '100%'}}>
                         {isLoading
                             ? <div className={classes.paperContent}>
                                 {<VisitSkeleton/>}
                             </div>
-                            : pastVisitItems.length
+                            : userVisitItems.length
                                 ? <div className={classes.paperContent}>
-                                    {pastVisitItems}
+                                    {userVisitItems}
                                 </div>
                                 : <div className={classes.emptyContent}>
                                     <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
                                     <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                    >Brak odbytych wizyt dla tego dnia</Typography>
+                                    >Brak odbytych wizyt dla tego pacjenta</Typography>
                                 </div>
                         }
                     </ShadowedScrollbar>
-                </div>
-            </MyPaper>
-            <MyPaper paperClassName={classNames({
-                [classes.paperContainer]: !isSmall,
-                [classes.mobilePaperContainer]: isSmall
-            })}>
-                <Typography className={classes.header} variant="subtitle1">{"Znajdź pacjenta"}</Typography>
-                <PersonSelector/>
-                <ShadowedScrollbar style={{height: '100%'}}>
-                    {isLoading
-                        ? <div className={classes.paperContent}>
-                            {<VisitSkeleton/>}
-                        </div>
-                        : userVisitItems.length
-                            ? <div className={classes.paperContent}>
-                                {userVisitItems}
-                            </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak odbytych wizyt dla tego pacjenta</Typography>
-                            </div>
-                    }
-                </ShadowedScrollbar>
-            </MyPaper>
-        </div>
+                </MyPaper>
+            </div>
+        </>
     )
 }
 

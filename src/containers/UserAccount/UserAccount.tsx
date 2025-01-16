@@ -23,6 +23,8 @@ import AtomButton from "../../atoms/AtomButton";
 import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 import {checkFormStillKeepsInitialValues} from "./utils.ts";
 import DeleteAccountDialog from "./components/DeleteAccountDialog";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 const UserAccount = () => {
     const {windowWidth} = useWindowSize();
@@ -234,6 +236,7 @@ const UserAccount = () => {
 
     return (
         <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
             <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
                 <Typography className={classes.userAccountHeader} variant="h2">Ustawienia konta</Typography>
                 <Scrollbars>

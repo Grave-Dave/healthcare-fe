@@ -18,6 +18,8 @@ import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
 import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
 
 const AdminVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
@@ -88,64 +90,67 @@ const AdminVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     })
 
     return (
-        <div className={classNames(classes.papersContainer,
-            {[classes.mobilePapersContainer]: isSmall})}>
-            <MyPaper
-                withBackButton
-                paperClassName={classNames({
-                    [classes.paperContainer]: !isSmall,
-                    [classes.mobilePaperContainer]: isSmall
-                })}>
-                <Typography
-                    className={classes.headerWithButton}
-                    variant="subtitle1">
-                    {`Oczekujące na potwierdzenie (${incomingPendingVisits.length})`}
-                </Typography>
-                <ShadowedScrollbar>
-                    {isLoading
-                        ? <div className={classes.paperContent}>
-                            {<VisitSkeleton/>}
-                        </div>
-                        : incomingPendingVisits.length
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <div className={classNames(classes.papersContainer,
+                {[classes.mobilePapersContainer]: isSmall})}>
+                <MyPaper
+                    withBackButton
+                    paperClassName={classNames({
+                        [classes.paperContainer]: !isSmall,
+                        [classes.mobilePaperContainer]: isSmall
+                    })}>
+                    <Typography
+                        className={classes.headerWithButton}
+                        variant="subtitle1">
+                        {`Oczekujące na potwierdzenie (${incomingPendingVisits.length})`}
+                    </Typography>
+                    <ShadowedScrollbar>
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {incomingPendingVisits}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak wizyt oczekujących na zatwierdzenie</Typography>
-                            </div>
-                    }
-                </ShadowedScrollbar>
-            </MyPaper>
-            <MyPaper
-                paperClassName={classNames({
-                    [classes.paperContainer]: !isSmall,
-                    [classes.mobilePaperContainer]: isSmall
-                })}>
-                <Typography
-                    className={classes.header}
-                    variant="subtitle1">
-                    {`Nadchodzące (${incomingConfirmedVisits.length})`}
-                </Typography>
-                <ShadowedScrollbar style={{height: '100%'}}>
-                    {isLoading
-                        ? <div className={classes.paperContent}>
-                            {<VisitSkeleton/>}
-                        </div>
-                        : incomingConfirmedVisits.length
+                            : incomingPendingVisits.length
+                                ? <div className={classes.paperContent}>
+                                    {incomingPendingVisits}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak wizyt oczekujących na zatwierdzenie</Typography>
+                                </div>
+                        }
+                    </ShadowedScrollbar>
+                </MyPaper>
+                <MyPaper
+                    paperClassName={classNames({
+                        [classes.paperContainer]: !isSmall,
+                        [classes.mobilePaperContainer]: isSmall
+                    })}>
+                    <Typography
+                        className={classes.header}
+                        variant="subtitle1">
+                        {`Nadchodzące (${incomingConfirmedVisits.length})`}
+                    </Typography>
+                    <ShadowedScrollbar style={{height: '100%'}}>
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {incomingConfirmedVisits}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak nadchodzących wizyt</Typography>
-                            </div>
-                    }
-                </ShadowedScrollbar>
-            </MyPaper>
-        </div>
+                            : incomingConfirmedVisits.length
+                                ? <div className={classes.paperContent}>
+                                    {incomingConfirmedVisits}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak nadchodzących wizyt</Typography>
+                                </div>
+                        }
+                    </ShadowedScrollbar>
+                </MyPaper>
+            </div>
+        </>
     )
 }
 

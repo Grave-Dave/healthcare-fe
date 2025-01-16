@@ -21,6 +21,8 @@ import authSelectors from "../../../../auth/selectors.ts";
 import actions from "../../actions.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {ShowPassword} from "../../../Register/types.ts";
+import {DESCRIPTION, KEYWORDS, TITLE} from "../../constants.ts";
+import Helmet from "../../../../reusableComponents/Helmet";
 
 const ChangePassword = () => {
     const {windowWidth} = useWindowSize();
@@ -135,21 +137,24 @@ const ChangePassword = () => {
     }
 
     return (
-        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
-            <Typography className={classes.changeHeader} variant="h2">Zmień hasło</Typography>
-            <Scrollbars>
-                {isLoading
-                    ? <CircularLoader isLoading={isLoading}/>
-                    : inputsContainer()}
-            </Scrollbars>
-            <div className={classNames(classes.buttonContainer, {[classes.mobileButtonContainer]: isSmall})}>
-                <AtomButton
-                    buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
-                    text={'Zmień hasło'}
-                    disabled={!isSubmittable || isLoading}
-                    onClick={handlePasswordChange}/>
-            </div>
-        </MyPaper>
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+                <Typography className={classes.changeHeader} variant="h2">Zmień hasło</Typography>
+                <Scrollbars>
+                    {isLoading
+                        ? <CircularLoader isLoading={isLoading}/>
+                        : inputsContainer()}
+                </Scrollbars>
+                <div className={classNames(classes.buttonContainer, {[classes.mobileButtonContainer]: isSmall})}>
+                    <AtomButton
+                        buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
+                        text={'Zmień hasło'}
+                        disabled={!isSubmittable || isLoading}
+                        onClick={handlePasswordChange}/>
+                </div>
+            </MyPaper>
+        </>
     )
 }
 

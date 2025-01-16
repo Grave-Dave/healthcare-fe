@@ -16,6 +16,8 @@ import {BREAKPOINT_NUMBERS} from "../../../../layouts/Layout/constants.ts";
 import authSelectors from "../../../../auth/selectors.ts";
 import actions from "../../actions.tsx";
 import {enterKeyListener} from "../../../../utils/utils.ts";
+import {DESCRIPTION, KEYWORDS, TITLE} from "../../constants.ts";
+import Helmet from "../../../../reusableComponents/Helmet";
 
 const PasswordResetLink = () => {
     const {windowWidth} = useWindowSize();
@@ -68,33 +70,36 @@ const PasswordResetLink = () => {
     }
 
     return (
-        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
-            <Typography className={classes.resetHeader} variant="h2">Zresetuj hasło</Typography>
-            <Scrollbars>
-                {isLoading
-                    ? <CircularLoader isLoading={isLoading}/>
-                    : <div className={classes.inputContainer}>
-                        <FormInput
-                            required
-                            autoFocus
-                            error={error}
-                            label={'Adres e-mail'}
-                            value={email}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                handleEmailInput(event.target.value);
-                            }}
-                        />
-                    </div>
-                }
-            </Scrollbars>
-            <div className={classNames(classes.buttonContainer, {[classes.mobileButtonContainer]: isSmall})}>
-                <AtomButton
-                    buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
-                    text={'Zresetuj hasło'}
-                    disabled={!isSubmittable || isLoading}
-                    onClick={handleSendResetLink}/>
-            </div>
-        </MyPaper>
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+                <Typography className={classes.resetHeader} variant="h2">Zresetuj hasło</Typography>
+                <Scrollbars>
+                    {isLoading
+                        ? <CircularLoader isLoading={isLoading}/>
+                        : <div className={classes.inputContainer}>
+                            <FormInput
+                                required
+                                autoFocus
+                                error={error}
+                                label={'Adres e-mail'}
+                                value={email}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleEmailInput(event.target.value);
+                                }}
+                            />
+                        </div>
+                    }
+                </Scrollbars>
+                <div className={classNames(classes.buttonContainer, {[classes.mobileButtonContainer]: isSmall})}>
+                    <AtomButton
+                        buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
+                        text={'Zresetuj hasło'}
+                        disabled={!isSubmittable || isLoading}
+                        onClick={handleSendResetLink}/>
+                </div>
+            </MyPaper>
+        </>
     )
 }
 

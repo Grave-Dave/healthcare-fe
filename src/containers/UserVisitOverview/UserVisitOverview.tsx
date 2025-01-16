@@ -22,6 +22,8 @@ import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import VisitSkeleton from "../../reusableComponents/VisitSkeleton";
 import {ROUTES} from "../../constants.ts";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     const {windowWidth} = useWindowSize();
@@ -67,70 +69,73 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
     })
 
     return (
-        <div
-            className={classNames(classes.papersContainer,
-                {[classes.mobilePapersContainer]: isSmall})}>
-            <MyPaper
-                withBackButton
-                paperClassName={classNames({
-                    [classes.paperContainer]: !isSmall,
-                    [classes.mobilePaperContainer]: isSmall
-                })}>
-                <Typography
-                    className={classes.headerWithButton}
-                    variant="subtitle1">
-                    {`Nadchodzące (${userIncomingVisits.length})`}
-                </Typography>
-                <ShadowedScrollbar>
-                    {isLoading
-                        ? <div className={classes.paperContent}>
-                            {<VisitSkeleton/>}
-                        </div>
-                        : userIncomingVisits.length
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <div
+                className={classNames(classes.papersContainer,
+                    {[classes.mobilePapersContainer]: isSmall})}>
+                <MyPaper
+                    withBackButton
+                    paperClassName={classNames({
+                        [classes.paperContainer]: !isSmall,
+                        [classes.mobilePaperContainer]: isSmall
+                    })}>
+                    <Typography
+                        className={classes.headerWithButton}
+                        variant="subtitle1">
+                        {`Nadchodzące (${userIncomingVisits.length})`}
+                    </Typography>
+                    <ShadowedScrollbar>
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {userIncomingVisits}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak nadchodzących wizyt</Typography>
-                            </div>
-                    }
-                </ShadowedScrollbar>
-            </MyPaper>
-            <MyPaper
-                paperClassName={classNames({
-                    [classes.paperContainer]: !isSmall,
-                    [classes.mobilePaperContainer]: isSmall
-                })}>
-                <Typography
-                    className={classes.header}
-                    variant="subtitle1">
-                    {`Zakończone (${userPastVisits.length})`}
-                </Typography>
-                <ShadowedScrollbar style={{height: 'calc(100% - 120px)'}}>
-                    {isLoading
-                        ? <div className={classes.paperContent}>
-                            {<VisitSkeleton/>}
-                        </div>
-                        : userPastVisits.length
+                            : userIncomingVisits.length
+                                ? <div className={classes.paperContent}>
+                                    {userIncomingVisits}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak nadchodzących wizyt</Typography>
+                                </div>
+                        }
+                    </ShadowedScrollbar>
+                </MyPaper>
+                <MyPaper
+                    paperClassName={classNames({
+                        [classes.paperContainer]: !isSmall,
+                        [classes.mobilePaperContainer]: isSmall
+                    })}>
+                    <Typography
+                        className={classes.header}
+                        variant="subtitle1">
+                        {`Zakończone (${userPastVisits.length})`}
+                    </Typography>
+                    <ShadowedScrollbar style={{height: 'calc(100% - 120px)'}}>
+                        {isLoading
                             ? <div className={classes.paperContent}>
-                                {userPastVisits}
+                                {<VisitSkeleton/>}
                             </div>
-                            : <div className={classes.emptyContent}>
-                                <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
-                                <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
-                                >Brak zakończonych wizyt</Typography>
-                            </div>
-                    }
-                </ShadowedScrollbar>
-                <AtomButton
-                    buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
-                    text={isSmall ? <AddIcon/> : "Umów nową wizytę"}
-                    onClick={() => navigate(ROUTES.MAKE_VISIT)}
-                />
-            </MyPaper>
-        </div>
+                            : userPastVisits.length
+                                ? <div className={classes.paperContent}>
+                                    {userPastVisits}
+                                </div>
+                                : <div className={classes.emptyContent}>
+                                    <EmptyVisitsIcon sx={{width: 150, height: 150}}/>
+                                    <Typography variant="body1" sx={{color: theme.palette.text.secondary}}
+                                    >Brak zakończonych wizyt</Typography>
+                                </div>
+                        }
+                    </ShadowedScrollbar>
+                    <AtomButton
+                        buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
+                        text={isSmall ? <AddIcon/> : "Umów nową wizytę"}
+                        onClick={() => navigate(ROUTES.MAKE_VISIT)}
+                    />
+                </MyPaper>
+            </div>
+        </>
     )
 }
 

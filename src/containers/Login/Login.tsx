@@ -22,6 +22,8 @@ import selectors from "../Login/selectors.ts";
 import authSelectors from "../../auth/selectors.ts";
 import actions from "../Login/actions.tsx";
 import CircularLoader from "../../reusableComponents/CircularLoader";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 const Login = () => {
     const {windowWidth} = useWindowSize();
@@ -143,15 +145,18 @@ const Login = () => {
     }
 
     return (
-        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
-            <Typography className={classes.loginHeader} variant="h2">Zaloguj się</Typography>
-            <Scrollbars>
-                {isLoading
-                    ? <CircularLoader isLoading={isLoading}/>
-                    : inputsContainer()}
-            </Scrollbars>
-            {actionsContainer()}
-        </MyPaper>
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+                <Typography className={classes.loginHeader} variant="h2">Zaloguj się</Typography>
+                <Scrollbars>
+                    {isLoading
+                        ? <CircularLoader isLoading={isLoading}/>
+                        : inputsContainer()}
+                </Scrollbars>
+                {actionsContainer()}
+            </MyPaper>
+        </>
     )
 }
 

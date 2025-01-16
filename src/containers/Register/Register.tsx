@@ -22,6 +22,8 @@ import {useStyles} from "./Register.style.ts";
 import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import authSelectors from "../../auth/selectors.ts";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 const Register = () => {
     const {windowWidth} = useWindowSize();
@@ -214,16 +216,19 @@ const Register = () => {
     }
 
     return (
-        <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
-            <Typography className={classes.registerHeader} variant="h2">Zarejestruj się</Typography>
-            <Scrollbars>
-                {isLoading
-                    ? <CircularLoader isLoading={isLoading}/>
-                    : inputsContainer()}
-            </Scrollbars>
-            {actionsContainer()}
-            <TermsAndConditions isOpen={isTermsDialogOpen} onClose={() => setIsTermsDialogOpen(false)}/>
-        </MyPaper>
+        <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+                <Typography className={classes.registerHeader} variant="h2">Zarejestruj się</Typography>
+                <Scrollbars>
+                    {isLoading
+                        ? <CircularLoader isLoading={isLoading}/>
+                        : inputsContainer()}
+                </Scrollbars>
+                {actionsContainer()}
+                <TermsAndConditions isOpen={isTermsDialogOpen} onClose={() => setIsTermsDialogOpen(false)}/>
+            </MyPaper>
+        </>
     )
 }
 

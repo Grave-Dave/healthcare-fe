@@ -25,6 +25,8 @@ import actions from "./actions.tsx";
 import {VisitItemVariantEnum} from "../UserVisitOverview/constants.ts";
 import AddNewVisitDialog from "./components/AddNewVisitDialog";
 import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
+import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
+import Helmet from "../../reusableComponents/Helmet";
 
 
 const VisitManager = () => {
@@ -142,6 +144,7 @@ const VisitManager = () => {
 
     return (
         <>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
             <MyPaper
                 withBackButton
                 withActionSwitch

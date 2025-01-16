@@ -3,7 +3,7 @@ import {Theme} from '@mui/material/styles';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
 
-export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles({
+export const useStyles = makeStyles(({palette, spacing, breakpoints}: Theme) => createStyles({
     container: {
         position: 'absolute',
         top: 0,
@@ -35,8 +35,20 @@ export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles(
         textAlign: 'center',
         color: palette.primary.contrastText,
         width: '100%',
-        padding: spacing(2)
-
+        padding: spacing(2),
+        animation: 'fadeInSlideUp 2s ease-out forwards',
+    },
+    subtitle: {
+        '&.MuiTypography-root': {
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: spacing(4),
+            fontSize: 28,
+            fontWeight: 300,
+            [breakpoints.down('xs')]: {
+                fontSize: 22,
+            },
+        }
     },
     heroButton: {
         top: '80%',
@@ -46,5 +58,15 @@ export const useStyles = makeStyles(({palette, spacing}: Theme) => createStyles(
     },
     buttonHovered: {
         backgroundColor: 'rgba(0,0,0,0.3)'
+    },
+    '@global': {
+        '@keyframes fadeInSlideUp': {
+            '0%': {
+                opacity: 0.1,
+            },
+            '100%': {
+                opacity: 1,
+            },
+        }
     }
 }))

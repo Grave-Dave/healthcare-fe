@@ -28,3 +28,7 @@ export const DEFAULT_REGISTER_FORM_ERROR: RegisterFormError = {
     password: false,
     password_confirmation: false
 }
+
+export const TITLE = 'Katarzyna Trzeciakiewicz Gabinet Psychoterapii | Rejestracja'
+export const DESCRIPTION = "Załóż konto i umów się na wizytę do Katarzyny Trzeciakiewicz, psychoterapeuty psychodynamicznego. Rejestracja online jest szybka i prosta."
+export const KEYWORDS = "rejestracja, załóż konto, Katarzyna Trzeciakiewicz, terapia psychodynamiczna, Wrocław, rezerwacja wizyt"
