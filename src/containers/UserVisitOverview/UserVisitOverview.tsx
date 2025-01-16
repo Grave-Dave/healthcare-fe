@@ -70,7 +70,7 @@ const UserVisitOverview = ({classes}: WithStyles<typeof styles>) => {
 
     return (
         <>
-            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS} noFollow/>
             <div
                 className={classNames(classes.papersContainer,
                     {[classes.mobilePapersContainer]: isSmall})}>

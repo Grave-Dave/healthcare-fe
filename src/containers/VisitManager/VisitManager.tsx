@@ -144,7 +144,7 @@ const VisitManager = () => {
 
     return (
         <>
-            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS} noFollow/>
             <MyPaper
                 withBackButton
                 withActionSwitch
