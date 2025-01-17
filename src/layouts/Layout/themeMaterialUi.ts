@@ -3,7 +3,7 @@ import {plPL} from "@mui/material/locale";
 import {plPL as corePlPL} from '@mui/material/locale';
 
 //primary
-const STEEL_BLUE = "#56809E";
+const STEEL_BLUE = "#457395";
 const PALE_SKY_BLUE = "#85A7BF";
 const DEEP_SLATE_BLUE = "#34596E";
 const PURE_WHITE = "#FFFFFF";

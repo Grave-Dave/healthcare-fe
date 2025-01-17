@@ -44,7 +44,8 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     mapContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        gap: 24,
+        rowGap: 32,
+        columnGap: 24,
         padding: spacing(2),
         justifyContent: 'center',
         alignItems: 'center',
