@@ -13,8 +13,8 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     mobilePaperContainer: {
         padding: spacing(1, 3, 3, 1),
         gap: 8,
-        [breakpoints.down('xs')]: {
-            padding: spacing(1, 1, 2),
+        [breakpoints.down('sm')]: {
+            padding: spacing(0, 1, 2),
             flex: 'auto'
         },
     },
@@ -24,8 +24,8 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
         gap: 24,
         height: '100%',
         width: '100%',
-        padding: spacing(1, 2,0),
-        [breakpoints.down('xs')]: {
+        padding: spacing(1, 2, 0),
+        [breakpoints.down('sm')]: {
             padding: spacing(0, 1),
         },
     },
@@ -38,6 +38,9 @@ export const useStyles = makeStyles(({spacing, breakpoints, palette}: Theme) => 
     descriptionHeader: {
         textTransform: 'uppercase',
         borderBottom: `2px solid ${palette.secondary.light}`,
+        [breakpoints.down('sm')]: {
+            padding: spacing(2, 0, 0),
+        },
     },
     description: {
         paddingTop: spacing(3),

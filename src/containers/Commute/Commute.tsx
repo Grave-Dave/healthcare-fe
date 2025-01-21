@@ -21,7 +21,7 @@ const Commute = () => {
         <>
             <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
             <MyPaper
-                withBackButton
+                withBackButton={!isSmall}
                 paperClassName={classNames({
                     [classes.paperContainer]: !isSmall,
                     [classes.mobilePaperContainer]: isSmall

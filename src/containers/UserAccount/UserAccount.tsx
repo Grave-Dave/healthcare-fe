@@ -237,7 +237,7 @@ const UserAccount = () => {
     return (
         <>
             <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
-            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+            <MyPaper withBackButton={!isSmall}  paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
                 <Typography className={classes.userAccountHeader} variant="h2">Ustawienia konta</Typography>
                 <Scrollbars>
                     {isLoading

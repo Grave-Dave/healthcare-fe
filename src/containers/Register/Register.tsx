@@ -218,7 +218,7 @@ const Register = () => {
     return (
         <>
             <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
-            <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
+            <MyPaper withBackButton={!isSmall} paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
                 <Typography className={classes.registerHeader} variant="h2">Zarejestruj się</Typography>
                 <Scrollbars>
                     {isLoading

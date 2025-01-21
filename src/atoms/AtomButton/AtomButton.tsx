@@ -129,7 +129,7 @@ const AtomButton = ({
                 <Link style={{
                     textDecoration: 'none',
                     color: 'inherit',
-                    padding: theme.spacing(1),
+                    padding: theme.spacing(1, 0),
                     width: '100%'
                 }}
                       to={link}>{text ?? children}</Link>
