@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import {Link} from "react-router-dom";
 
-import {Button} from "@mui/material";
+import {Button, Tooltip} from "@mui/material";
 
 import {AtomButtonProps} from "./types.ts";
 import {BREAKPOINT_NUMBERS} from "../../layouts/Layout/constants.ts";
@@ -114,6 +114,8 @@ const AtomButton = ({
                         buttonVariant,
                         buttonClassName,
                         text,
+                        withTooltip,
+                        tooltipText,
                         link = '/',
                         ...otherProps
                     }: AtomButtonProps) => {
@@ -138,7 +140,7 @@ const AtomButton = ({
             buttonText = text
     }
 
-    return (
+    const getButton = () => (
         <Button
             variant={"contained"}
             sx={getStylesForVariant(buttonVariant, isMobile, isSmall)}
@@ -150,6 +152,14 @@ const AtomButton = ({
             {...otherProps}>
             {buttonText}
         </Button>
+    )
+
+    return (
+        withTooltip
+            ? <Tooltip title={tooltipText}>
+                {getButton()}
+            </Tooltip>
+            : getButton()
     )
 }
 

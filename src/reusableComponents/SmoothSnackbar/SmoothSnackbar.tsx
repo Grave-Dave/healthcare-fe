@@ -54,6 +54,11 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
         onClose(id)
     }
 
+    const handleButtonClick = () => {
+        onButtonClick && onButtonClick()
+        onClose(id)
+    }
+
     return (
         <Snackbar
             open={isSnackBarOpen}
@@ -76,7 +81,7 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
                     },
                 }}
                 action={withButton ?
-                    <Button color="inherit" size="small" onClick={onButtonClick}>
+                    <Button color="inherit" size="small" onClick={handleButtonClick}>
                         <Typography sx={{color: theme.palette.secondary.main}} variant="body2">{buttonText}</Typography>
                     </Button> : undefined
                 }

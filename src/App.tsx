@@ -31,6 +31,7 @@ function App() {
                 <Route path={ROUTES.ABOUT_ME} element={<AboutMe/>}/>
                 <Route path={ROUTES.CONTACT} element={<Contact/>}/>
                 <Route path={ROUTES.COMMUTE} element={<Commute/>}/>
+                <Route path={ROUTES.MAKE_VISIT} element={<VisitManager/>}/>
 
                 {/*GUEST ONLY ROUTES*/}
 
@@ -85,6 +86,14 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path={ROUTES.CALENDAR}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.AdminRoute}>
+                            <VisitManager/>
+                        </ProtectedRoute>
+                    }
+                />
 
                 {/*AUTH ROUTES*/}
 
@@ -93,22 +102,6 @@ function App() {
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
                             <UserVisitOverview/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path={ROUTES.MAKE_VISIT}
-                    element={
-                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
-                            <VisitManager/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path={ROUTES.CALENDAR}
-                    element={
-                        <ProtectedRoute routeType={ProtectedRouteEnum.AuthRoute}>
-                            <VisitManager/>
                         </ProtectedRoute>
                     }
                 />

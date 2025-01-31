@@ -20,9 +20,17 @@ export interface AtomButtonProps extends ButtonProps {
      */
     text?: MuiPropsButton['children'];
     /**
-     * Button Text
+     * Button Link
      */
     link?: string;
+    /**
+     * Button Tooltip
+     */
+    withTooltip?: boolean;
+    /**
+     * Button Tooltip Text
+     */
+    tooltipText?: string;
     /**
      * Classes for button
      */

@@ -96,7 +96,7 @@ const Login = () => {
             field !== LOGIN_FORM_KEYS.PASSWORD
                 ? <FormInput
                     required
-                    autoFocus
+                    autoFocus={!isSmall}
                     error={loginFormError[field]}
                     label={label}
                     value={fieldValue}

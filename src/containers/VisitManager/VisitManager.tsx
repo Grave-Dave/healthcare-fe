@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import classNames from "classnames";
 
 import {Typography} from "@mui/material";
@@ -27,17 +28,22 @@ import AddNewVisitDialog from "./components/AddNewVisitDialog";
 import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types.ts";
 import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
 import Helmet from "../../reusableComponents/Helmet";
+import layoutActions from "../../layouts/Layout/actions.tsx";
+import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
+import {ROUTES} from "../../constants.ts";
 
 
 const VisitManager = () => {
     const {windowWidth} = useWindowSize();
     const classes = useStyles()
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
     const isAdmin = useAppSelector(authSelectors.getIsAdmin)
+    const isLoggedIn = useAppSelector(authSelectors.getIsAuthenticated)
     const selectedTermId = useAppSelector(selectors.getSelectedTermId)
     const selectedDate = useAppSelector(selectors.getSelectedDate)
     const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
@@ -104,6 +110,21 @@ const VisitManager = () => {
         setIsExpanded(prevState => !prevState)
     }
 
+    const redirectToLogin = () => {
+        navigate(ROUTES.LOGIN)
+    }
+
+    const notifyToLogin = () => {
+        dispatch(layoutActions.showSnackBar({
+            message: 'Należy najpierw się zalogować.',
+            type: SmoothSnackbarEnum.WARNING,
+            autoHideDuration: 10000,
+            withButton: true,
+            buttonText: 'Zaloguj się',
+            onButtonClick: redirectToLogin
+        }))
+    }
+
     const getActionDialog = () => {
         switch (true) {
             case isAdmin: {
@@ -144,7 +165,7 @@ const VisitManager = () => {
 
     return (
         <>
-            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS} noFollow/>
+            <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
             <MyPaper
                 withBackButton
                 withActionSwitch
@@ -202,8 +223,10 @@ const VisitManager = () => {
                 </div>
                 <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
                             text={isSmall ? <AddIcon/> : isAdmin ? "Dodaj terminy" : "Umów wizytę"}
-                            onClick={onCreateVisitDialogOpen}
+                            onClick={isLoggedIn ? onCreateVisitDialogOpen : notifyToLogin}
                             disabled={!isAdmin && !selectedTermId}
+                            withTooltip={!isLoggedIn}
+                            tooltipText={"Aby zarezerwować termin, należy najpierw się zalogować"}
                 />
             </MyPaper>
             {getActionDialog()}

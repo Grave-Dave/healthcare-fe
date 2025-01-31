@@ -166,7 +166,7 @@ const UserAccount = () => {
                 return (
                     <FormInput
                         required
-                        autoFocus={field === REGISTER_FORM_KEYS.FIRST_NAME}
+                        autoFocus={field === REGISTER_FORM_KEYS.FIRST_NAME && !isSmall}
                         error={userDataFormError[field]}
                         label={label}
                         value={fieldValue}
