@@ -76,8 +76,12 @@ const SmoothSnackbar = ({snackbar, index, firstSnackbarId, onClose}: SmoothSnack
                 sx={{
                     width: '100%',
                     gap: 1,
+                    alignItems:'center',
                     '& .MuiAlert-action': {
                         padding: 0,
+                    },
+                    [theme.breakpoints.down('xs')]: {
+                        gap: 0.5
                     },
                 }}
                 action={withButton ?
