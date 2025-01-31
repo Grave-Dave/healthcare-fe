@@ -29,6 +29,7 @@ import {CurrentMonthYearType} from "../../reusableComponents/VisitCalendar/types
 import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
 import Helmet from "../../reusableComponents/Helmet";
 import layoutActions from "../../layouts/Layout/actions.tsx";
+import authActions from "../../auth/actions.tsx";
 import {SmoothSnackbarEnum} from "../../layouts/Layout/types.ts";
 import {ROUTES} from "../../constants.ts";
 
@@ -44,6 +45,7 @@ const VisitManager = () => {
 
     const isAdmin = useAppSelector(authSelectors.getIsAdmin)
     const isLoggedIn = useAppSelector(authSelectors.getIsAuthenticated)
+    const hasToken = !!useAppSelector(authSelectors.getAccessToken)
     const selectedTermId = useAppSelector(selectors.getSelectedTermId)
     const selectedDate = useAppSelector(selectors.getSelectedDate)
     const isCreateVisitDialogOpen = useAppSelector(selectors.getIsCreateVisitDialogOpen)
@@ -66,6 +68,12 @@ const VisitManager = () => {
             dispatch(actions.fetchAvailableTerms(selectedDate))
         }
     }, [selectedDate])
+
+    useEffect(()=>{
+        if(!isLoggedIn && hasToken){
+            notifyToVerify()
+        }
+    },[isLoggedIn])
 
     const onSelectTerm = (availableTermId: number) => {
         dispatch(actions.setSelectedTermId(availableTermId))
@@ -114,6 +122,10 @@ const VisitManager = () => {
         navigate(ROUTES.LOGIN)
     }
 
+    const resendMail = () => {
+        dispatch(authActions.resendMail())
+    }
+
     const notifyToLogin = () => {
         dispatch(layoutActions.showSnackBar({
             message: 'Należy najpierw się zalogować.',
@@ -122,6 +134,17 @@ const VisitManager = () => {
             withButton: true,
             buttonText: 'Zaloguj się',
             onButtonClick: redirectToLogin
+        }))
+    }
+
+    const notifyToVerify = () => {
+        dispatch(layoutActions.showSnackBar({
+            message: 'Należy najpierw zweryfikować adres email. Link nie dotarł?',
+            type: SmoothSnackbarEnum.WARNING,
+            autoHideDuration: 10000,
+            withButton: true,
+            buttonText: 'Wyślij ponownie',
+            onButtonClick: resendMail
         }))
     }
 
