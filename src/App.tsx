@@ -19,6 +19,7 @@ import AboutMe from "./containers/AboutMe";
 import Contact from "./containers/Contact";
 import Commute from "./containers/Commute";
 import ErrorPage from "./containers/ErrorPage";
+import GoogleLoginSuccess from "./containers/Login/components/GoogleLoginSuccess";
 
 function App() {
 
@@ -40,6 +41,14 @@ function App() {
                     element={
                         <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
                             <Login/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.GOOGLE_LOGIN}
+                    element={
+                        <ProtectedRoute routeType={ProtectedRouteEnum.GuestRoute}>
+                            <GoogleLoginSuccess/>
                         </ProtectedRoute>
                     }
                 />

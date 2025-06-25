@@ -44,8 +44,21 @@ const login = (loginForm: LoginForm, navigate: NavigateFunction) => (dispatch: a
     })
 }
 
+const loginWithGoogle = (navigate: NavigateFunction) => (dispatch: any) => {
+    setTimeout(() => {
+        navigate(ROUTES.HOME)
+        dispatch(layoutActions.showSnackBar({
+            message: 'Zalogowano pomyślnie!',
+            autoHideDuration: 5000
+        }))
+        dispatch(staticActions.resetLoginForm(DEFAULT_LOGIN_FORM))
+        dispatch(staticActions.resetLoginFormError(DEFAULT_LOGIN_FORM_ERROR))
+    }, 500)
+}
+
 const asyncActions = {
-    login
+    login,
+    loginWithGoogle
 }
 
 export default {

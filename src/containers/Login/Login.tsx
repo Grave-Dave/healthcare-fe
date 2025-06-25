@@ -15,6 +15,7 @@ import {LOGIN_FORM_KEYS} from "./constants.ts";
 import MyPaper from "../../reusableComponents/MyPaper";
 import FormInput from "../../reusableComponents/FormInput";
 import PasswordAdornment from "../../reusableComponents/PasswordAdornment";
+import GoogleAuthButton from "../../reusableComponents/GoogleAuthButton";
 import {enterKeyListener} from "../../utils/utils.ts";
 import {ROUTES} from "../../constants.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
@@ -118,13 +119,17 @@ const Login = () => {
         )
     }
 
-    const inputsContainer = () => {
+    const getAuthContainer = () => {
         return (
-            <div className={classes.inputsContainer}>
-                {getInput(LOGIN_FORM_KEYS.EMAIL, loginForm.email, 'Adres e-mail')}
-                <div className={classes.passwordContainer}>
-                    {getInput(LOGIN_FORM_KEYS.PASSWORD, loginForm.password, 'Hasło')}
-                    {getForgotPasswordButton()}
+            <div className={classes.authContainer}>
+                <GoogleAuthButton/>
+                <Typography style={{textAlign: 'center'}}>- lub -</Typography>
+                <div className={classes.inputsContainer}>
+                    {getInput(LOGIN_FORM_KEYS.EMAIL, loginForm.email, 'Adres e-mail')}
+                    <div className={classes.passwordContainer}>
+                        {getInput(LOGIN_FORM_KEYS.PASSWORD, loginForm.password, 'Hasło')}
+                        {getForgotPasswordButton()}
+                    </div>
                 </div>
             </div>
         )
@@ -149,12 +154,12 @@ const Login = () => {
             <Helmet title={TITLE} description={DESCRIPTION} keywords={KEYWORDS}/>
             <MyPaper withBackButton paperClassName={classNames({[classes.paperContainer]: !isSmall})}>
                 <Typography className={classes.loginHeader} variant="h2">Zaloguj się</Typography>
-                <Scrollbars>
+                <Scrollbars className={classes.scrollbar}>
                     {isLoading
                         ? <CircularLoader isLoading={isLoading}/>
-                        : inputsContainer()}
+                        : getAuthContainer()}
+                    {actionsContainer()}
                 </Scrollbars>
-                {actionsContainer()}
             </MyPaper>
         </>
     )

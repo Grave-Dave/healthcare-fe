@@ -10,6 +10,7 @@ export enum ROUTES {
     CONTACT = '/kontakt',
     REGISTER = '/register',
     LOGIN = '/login',
+    GOOGLE_LOGIN = '/login/google',
     USER = '/user',
     PASSWORD_LINK = '/password/reset/link',
     PASSWORD_RESET = '/password/reset/:token',

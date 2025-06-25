@@ -30,4 +30,5 @@ export const DEFAULT_USER_DATA: User = {
     lastName: '',
     phone: '',
     email: '',
+    avatar: '',
 }

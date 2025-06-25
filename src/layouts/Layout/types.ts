@@ -10,6 +10,7 @@ export interface User {
     lastName: string
     phone: string
     email: string
+    avatar: string
 }
 
 export interface SmoothSnackbarState {
