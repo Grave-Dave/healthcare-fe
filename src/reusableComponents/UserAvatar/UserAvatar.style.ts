@@ -3,7 +3,7 @@ import createStyles from "@mui/styles/createStyles";
 
 export const styles = (theme: Theme) => createStyles({
     avatar: {
-        padding: theme.spacing(.5),
+        padding: theme.spacing(.25),
         borderRadius: '50%',
         backgroundColor: theme.palette.background.paper,
         cursor: 'pointer'

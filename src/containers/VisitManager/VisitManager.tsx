@@ -44,6 +44,7 @@ const VisitManager = () => {
     const isMobile = windowWidth <= BREAKPOINT_NUMBERS.MD;
 
     const isAdmin = useAppSelector(authSelectors.getIsAdmin)
+    const hasPhoneNumber = !!useAppSelector(authSelectors.getUser).phone
     const isLoggedIn = useAppSelector(authSelectors.getIsAuthenticated)
     const hasToken = !!useAppSelector(authSelectors.getAccessToken)
     const selectedTermId = useAppSelector(selectors.getSelectedTermId)
@@ -69,11 +70,11 @@ const VisitManager = () => {
         }
     }, [selectedDate])
 
-    useEffect(()=>{
-        if(!isLoggedIn && hasToken){
+    useEffect(() => {
+        if (!isLoggedIn && hasToken) {
             notifyToVerify()
         }
-    },[isLoggedIn])
+    }, [isLoggedIn])
 
     const onSelectTerm = (availableTermId: number) => {
         dispatch(actions.setSelectedTermId(availableTermId))
@@ -118,8 +119,22 @@ const VisitManager = () => {
         setIsExpanded(prevState => !prevState)
     }
 
+    const onButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (!isLoggedIn) {
+            notifyToLogin();
+        } else if (!hasPhoneNumber) {
+            notifyToUpdatePhone();
+        } else {
+            onCreateVisitDialogOpen(e);
+        }
+    }
+
     const redirectToLogin = () => {
         navigate(ROUTES.LOGIN)
+    }
+
+    const redirectToUserAccount = () => {
+        navigate(ROUTES.USER)
     }
 
     const resendMail = () => {
@@ -147,6 +162,18 @@ const VisitManager = () => {
             onButtonClick: resendMail
         }))
     }
+
+    const notifyToUpdatePhone = () => {
+        dispatch(layoutActions.showSnackBar({
+            message: 'Aby umówić wizytę, należy podać numer telefonu, aby ułatwić kontakt',
+            type: SmoothSnackbarEnum.WARNING,
+            autoHideDuration: 10000,
+            withButton: true,
+            buttonText: 'Podaj numer telefonu',
+            onButtonClick: redirectToUserAccount
+        }))
+    }
+
 
     const getActionDialog = () => {
         switch (true) {
@@ -246,7 +273,7 @@ const VisitManager = () => {
                 </div>
                 <AtomButton buttonVariant={AtomButtonVariants.FLOATING_BUTTON_VARIANT}
                             text={isSmall ? <AddIcon/> : isAdmin ? "Dodaj terminy" : "Umów wizytę"}
-                            onClick={isLoggedIn ? onCreateVisitDialogOpen : notifyToLogin}
+                            onClick={onButtonClick}
                             disabled={!isAdmin && !selectedTermId}
                             withTooltip={!isLoggedIn}
                             tooltipText={"Aby zarezerwować termin, należy najpierw się zalogować"}

@@ -98,12 +98,30 @@ const fetchUserVisits = (userId: number) => (dispatch: any) => {
         )
 }
 
+const impersonateUser = (userId: number) => (dispatch: any) => {
+    dispatch(staticActions.setIsLoading(true))
+
+    return service.impersonateUser(userId).then(() => {
+        window.open('/', '_blank');
+    })
+        .catch((error) => {
+            dispatch(layoutActions.showSnackBar({
+                message: t(extractValidationMessages(error)[0]) ?? error.message,
+                autoHideDuration: 5000,
+                type: SmoothSnackbarEnum.ERROR
+            }))
+        }).finally(() =>
+            dispatch(staticActions.setIsLoading(false))
+        )
+}
+
 
 const asyncActions = {
     fetchMonthPastTerms,
     fetchPastVisits,
     fetchUsers,
-    fetchUserVisits
+    fetchUserVisits,
+    impersonateUser
 }
 
 export default {

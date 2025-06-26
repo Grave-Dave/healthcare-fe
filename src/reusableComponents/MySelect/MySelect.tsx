@@ -7,7 +7,7 @@ interface MySelectProps extends WithStyles<typeof styles> {
     value?: number
     onChange: (event: SelectChangeEvent<number>) => void
     label: string
-    disabled: boolean
+    disabled?: boolean
     menuItems: { value: number, name: string }[]
 }
 

@@ -46,6 +46,14 @@ interface UserAvatarProps extends WithStyles<typeof styles> {
 }
 
 const UserAvatar = ({user, isAdmin, onClick, isLoading, classes}: UserAvatarProps) => {
+
+    const getAvatar = () => {
+        if(user.avatar){
+            return user.avatar
+        }
+        return isAdmin ? adminAvatar : defaultAvatar
+    }
+
     return (
         <div className={classNames(classes.avatar, {[classes.disabled]: isLoading})} onClick={onClick}>
             <StyledBadge
@@ -53,7 +61,7 @@ const UserAvatar = ({user, isAdmin, onClick, isLoading, classes}: UserAvatarProp
                 anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                 variant={user.id ? "dot" : undefined}
             >
-                <Avatar alt="user avatar" src={isAdmin ? adminAvatar : defaultAvatar}/>
+                <Avatar alt="user avatar" src={getAvatar()}/>
             </StyledBadge>
         </div>
     )

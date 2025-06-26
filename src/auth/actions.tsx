@@ -17,8 +17,6 @@ const checkAuth = () => (dispatch: any) => {
         const userData = get(response, "data.user", DEFAULT_USER_DATA)
         const isAdmin = get(response, "data.isAdmin", false)
 
-        console.log(userData)
-
         if (userData.id) {
             dispatch(staticActions.setIsAuthenticated(true))
             dispatch(staticActions.setUserData(userData))

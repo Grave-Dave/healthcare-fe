@@ -17,4 +17,8 @@ export default class Service extends BaseService {
     getUserVisits = (userId: number): Promise<any> => {
         return this.get(`/admin-user-visits/${userId}`);
     }
+
+    impersonateUser = (userId: number): Promise<any> => {
+        return this.post(`/impersonate/${userId}`);
+    }
 }

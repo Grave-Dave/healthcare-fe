@@ -33,7 +33,7 @@ const Contact = () => {
                         <Typography variant="body1" className={classes.description}>
                             {'Jeżeli jesteś zainteresowany konsultacją, zapraszam do kontaktu pod numerem:'}
                         </Typography>
-                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60%'}}>
+                        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '75%'}}>
                             <Typography variant="h2" className={classes.description}>
                                 <a href={`tel:+48535355406`}
                                    className={classes.phone}

@@ -5,11 +5,13 @@ import {debounce} from "lodash";
 import {MenuItem} from "@mui/material";
 
 import {customStyles} from "./PersonSelector.style.ts";
+import AtomButton from "../../atoms/AtomButton";
 import {OptionType} from "./types.ts";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import actions from "../../containers/AdminPanel/actions.tsx";
 import selectors from "../../containers/AdminPanel/selectors.ts";
+import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 
 interface PersonSelectorProps {
 
@@ -49,6 +51,12 @@ const PersonSelector = ({}: PersonSelectorProps) => {
         setSelectedOption(option as OptionType);
     };
 
+    const handleImpersonate = () => {
+        if (selectedOption?.value) {
+            dispatch(actions.impersonateUser(+selectedOption.value))
+        }
+    }
+
     const Option = ({...props}) => {
         return (
             <MenuItem
@@ -67,19 +75,26 @@ const PersonSelector = ({}: PersonSelectorProps) => {
     };
 
     return (
-        <Select
-            placeholder={'Wybierz pacjenta'}
-            value={selectedOption}
-            onChange={option => handleChange(option)}
-            onInputChange={handleSearchPhraseChange}
-            options={userOptions}
-            isLoading={isLoading}
-            // @ts-ignore
-            styles={customStyles}
-            components={{
-                ...components,
-                Option: Option,
-            }}/>
+        <div style={{display: 'flex', gap: 24}}>
+            <Select
+                placeholder={'Wybierz pacjenta'}
+                value={selectedOption}
+                onChange={option => handleChange(option)}
+                onInputChange={handleSearchPhraseChange}
+                options={userOptions}
+                isLoading={isLoading}
+                // @ts-ignore
+                styles={customStyles}
+                components={{
+                    ...components,
+                    Option: Option,
+                }}/>
+            <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
+                        text={'Impersonuj 😎'}
+                        style={{height: 48}}
+                        disabled={!selectedOption?.value}
+                        onClick={handleImpersonate}/>
+        </div>
     )
 }
 

@@ -15,6 +15,10 @@ import {useAppDispatch, useAppSelector} from "../../../../hooks/reduxHooks.ts";
 import actions from "../../actions.tsx";
 import selectors from "../../selectors.ts";
 import CircularLoader from "../../../../reusableComponents/CircularLoader";
+import useWindowSize from "../../../../hooks/useWindowSize.ts";
+import {BREAKPOINT_NUMBERS} from "../../../../layouts/Layout/constants.ts";
+import MobileHourRangeSelect from "../../../../reusableComponents/MobileHourRangeSelect";
+import classNames from "classnames";
 
 interface AddNewTermDialogProps {
     isOpen: boolean,
@@ -26,6 +30,9 @@ interface AddNewTermDialogProps {
 const AddNewTermDialog = ({isOpen, onClose, selectedDate, locationsData}: AddNewTermDialogProps) => {
     const classes = useStyles()
     const dispatch = useAppDispatch();
+    const {windowWidth} = useWindowSize();
+
+    const isSmall = windowWidth <= BREAKPOINT_NUMBERS.SM;
 
     const locations: LocationItemType[] = locationsData.map(location => ({
         value: location.id,
@@ -62,6 +69,16 @@ const AddNewTermDialog = ({isOpen, onClose, selectedDate, locationsData}: AddNew
         setHourRange(value)
     }
 
+
+    const handleMobileHourChange = (value: number, option: 'from' | 'to') => {
+        setHourRange(([from, to]) => {
+            if (option === 'from') {
+                return [Math.min(value, to), to];
+            } else {
+                return [from, Math.max(value, from)];
+            }
+        });
+    }
     const handleLocationChange = (e: SelectChangeEvent<number>) => {
         setSelectedLocation(locations.find(location => location.value === e.target.value) || null)
     }
@@ -91,9 +108,18 @@ const AddNewTermDialog = ({isOpen, onClose, selectedDate, locationsData}: AddNew
                             disabled={isSelectorLoading}
                         />
                     </div>
-                    <div className={classes.sliderContainer}>
+                    <div className={classNames({
+                        [classes.sliderContainer]: !isSmall,
+                    })}>
                         <Typography variant="body1">Wybierz nowe terminy (godziny):</Typography>
-                        <HourRangeSelect range={hourRange} onChange={handleHourRangeChange}/>
+                        {isSmall
+                            ? <MobileHourRangeSelect
+                                startHour={hourRange[0]}
+                                endHour={hourRange[1]}
+                                onStartHourChange={handleMobileHourChange}
+                                onEndHourChange={handleMobileHourChange}
+                            />
+                            : <HourRangeSelect range={hourRange} onChange={handleHourRangeChange}/>}
                     </div>
                 </DialogContent>}
             <DialogActions>
