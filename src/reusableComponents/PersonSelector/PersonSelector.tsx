@@ -75,7 +75,7 @@ const PersonSelector = ({}: PersonSelectorProps) => {
     };
 
     return (
-        <div style={{display: 'flex', gap: 24}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24}}>
             <Select
                 placeholder={'Wybierz pacjenta'}
                 value={selectedOption}
@@ -91,7 +91,7 @@ const PersonSelector = ({}: PersonSelectorProps) => {
                 }}/>
             <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
                         text={'Impersonuj 😎'}
-                        style={{height: 48}}
+                        style={{height: 48, maxWidth: 150}}
                         disabled={!selectedOption?.value}
                         onClick={handleImpersonate}/>
         </div>
