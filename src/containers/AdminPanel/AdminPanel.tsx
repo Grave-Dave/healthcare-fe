@@ -22,6 +22,9 @@ import selectors from "./selectors.ts";
 import actions from "./actions.tsx";
 import {DESCRIPTION, KEYWORDS, TITLE} from "./constants.ts";
 import Helmet from "../../reusableComponents/Helmet";
+import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
+import AtomButton from "../../atoms/AtomButton";
+import {OptionType} from "../../reusableComponents/PersonSelector/types.ts";
 
 const AdminPanel = () => {
     const {windowWidth} = useWindowSize();
@@ -39,6 +42,7 @@ const AdminPanel = () => {
     const isCalendarLoading = useAppSelector(selectors.getIsAdminCalendarLoading)
 
     const [isExpanded, setIsExpanded] = useState<boolean>(true)
+    const [selectedPersonId, setSelectedPersonId] = useState<number>(0)
 
     useEffect(() => {
         if (selectedDate) {
@@ -56,6 +60,18 @@ const AdminPanel = () => {
 
     const handleSwitchChange = () => {
         setIsExpanded(prevState => !prevState)
+    }
+
+    const handlePersonChange = (option: OptionType) => {
+        if (option.value) {
+            setSelectedPersonId(+option.value);
+        }
+    }
+
+    const handleImpersonate = () => {
+        if (selectedPersonId) {
+            dispatch(actions.impersonateUser(selectedPersonId))
+        }
     }
 
     const pastVisitItems = pastVisitsData.map((visitItem, i) => {
@@ -139,7 +155,14 @@ const AdminPanel = () => {
                     [classes.mobilePaperContainer]: isSmall
                 })}>
                     <Typography className={classes.header} variant="subtitle1">{"Znajdź pacjenta"}</Typography>
-                    <PersonSelector/>
+                    <div className={classes.personOptionsContainer}>
+                        <PersonSelector handlePersonChange={handlePersonChange}/>
+                        <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
+                                    text={'Impersonuj 😎'}
+                                    style={{height: 48, maxWidth: 150}}
+                                    disabled={!selectedPersonId}
+                                    onClick={handleImpersonate}/>
+                    </div>
                     <ShadowedScrollbar style={{height: '100%'}}>
                         {isLoading
                             ? <div className={classes.paperContent}>

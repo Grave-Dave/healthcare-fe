@@ -5,19 +5,17 @@ import {debounce} from "lodash";
 import {MenuItem} from "@mui/material";
 
 import {customStyles} from "./PersonSelector.style.ts";
-import AtomButton from "../../atoms/AtomButton";
 import {OptionType} from "./types.ts";
 import theme from "../../layouts/Layout/themeMaterialUi.ts";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks.ts";
 import actions from "../../containers/AdminPanel/actions.tsx";
 import selectors from "../../containers/AdminPanel/selectors.ts";
-import {AtomButtonVariants} from "../../atoms/AtomButton/constants.ts";
 
 interface PersonSelectorProps {
-
+    handlePersonChange: (option: OptionType) => void
 }
 
-const PersonSelector = ({}: PersonSelectorProps) => {
+const PersonSelector = ({handlePersonChange}: PersonSelectorProps) => {
     const dispatch = useAppDispatch();
 
     const isLoading = useAppSelector(selectors.getIsUserSelectorLoading)
@@ -49,13 +47,8 @@ const PersonSelector = ({}: PersonSelectorProps) => {
 
     const handleChange = (option: unknown) => {
         setSelectedOption(option as OptionType);
+        handlePersonChange && handlePersonChange(option as OptionType)
     };
-
-    const handleImpersonate = () => {
-        if (selectedOption?.value) {
-            dispatch(actions.impersonateUser(+selectedOption.value))
-        }
-    }
 
     const Option = ({...props}) => {
         return (
@@ -75,26 +68,19 @@ const PersonSelector = ({}: PersonSelectorProps) => {
     };
 
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24}}>
-            <Select
-                placeholder={'Wybierz pacjenta'}
-                value={selectedOption}
-                onChange={option => handleChange(option)}
-                onInputChange={handleSearchPhraseChange}
-                options={userOptions}
-                isLoading={isLoading}
-                // @ts-ignore
-                styles={customStyles}
-                components={{
-                    ...components,
-                    Option: Option,
-                }}/>
-            <AtomButton buttonVariant={AtomButtonVariants.STANDARD_BUTTON_VARIANT}
-                        text={'Impersonuj 😎'}
-                        style={{height: 48, maxWidth: 150}}
-                        disabled={!selectedOption?.value}
-                        onClick={handleImpersonate}/>
-        </div>
+        <Select
+            placeholder={'Wybierz pacjenta'}
+            value={selectedOption}
+            onChange={option => handleChange(option)}
+            onInputChange={handleSearchPhraseChange}
+            options={userOptions}
+            isLoading={isLoading}
+            // @ts-ignore
+            styles={customStyles}
+            components={{
+                ...components,
+                Option: Option,
+            }}/>
     )
 }
 

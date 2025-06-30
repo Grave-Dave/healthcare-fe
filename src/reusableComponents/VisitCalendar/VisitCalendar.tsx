@@ -35,7 +35,7 @@ const StyledDateCalendar = styled(DateCalendar, {
     shouldForwardProp: (prop) => prop !== 'isMobile',
 })((prop: StyledCalendarProps) => ({
     '&.MuiDateCalendar-root': {
-        height: '400px',
+        height: '415px',
         width: '310px',
         margin: '0 16px',
         maxHeight: 'none',
@@ -44,7 +44,7 @@ const StyledDateCalendar = styled(DateCalendar, {
             width: prop.isMobile ? '420px' : '350px',
         },
         '@media (min-width:1280px)': {
-            height: '430px',
+            height: '450px',
             width: '410px',
         },
         '& .MuiDayCalendar-weekDayLabel': {

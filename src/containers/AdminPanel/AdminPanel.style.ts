@@ -60,4 +60,14 @@ export const useStyles = makeStyles(({spacing, breakpoints}: Theme) => createSty
         flexDirection: 'column',
         height: '80%',
     },
+    personOptionsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: 24,
+        [breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+    }
 }))
