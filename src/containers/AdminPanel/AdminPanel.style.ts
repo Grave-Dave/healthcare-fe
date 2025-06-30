@@ -62,7 +62,6 @@ export const useStyles = makeStyles(({spacing, breakpoints}: Theme) => createSty
     },
     personOptionsContainer: {
         display: 'flex',
-        flexWrap: 'wrap',
         justifyContent: 'center',
         gap: 24,
         [breakpoints.down('xs')]: {
