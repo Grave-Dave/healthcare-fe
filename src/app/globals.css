@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Design tokens – source of truth: docs/design-system.md */
+@theme {
+  --color-mist-50: #f7f7f3;
+  --color-mist-100: #eef0ea;
+  --color-mist-200: #dde1d8;
+  --color-mist-300: #cdd3c9;
+
+  --color-moss-100: #cfd9d1;
+  --color-moss-200: #b7c4b9;
+  --color-moss-300: #8fa396;
+  --color-moss-400: #647c6c;
+  --color-moss-500: #56695d;
+  --color-moss-600: #486152;
+  --color-moss-700: #3a4d42;
+  --color-moss-800: #30473b;
+  --color-moss-900: #24362d;
+  --color-moss-950: #1a2620;
+
+  --color-dawn-300: #ebd9b1;
+  --color-dawn-400: #e4ce9d;
+  --color-dawn-500: #d6bc85;
+
+  --color-ember-50: #fbf1ee;
+  --color-ember-200: #e3c4bc;
+  --color-ember-700: #8e4335;
+  --color-ember-800: #7e3a2e;
+
+  --font-display: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-karla), system-ui, sans-serif;
+
+  --radius-card: 28px;
+  --radius-panel: 36px;
+
+  --shadow-rest: 0 1px 2px rgb(26 38 32 / 0.06);
+  --shadow-float: 0 18px 44px -24px rgb(26 38 32 / 0.28);
+  --shadow-lift: 0 26px 60px -30px rgb(26 38 32 / 0.32);
+  --shadow-lifted: 14px 18px 34px -14px rgb(var(--sh, 26 38 32) / 0.5), 3px 5px 10px -6px rgb(var(--sh, 26 38 32) / 0.25);
+  --shadow-pressed: 2px 4px 10px -6px rgb(var(--sh, 26 38 32) / 0.4), 0 1px 2px rgb(var(--sh, 26 38 32) / 0.12);
+  --shadow-pressed-deep: 0 1px 2px rgb(var(--sh, 26 38 32) / 0.2);
+
+  --ease-mist: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.6s var(--ease-mist) both;
+  --animate-rise: rise 1.4s var(--ease-mist) both;
+  --animate-hero-drift: hero-drift 24s ease-in-out infinite alternate;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes hero-drift {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.12) translateY(-12px); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* shadcn/ui semantic variables mapped onto the mist palette */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-heading: var(--font-display);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #f7f7f3;
+  --foreground: #1a2620;
+  --card: #ffffff;
+  --card-foreground: #1a2620;
+  --popover: #ffffff;
+  --popover-foreground: #1a2620;
+  --primary: #30473b;
+  --primary-foreground: #ffffff;
+  --secondary: #eef0ea;
+  --secondary-foreground: #1a2620;
+  --muted: #eef0ea;
+  --muted-foreground: #56695d;
+  --accent: #e4ce9d;
+  --accent-foreground: #1a2620;
+  --destructive: #8e4335;
+  --border: #dde1d8;
+  --input: #dde1d8;
+  --ring: #8fa396;
+  --radius: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-moss-300);
+    outline-offset: 2px;
+  }
+}
+
+@utility eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-moss-500);
+}
+
+@utility page-x {
+  padding-inline: 20px;
+  @media (width >= 64rem) {
+    padding-inline: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

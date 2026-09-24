@@ -1,24 +1,32 @@
-FROM ubuntu:latest
-LABEL authors="DGrabarz"
+# syntax=docker/dockerfile:1
 
-ENTRYPOINT ["top", "-b"]
-
-# Use a lightweight Node.js image for building the React app
-FROM node:16-alpine AS build
-
+FROM node:22-alpine AS deps
 WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the application and build it
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# NEXT_PUBLIC_* values are inlined at build time
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_CONTACT_PHONE
+ARG NEXT_PUBLIC_CONTACT_EMAIL
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Use an Nginx image to serve the React app
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
+COPY --from=build --chown=nextjs:nextjs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nextjs /app/.next/static ./.next/static
+COPY --from=build --chown=nextjs:nextjs /app/public ./public
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
