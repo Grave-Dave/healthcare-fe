@@ -318,7 +318,7 @@ function CancelDialog({ dialogRef, visit, officeName, policy, onCanceled }: Dial
       )}
     >
       {visit && (
-        <div className="flex animate-fade-up flex-col gap-6 px-5 pt-3.5 pb-8 lg:gap-7 lg:p-12">
+        <div className="flex animate-fade-in flex-col gap-6 px-5 pt-3.5 pb-8 lg:gap-7 lg:p-12">
           <span aria-hidden="true" className="h-1 w-10 self-center rounded bg-mist-300 lg:hidden" />
           <div className="flex flex-col gap-3">
             <span className="eyebrow text-ember-700 max-lg:hidden">Odwołanie wizyty</span>

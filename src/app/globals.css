@@ -45,6 +45,7 @@
   --ease-mist: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   --animate-fade-up: fade-up 0.6s var(--ease-mist) both;
+  --animate-fade-in: fade-in 0.5s var(--ease-mist) both;
   --animate-rise: rise 1.4s var(--ease-mist) both;
   --animate-hero-drift: hero-drift 24s ease-in-out infinite alternate;
   --animate-scroll-cue: scroll-cue 2.4s ease-in-out infinite;
@@ -52,6 +53,11 @@
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: none; }
+  }
+  /* Opacity only – for content inside scroll containers and dialogs, where a translate would flash a scrollbar. */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
   @keyframes hero-drift {
     from { transform: scale(1.04); }

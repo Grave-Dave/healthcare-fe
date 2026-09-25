@@ -190,10 +190,11 @@ export function BookingView({ offices, note }: Props) {
             ))}
           </div>
 
-          {/* Fixed height on desktop – switching days must not move the content below. */}
-          <div className={cn("min-h-[250px] transition-opacity duration-400 lg:h-[330px] lg:overflow-y-auto", termsLoading && "opacity-50")}>
+          {/* Fixed height on desktop – switching days must not move the content below. The padding (offset by the negative
+              margin) leaves room for the hover lift, which the scroll container would otherwise clip. */}
+          <div className={cn("min-h-[250px] transition-opacity duration-400 lg:-m-3 lg:h-[354px] lg:overflow-y-auto lg:p-3", termsLoading && "opacity-50")}>
             {visible.length > 0 ? (
-              <div className="grid animate-fade-up grid-cols-2 gap-2.5 lg:gap-3.5" key={`${selectedDate}-${office}`}>
+              <div className="grid animate-fade-in grid-cols-2 gap-2.5 lg:gap-3.5" key={`${selectedDate}-${office}`}>
                 {visible.map((term) => {
                   const active = term.id === selectedTermId
                   return (
@@ -230,7 +231,7 @@ export function BookingView({ offices, note }: Props) {
               </div>
             ) : (
               terms && (
-                <div className="flex h-full min-h-[200px] animate-fade-up flex-col items-center justify-center gap-2 rounded-3xl p-8 text-center shadow-[inset_0_0_0_1px_var(--color-mist-200)]">
+                <div className="flex h-full min-h-[200px] animate-fade-in flex-col items-center justify-center gap-2 rounded-3xl p-8 text-center shadow-[inset_0_0_0_1px_var(--color-mist-200)]">
                   <span className="font-display text-[22px] text-moss-950 lg:text-2xl">Brak wolnych terminów{office !== "all" && " w tym gabinecie"}</span>
                   <span className="text-[15px] text-moss-500">Wybierz inny {office !== "all" ? "gabinet albo " : ""}dzień w kalendarzu.</span>
                 </div>
@@ -332,7 +333,7 @@ function ConfirmDialog({ dialogRef, term, booked, officeName, onBooked }: Dialog
       )}
     >
       {shown && (
-        <div className="flex animate-fade-up flex-col gap-6 px-5 pt-3.5 pb-8 lg:gap-7 lg:p-12">
+        <div className="flex animate-fade-in flex-col gap-6 px-5 pt-3.5 pb-8 lg:gap-7 lg:p-12">
           <span aria-hidden="true" className="h-1 w-10 self-center rounded bg-mist-300 lg:hidden" />
           {booked ? (
             <>
