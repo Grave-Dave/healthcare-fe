@@ -7,7 +7,11 @@ export const site = {
 export const routes = {
   home: "/",
   login: "/login",
+  panel: "/panel",
   booking: "/panel/rezerwacja",
   myVisits: "/panel/wizyty",
   account: "/panel/konto",
+  admin: "/panel/admin",
+  adminTerms: "/panel/admin/terminy",
+  adminPatients: "/panel/admin/pacjenci",
 }

@@ -28,7 +28,7 @@ export function GoogleCallback() {
     completeGoogleLogin().then((session) => {
       if (session.status === "anonymous") return fail()
       toast("Zalogowano przez Google")
-      router.replace(routes.booking)
+      router.replace(routes.panel)
     })
   }, [success, router, toast])
 

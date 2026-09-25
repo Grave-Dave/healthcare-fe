@@ -340,6 +340,13 @@ Ten sam język co panel pacjenta. Różnice: plakietka „Administrator” przy 
 
 Przełącznik (`switch`): tor 44×26 `mist-300` → `moss-800` po włączeniu, gałka biała z cieniem, `role="switch"` + `aria-checked`, przejście 450 ms.
 
+**Implementacja (`/panel/admin`, `/panel/admin/terminy`, `/panel/admin/pacjenci`):**
+- Po zalogowaniu `/panel` kieruje terapeutkę do `/panel/admin`, pacjenta do rezerwacji. Nagłówek admina: Wizyty / Terminy / Pacjenci + licznik oczekujących, plakietka „Administrator”. Na mobile pod nagłówkiem chipy nawigacji (dla obu ról).
+- Wizyty: `GET /admin-visits` zaczyna od jutra, więc dzisiejsze wizyty dochodzą z `POST /admin-visits {date}`. „N. wizyta” liczona z historii pacjenta (`/admin-user-visits/{id}`, jedno zapytanie na pacjenta). Kafel „dni z wolnymi terminami” zamiast liczby terminów (brak endpointu z liczbą). Dzisiejszych wizyt nie da się odrzucić/odwołać (backend: `date > now()`).
+- Terminy: kropki = dni z wolnymi terminami (`/month-terms`, od jutra) + przyszłe wizyty z przeglądu + dni z wizytami do dziś (`/admin-month-terms`, bez statusu – kropka „wizyta”). Grafik dnia = `/terms` (wolne) + `POST /admin-visits` (wizyty). Dodawanie wysyła każdy ciąg kolejnych godzin jako osobny przedział do `/new-terms`. Wybór dnia w adresie (`?date=`).
+- Pacjenci: `/users` zwraca listę bez metadanych paginacji, więc pobieramy do 100 wyników; szukanie tylko po imieniu i nazwisku. Wybrany pacjent w adresie (`?id=`).
+- Impersonacja: dialog z wyjaśnieniem, potem `POST /impersonate/{id}` podmienia cookie odświeżania na pacjenta – sesja admina się kończy. Pasek `dawn-400` „Przeglądasz panel jako …” (imię w localStorage, przetrwa odświeżenie); „Zakończ” wylogowuje i prowadzi do logowania z powrotem do Pacjentów.
+
 ## 11. Logowanie i rejestracja
 
 Ekrany `/login`, `/register`, `/password/reset/link`, `/password/reset/[token]`, `/login/google` (adresy zgodne ze starym frontem – linkują do nich e-maile i Google OAuth).
@@ -359,7 +366,8 @@ Komunikaty z Laravela (angielskie) tłumaczy `src/lib/api-errors.ts`.
 
 - **Backend – terminy:** `/month-terms` nie filtruje po terapeucie, a `/terms` tak (`MAIN_THERAPIST_ID`) – kalendarz mógłby pokazać dzień bez godzin, gdyby terminy dodał inny terapeuta. `/new-terms` przyjmuje **przedział** godzin `[od, do]`, nie listę – panel admina (zaznaczanie pojedynczych godzin) musi to uwzględnić.
 
-- Pasek trybu impersonacji w panelu pacjenta.
+- **Backend – impersonacja:** nadpisuje refresh token pacjenta (wylogowuje go na jego urządzeniach) i kończy sesję admina. Lepiej: osobny token impersonacji z powrotem do konta admina.
+- **Backend – panel admina:** `/users` gubi metadane paginacji (`response()->json(new ResourceCollection)`) i nie szuka po e-mailu/telefonie; `/admin-month-terms` zwraca tylko dni z przeszłości; `/terms` filtruje po `MAIN_THERAPIST_ID`, a zapis terminów po zalogowanym terapeucie. W lokalnym seedzie konto Dawida też jest terapeutą (`therapists.user_id = 2`), więc widzi panel admina.
 - **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem. Tymczasowo front blokuje usunięcie konta przy nadchodzących wizytach.
 - **Backend – konto:** zmiana hasła nie wymaga obecnego hasła, a zmiana e-maila nie wymaga ponownej weryfikacji adresu – do poprawy razem z aktualizacją Laravela.
 - **Backend – odwołane wizyty:** soft delete przy odwołaniu ukrywa je w historii pacjenta (`/user-visits` bez `withTrashed`).

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Tabs } from "radix-ui"
 import { useCallback, useEffect, useRef, useState } from "react"
 
+import { PinIcon, StatusBadge } from "@/components/panel/visit-status"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import { FormAlert } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
@@ -249,33 +250,6 @@ function VisitRow({ visit, officeName, past = false, onCancel }: { visit: Visit;
   )
 }
 
-const badgeStyles = {
-  pending: { box: "bg-[#f3ead6] text-[#6b5a33]", dot: "bg-dawn-500" },
-  confirmed: { box: "bg-[#e6ebe3] text-moss-800", dot: "bg-moss-600" },
-  muted: { box: "bg-mist-100 text-moss-500", dot: "bg-mist-300" },
-}
-
-function StatusBadge({ visit, past = false }: { visit: Visit; past?: boolean }) {
-  // Past visits: "Odbyta" is derived here – the backend has no "completed" status.
-  const [label, style, short] =
-    visit.status === "canceled"
-      ? ["Odwołana", badgeStyles.muted]
-      : past
-        ? visit.status === "confirmed"
-          ? ["Odbyta", badgeStyles.confirmed]
-          : ["Niepotwierdzona", badgeStyles.muted]
-        : visit.status === "confirmed"
-          ? ["Potwierdzona", badgeStyles.confirmed]
-          : ["Oczekuje na potwierdzenie", badgeStyles.pending, "Oczekuje"]
-  return (
-    <span className={cn("inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] font-medium whitespace-nowrap lg:text-sm", style.box)}>
-      <i aria-hidden="true" className={cn("size-1.5 rounded-full lg:size-2", style.dot)} />
-      <span className={cn(short && "max-sm:hidden")}>{label}</span>
-      {short && <span className="sm:hidden">{short}</span>}
-    </span>
-  )
-}
-
 function EmptyState({ title, text }: { title: string; text: string }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-[28px] px-6 py-14 text-center shadow-[inset_0_0_0_1px_var(--color-mist-200)] lg:rounded-[36px] lg:py-20">
@@ -380,14 +354,5 @@ function CancelDialog({ dialogRef, visit, officeName, policy, onCanceled }: Dial
         </div>
       )}
     </dialog>
-  )
-}
-
-function PinIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11Z" />
-      <circle cx="12" cy="10" r="2.5" />
-    </svg>
   )
 }

@@ -158,6 +158,7 @@ export async function logout() {
     await authRequest("/logout", { method: "POST" })
   } finally {
     accessToken = null
+    setImpersonation(null)
     setSession({ status: "anonymous", user: null, isAdmin: false, endedByUser: true })
   }
 }
@@ -194,4 +195,39 @@ export async function deleteAccount() {
   await authRequest("/user-delete", { method: "DELETE" })
   accessToken = null
   setSession({ status: "anonymous", user: null, isAdmin: false, endedByUser: true })
+}
+
+// Impersonation: the backend swaps the refresh cookie for the patient's, so the admin session ends here.
+// The patient's name is kept (non-sensitive) so the panel can show the "viewing as" bar after a reload.
+const IMPERSONATION_KEY = "kt-impersonating"
+
+export function getImpersonation(): string | null {
+  try {
+    return localStorage.getItem(IMPERSONATION_KEY)
+  } catch {
+    return null
+  }
+}
+
+function setImpersonation(name: string | null) {
+  try {
+    if (name) localStorage.setItem(IMPERSONATION_KEY, name)
+    else localStorage.removeItem(IMPERSONATION_KEY)
+  } catch {
+    // storage unavailable – the bar just won't survive a reload
+  }
+}
+
+export async function startImpersonation(patient: User) {
+  await authRequest(`/impersonate/${patient.id}`, { method: "POST" })
+  setImpersonation([patient.firstName, patient.lastName].filter(Boolean).join(" ") || patient.email)
+  accessToken = null
+  await refreshAccessToken()
+  return loadUser()
+}
+
+/** Ends the patient session; the therapist has to log in again. */
+export async function endImpersonation() {
+  setImpersonation(null)
+  await logout().catch(() => undefined)
 }

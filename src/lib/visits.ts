@@ -1,25 +1,26 @@
 "use client"
 
-import { authRequest } from "@/lib/auth/session"
+import { authRequest, type User } from "@/lib/auth/session"
 import type { Term } from "@/lib/booking"
 import { formatTime, toISODate } from "@/lib/dates"
 
 export type VisitStatus = "pending" | "confirmed" | "canceled"
 
-export type Visit = { id: number; status: VisitStatus; term: Term }
+export type Visit = { id: number; status: VisitStatus; term: Term; user?: User }
 
-type ApiVisit = { id: number; status: "0" | "1" | "2"; availableTerm: Term }
+export type ApiVisit = { id: number; status: "0" | "1" | "2"; availableTerm: Term; user?: User }
 type ApiVisits = { incoming_visits: ApiVisit[]; past_visits: ApiVisit[] }
 
 const statuses: Record<ApiVisit["status"], VisitStatus> = { "0": "pending", "1": "confirmed", "2": "canceled" }
 
-const toVisit = (visit: ApiVisit): Visit => ({
+export const toVisit = (visit: ApiVisit): Visit => ({
   id: visit.id,
+  user: visit.user,
   status: statuses[visit.status] ?? "pending",
   term: { ...visit.availableTerm, time: formatTime(visit.availableTerm.time) },
 })
 
-const startsAt = (visit: Visit) => `${visit.term.date} ${visit.term.time}`
+export const startsAt = (visit: Visit) => `${visit.term.date} ${visit.term.time}`
 
 /**
  * The patient's visits split by the start time. The backend splits by date only (today's visits land in "past"),
