@@ -1,33 +1,35 @@
-// Client for the Laravel API (healthcare-be).
-// Auth matches the legacy app: short-lived Bearer access token + httpOnly refresh cookie (POST /auth/refresh).
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api"
+// Client for the Laravel API (healthcare-be), used from the browser only (the panel stays static-export friendly).
+// Auth matches the backend: short-lived Bearer access token kept in memory + httpOnly `refresh_token` cookie.
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api"
 
 export class ApiError extends Error {
   constructor(
     public status: number,
-    public body: unknown
+    public body: { message?: string; errors?: Record<string, string[]> } | null
   ) {
-    super(`API request failed with status ${status}`)
+    super(body?.message || `API request failed with status ${status}`)
   }
 }
 
-type ApiInit = RequestInit & { token?: string | null }
+export type ApiInit = Omit<RequestInit, "body"> & { body?: unknown; token?: string | null }
 
-export async function api<T>(path: string, { token, headers, ...init }: ApiInit = {}): Promise<T> {
+export async function request<T>(path: string, { token, headers, body, ...init }: ApiInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
     ...init,
+    // The refresh cookie is sent to /auth/refresh and set by /login, /register and /auth/refresh.
     credentials: "include",
     headers: {
       Accept: "application/json",
-      ...(init.body ? { "Content-Type": "application/json" } : {}),
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
   })
 
-  const body = response.status === 204 ? null : await response.json().catch(() => null)
+  const data = response.status === 204 ? null : await response.json().catch(() => null)
   if (!response.ok) {
-    throw new ApiError(response.status, body)
+    throw new ApiError(response.status, data)
   }
-  return body as T
+  return data as T
 }

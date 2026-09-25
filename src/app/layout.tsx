@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { karla, newsreader } from "@/app/fonts"
+import { ToastProvider } from "@/components/ui/toast"
 import { site } from "@/lib/site"
 
 import "./globals.css"
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pl" className={`${newsreader.variable} ${karla.variable}`}>
-      <body className="flex min-h-svh flex-col">{children}</body>
+      <body className="flex min-h-svh flex-col">
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   )
 }

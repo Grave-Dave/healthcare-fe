@@ -26,7 +26,7 @@ export async function ArticlesSection({ section }: SectionProps<"section_article
       {articles.length === 0 ? (
         <p className="rounded-3xl p-8 text-lg text-moss-500 shadow-[inset_0_0_0_1px_var(--color-mist-200)]">Pierwsze artykuły pojawią się wkrótce.</p>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
           {articles.map((article) => {
             const cover = getMediaUrl(article.cover, { width: 900 })
             return (

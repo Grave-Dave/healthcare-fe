@@ -17,7 +17,7 @@ export type FooterProps = {
 export function Footer({ siteName, headline, links, legalLinks, phone, email, cta }: FooterProps) {
   return (
     <footer id="site-footer" className="page-x bg-moss-950 pt-16 pb-8 text-moss-200 lg:pt-26 lg:pb-12">
-      <div className="grid gap-11 lg:grid-cols-12 lg:gap-8">
+      <div className="grid grid-cols-1 gap-11 lg:grid-cols-12 lg:gap-8">
         <p className="font-display text-3xl leading-tight font-light text-mist-50 lg:col-span-6 lg:text-[44px]">
           <Emphasis text={headline || siteName} />
         </p>

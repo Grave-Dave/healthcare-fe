@@ -37,7 +37,7 @@ export default async function HelpAreaPage({ params }: PageProps<"/obszary-pomoc
         aside={<HelpAreaIllustration name={area.illustration} className="mx-auto h-auto w-full max-w-[320px]" />}
       />
       {area.body && (
-        <div className="page-x grid pb-20 lg:grid-cols-12 lg:gap-8 lg:pb-32">
+        <div className="page-x grid grid-cols-1 pb-20 lg:grid-cols-12 lg:gap-8 lg:pb-32">
           <RichText html={area.body} className="lg:col-span-7" />
         </div>
       )}

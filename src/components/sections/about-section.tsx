@@ -24,7 +24,7 @@ export function AboutSection({ section }: SectionProps<"section_about">) {
     <section
       id={section.anchor || undefined}
       className={cn(
-        "page-x relative grid gap-10 py-22 lg:grid-cols-12 lg:gap-8 lg:pt-[200px] lg:pb-[220px]",
+        "page-x relative grid grid-cols-1 gap-10 py-22 lg:grid-cols-12 lg:gap-8 lg:pt-[200px] lg:pb-[220px]",
         // Offset block bleeds into the next section; -z-10 in <main>'s stacking context keeps it under all content.
         section.decoration === "przesuniete-tlo" &&
           "after:absolute after:top-[640px] after:right-0 after:-bottom-15 after:left-[30%] after:-z-10 after:rounded-l-[40px] after:bg-mist-100 lg:after:top-[300px] lg:after:-bottom-50 lg:after:left-[46%] lg:after:rounded-l-[64px]"

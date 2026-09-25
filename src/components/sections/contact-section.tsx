@@ -13,7 +13,7 @@ export async function ContactSection({ section, ctx }: SectionProps<"section_con
   const offices = section.showOffices ? await getOffices() : []
 
   return (
-    <section id={section.anchor || undefined} className="page-x grid gap-12 pt-16 pb-22 lg:grid-cols-12 lg:gap-8 lg:pt-28 lg:pb-[160px]">
+    <section id={section.anchor || undefined} className="page-x grid grid-cols-1 gap-12 pt-16 pb-22 lg:grid-cols-12 lg:gap-8 lg:pt-28 lg:pb-[160px]">
       <div className="flex flex-col gap-6 lg:col-span-6">
         {section.eyebrow && <span className="eyebrow">{section.eyebrow}</span>}
         {section.title && (

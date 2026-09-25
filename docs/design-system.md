@@ -210,7 +210,7 @@ Na mobile przesunięcia skalujemy do ~12–16 px, a bloki wchodzące w kolejną 
 
 | Sekcja | Opis | Dane |
 |---|---|---|
-| `SiteHeader` | Dwa stany. **Na hero:** przezroczysty, biały tekst, wysokość ~112 px; kontrast zapewnia scrim u góry hero (gradient `rgb(14 22 18 / .5)` → 0 na 200 px desktop / 140 px mobile), a ogólna nakładka hero spada do 34% (mobile 38%). **Po przewinięciu** (próg ~80 px lub wyjście hero z viewportu – IntersectionObserver): `position: sticky`, wysokość 76 px, tło `mist-50/82` + `backdrop-filter: blur(18px) saturate(1.1)`, linia 1 px `moss-950/6%` i miękki cień w dół; ciemny tekst; telefon z ikoną; CTA „Umów wizytę” jako `btn-primary` w rozmiarze sm (15 px, strzałka 22 px). Przejście stanów: tło i kolor 400–500 ms `--ease-mist`, bez zmiany położenia elementów. Aktywny link = sekcja w widoku (scroll-spy): opacity 1 + linia 1.5 px. Belka jest zawsze widoczna (nie chowa się przy przewijaniu w dół) – CTA rezerwacji ma być pod ręką. Mobile: to samo, bez telefonu w belce (telefon jest w dolnym sticky pasku) | Flotiq: nawigacja |
+| `SiteHeader` | Dwa stany. **Na hero:** przezroczysty, biały tekst, wysokość ~112 px; kontrast zapewnia scrim u góry hero (gradient `rgb(14 22 18 / .5)` → 0 na 200 px desktop / 140 px mobile), a ogólna nakładka hero spada do 34% (mobile 38%). **Po przewinięciu** (próg ~80 px lub wyjście hero z viewportu – IntersectionObserver): `position: sticky`, wysokość 76 px, tło `mist-50/82` + `backdrop-filter: blur(18px) saturate(1.1)`, linia 1 px `moss-950/6%` i miękki cień w dół; ciemny tekst; telefon z ikoną; CTA „Umów wizytę” jako `btn-primary` w rozmiarze sm (15 px, strzałka 22 px). Przejście stanów: tło i kolor 400–500 ms `--ease-mist`, bez zmiany położenia elementów. Aktywny link = sekcja w widoku (scroll-spy): opacity 1 + linia 1.5 px. Belka jest zawsze widoczna (nie chowa się przy przewijaniu w dół) – CTA rezerwacji ma być pod ręką. Link „Zaloguj” zmienia się w „Konto” (→ Moje wizyty), gdy użytkownik jest zalogowany; sesja na stronach publicznych jest sprawdzana tylko, jeśli przeglądarka miała wcześniej sesję (znacznik w localStorage), żeby nie wysyłać zapytania do API przy każdej wizycie gościa. Mobile: to samo, bez telefonu w belce (telefon jest w dolnym sticky pasku) | Flotiq: nawigacja |
 | `HeroVideo` | pętla wideo MP4/WebM (≤600 kB) z posterem, nakładka moss-950/38%, mgła u dołu, dwa CTA | Flotiq: tytuł, lead, media |
 | `Statement` | jedno duże zdanie z kursywą | Flotiq |
 | `AreasExplorer` | Strona „stoi”, dopóki nie przejdziemy przez wszystkie obszary. Implementacja: sekcja o wysokości ~`100vh + N × 35vh` (krótki skok – jeden obszar na ok. 1/3 ekranu), nagłówek sekcji + lista + panel przypięte razem (`position: sticky`, bez przerwy między nagłówkiem a listą), aktywny obszar = postęp przewijania sekcji (`useScroll` / IntersectionObserver). Działa dla kółka, touchpada, klawiatury i dotyku, bez przechwytywania `wheel`. (Makieta symuluje to przechwyceniem `wheel` z `passive: false` – nie przenosić do produkcji.) Szyna postępu obok listy, klik w pozycję przewija do jej progu. Panel ma **stałą wysokość** (`min(560px, 100vh − 340px)`) – zmiana obszaru nie może przesuwać treści poniżej. W panelu: ilustracja do 220 px (`flex-shrink: 0`), opis przycięty do 5 linii (`line-clamp`), link „Dowiedz się więcej” przyklejony do dołu (`margin-top: auto`). W CMS limit opisu skrótowego ~280 znaków. Mobile: zwykła lista rozwijana bez sticky | Flotiq: typ „Obszar pomocy” (nazwa, opis, ilustracja, slug) |
@@ -334,7 +334,22 @@ Ten sam język co panel pacjenta. Różnice: plakietka „Administrator” przy 
 
 Przełącznik (`switch`): tor 44×26 `mist-300` → `moss-800` po włączeniu, gałka biała z cieniem, `role="switch"` + `aria-checked`, przejście 450 ms.
 
-## 11. Otwarte kwestie
+## 11. Logowanie i rejestracja
+
+Ekrany `/login`, `/register`, `/password/reset/link`, `/password/reset/[token]`, `/login/google` (adresy zgodne ze starym frontem – linkują do nich e-maile i Google OAuth).
+
+- **Powłoka:** tło `mist-50`, pierścienie mgły w rogach, nagłówek z nazwą i linkiem „← Strona główna”; jedna biała karta (maks. 480 px, radius 28/32, cień jak karty panelu) wyśrodkowana na desktopie, u góry na mobile.
+- **Karta:** eyebrow, tytuł Newsreader 34/40 px z kursywą, lead 15 px `moss-500`, formularz, linki pomocnicze pod spodem.
+- **Pola:** jak w „Konto” (sekcja 9) – etykieta nad polem, podpowiedź pod polem, błąd pola w `ember-700` zamiast podpowiedzi (`aria-invalid` + `aria-describedby`). Hasło z przełącznikiem widoczności (ikona oka, `aria-pressed`).
+- **Błąd formularza** (np. zły e-mail lub hasło): `FormAlert` – tło `ember-50`, obrys `ember-200`, `role="alert"`. Informacja: tło `mist-100`, `role="status"`.
+- **Google:** przycisk pełnej szerokości, biały z obrysem `mist-300`, kolorowe logo, oddzielony separatorem „lub”.
+- **Rejestracja:** imię i nazwisko w dwóch kolumnach (od 640 px), e-mail, telefon, hasło ×2, zgoda na regulamin i politykę prywatności (checkbox, linki w nowej karcie).
+- **Niepotwierdzony e-mail:** w panelu zamiast treści karta „Potwierdź adres e-mail” – „Potwierdziłem – przejdź dalej” (ponowne sprawdzenie), „Wyślij link ponownie” (quiet), „Wyloguj się”.
+- **Toast** (`ToastProvider` w głównym layoucie): pill `moss-950` z ✓ `dawn-400` (sukces) lub `ember-700` z ! (błąd), ok. 3,5 s.
+
+Komunikaty z Laravela (angielskie) tłumaczy `src/lib/api-errors.ts`.
+
+## 12. Otwarte kwestie
 
 - Pasek trybu impersonacji w panelu pacjenta.
 - **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem.
@@ -346,3 +361,4 @@ Przełącznik (`switch`): tor 44×26 `mist-300` → `moss-800` po włączeniu, g
 - **Tailwind 4 – przejścia przesunięć:** klasy `translate-*` ustawiają właściwość CSS `translate`, nie `transform`. W listach `transition-[…]` trzeba podawać `translate` (nie `transform`), inaczej element „skacze” zamiast płynnie się przesuwać. Dotyczy przycisków `press`, kart i paska na mobile.
 - **Media z Flotiqa:** obrazy (także animowane GIF) z `/image/0x0/…` (oryginał), inne pliki (wideo) z `/file/…` – `getMediaUrl()` dobiera ścieżkę po typie medium.
 - **Dekoracje sekcji a warstwy:** tła wychodzące poza sekcję (`::before`/`::after` z `-z-10`) muszą należeć do kontekstu warstw `<main>` (ma `isolate`). Sekcja z takim tłem **nie może** mieć własnego `isolate` ani `z-index` – wtedy jej dekoracja przykrywa treść kolejnych sekcji (np. FAQ pod „O mnie”). `isolate` stosujemy tylko na małych elementach wewnątrz sekcji (portret z obrysem, CTA z ramką).
+- **Siatki na mobile:** każda siatka responsywna musi mieć kolumnę bazową `grid-cols-1` (`minmax(0, 1fr)`), np. `grid grid-cols-1 lg:grid-cols-12`. Samo `grid` tworzy kolumnę `auto`, którą rozpycha najszersza zawartość (np. przewijana poziomo lista zakładek) – przeglądarka mobilna poszerza wtedy całą stronę i ją ucina.

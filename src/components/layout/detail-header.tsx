@@ -8,7 +8,7 @@ type Crumb = { label: string; href: string }
 /** Title block for collection detail pages (help area, office, article). */
 export function DetailHeader({ back, eyebrow, title, lead, aside }: { back: Crumb; eyebrow?: string; title: string; lead?: string; aside?: ReactNode }) {
   return (
-    <header className="page-x grid gap-10 pt-12 pb-14 lg:grid-cols-12 lg:gap-8 lg:pt-20 lg:pb-24">
+    <header className="page-x grid grid-cols-1 gap-10 pt-12 pb-14 lg:grid-cols-12 lg:gap-8 lg:pt-20 lg:pb-24">
       <div className="flex flex-col gap-6 lg:col-span-7">
         <Link href={back.href} className="group inline-flex items-center gap-2 self-start text-sm font-medium text-moss-800 opacity-70 transition-opacity hover:opacity-100">
           <span aria-hidden="true" className="transition-transform duration-500 ease-mist group-hover:-translate-x-1">

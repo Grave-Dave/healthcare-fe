@@ -9,6 +9,7 @@ import { CloseIcon, MenuIcon, PhoneIcon } from "@/components/icons"
 import { Emphasis } from "@/components/text"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import type { ResolvedLink } from "@/lib/links"
+import { useSession } from "@/lib/auth/use-session"
 import { routes } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
@@ -38,7 +39,10 @@ export function Navbar({ siteName, items, showLogin, phone, cta, overHero }: Nav
   }, [])
 
   const transparent = overHero && !scrolled
-  const menuItems = showLogin ? [...items, { label: "Zaloguj się", href: routes.login }] : items
+  const { status } = useSession({ onlyIfKnown: true })
+  // Logged-in visitors get a shortcut to the panel instead of "Zaloguj".
+  const account = status === "authenticated" || status === "unverified" ? { label: "Konto", href: routes.myVisits } : { label: "Zaloguj", href: routes.login }
+  const menuItems = showLogin ? [...items, { label: account.label === "Zaloguj" ? "Zaloguj się" : account.label, href: account.href }] : items
   const [first, ...rest] = siteName.split(" ")
 
   return (
@@ -67,8 +71,8 @@ export function Navbar({ siteName, items, showLogin, phone, cta, overHero }: Nav
             </Link>
           ))}
           {showLogin && (
-            <Link href={routes.login} className="opacity-70 transition-opacity duration-400 hover:opacity-100">
-              Zaloguj
+            <Link href={account.href} className="opacity-70 transition-opacity duration-400 hover:opacity-100">
+              {account.label}
             </Link>
           )}
           {phone && (

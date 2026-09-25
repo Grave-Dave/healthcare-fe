@@ -41,7 +41,7 @@ export default async function OfficePage({ params }: PageProps<"/gabinety/[slug]
   return (
     <SiteFrame overHero={false}>
       <DetailHeader back={{ label: "Gabinety", href: "/gabinety" }} eyebrow="Gabinet" title={office.name} lead={`${office.street}, ${office.postalCode} ${office.city}`} />
-      <div className="page-x grid gap-10 pb-20 lg:grid-cols-12 lg:gap-8 lg:pb-32">
+      <div className="page-x grid grid-cols-1 gap-10 pb-20 lg:grid-cols-12 lg:gap-8 lg:pb-32">
         <div className="relative h-64 overflow-hidden rounded-card bg-mist-100 lg:col-span-7 lg:h-[480px]">
           {photo && <Image src={photo} alt={`Gabinet ${office.name}`} fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />}
         </div>

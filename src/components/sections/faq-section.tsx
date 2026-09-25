@@ -22,7 +22,7 @@ export function FaqSection({ section }: SectionProps<"section_faq">) {
   }
 
   return (
-    <section id={section.anchor || undefined} className="page-x grid gap-9 py-22 lg:grid-cols-12 lg:gap-8 lg:py-[160px]">
+    <section id={section.anchor || undefined} className="page-x grid grid-cols-1 gap-9 py-22 lg:grid-cols-12 lg:gap-8 lg:py-[160px]">
       <div className="lg:col-span-4">
         <SectionHeading eyebrow={section.eyebrow} title={section.title} />
       </div>

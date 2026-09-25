@@ -15,7 +15,7 @@ export function CtaSection({ section, ctx }: SectionProps<"section_cta">) {
     <section id={section.anchor || undefined} className="page-x py-10 lg:py-16">
       <div className="relative isolate mr-3.5 lg:mr-7">
         <div aria-hidden="true" className="absolute inset-0 -z-10 translate-3.5 rounded-[28px] shadow-[inset_0_0_0_1px_var(--color-moss-200)] lg:translate-7 lg:rounded-[40px]" />
-        <div className="grid gap-7 rounded-[28px] bg-moss-800 px-6 pt-11 pb-10 text-white shadow-[0_40px_80px_-48px_rgb(26_38_32/0.5)] lg:grid-cols-12 lg:items-center lg:gap-8 lg:rounded-[40px] lg:px-24 lg:py-26">
+        <div className="grid grid-cols-1 gap-7 rounded-[28px] bg-moss-800 px-6 pt-11 pb-10 text-white shadow-[0_40px_80px_-48px_rgb(26_38_32/0.5)] lg:grid-cols-12 lg:items-center lg:gap-8 lg:rounded-[40px] lg:px-24 lg:py-26">
           <div className="flex flex-col gap-3.5 lg:col-span-7 lg:gap-5">
             <h2 className="font-display text-[32px] leading-tight font-light lg:text-[54px] lg:leading-[1.1]">
               <Emphasis text={section.title} />

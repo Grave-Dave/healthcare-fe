@@ -5,7 +5,7 @@ import type { SectionProps } from "./types"
 
 export function StatementSection({ section }: SectionProps<"section_statement">) {
   return (
-    <section id={section.anchor || undefined} className="page-x relative grid gap-5 overflow-x-clip pt-22 pb-8 lg:grid-cols-12 lg:gap-8 lg:pt-44 lg:pb-16">
+    <section id={section.anchor || undefined} className="page-x relative grid grid-cols-1 gap-5 overflow-x-clip pt-22 pb-8 lg:grid-cols-12 lg:gap-8 lg:pt-44 lg:pb-16">
       {section.fogRings && (
         <FogRings className="pointer-events-none absolute -top-28 -right-28 size-65 text-moss-300 opacity-50 lg:-top-48 lg:-right-44 lg:size-130 lg:opacity-55" />
       )}
