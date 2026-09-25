@@ -127,7 +127,7 @@ function MobileMenu({ siteName, items, phone, cta, onClose }: MobileMenuProps) {
   }, [onClose])
 
   return createPortal(
-    <div role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-x-0 top-0 z-50 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-mist-50 text-moss-950 lg:hidden">
+    <div role="dialog" aria-modal="true" aria-label="Menu" data-analytics="menu mobilne" className="fixed inset-x-0 top-0 z-50 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-mist-50 text-moss-950 lg:hidden">
       <div className="flex h-[68px] items-center justify-between pr-3 pl-5">
         <span className="font-display text-[19px]">
           <Emphasis text={siteName} />

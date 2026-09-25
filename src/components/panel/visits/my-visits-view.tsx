@@ -8,6 +8,7 @@ import { PinIcon, StatusBadge } from "@/components/panel/visit-status"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import { FormAlert } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { errorMessage } from "@/lib/api-errors"
 import type { Term } from "@/lib/booking"
 import { formatDayMonth, formatLongDate, parseISODate } from "@/lib/dates"
@@ -296,6 +297,7 @@ function CancelDialog({ dialogRef, visit, officeName, policy, onCanceled }: Dial
     setError("")
     try {
       await cancelVisit(visit.id)
+      track("Wizyta odwołana")
       close()
       onCanceled()
     } catch (err) {

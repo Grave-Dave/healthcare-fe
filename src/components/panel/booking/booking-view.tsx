@@ -8,6 +8,7 @@ import { MonthCalendar } from "@/components/panel/month-calendar"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import { FormAlert } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { errorMessage } from "@/lib/api-errors"
 import { useSession } from "@/lib/auth/use-session"
 import { createVisit, getDayTerms, getMonthTerms, type Term } from "@/lib/booking"
@@ -118,6 +119,7 @@ export function BookingView({ offices, note }: Props) {
 
   function onBook() {
     if (!selectedTerm) return
+    track("Rezerwacja – Zarezerwuj", { zalogowany: session.status === "authenticated" || session.status === "unverified" })
     if (session.status !== "authenticated" && session.status !== "unverified") {
       router.push(`${routes.login}?next=${encodeURIComponent(`${pathname}?date=${selectedTerm.date}&term=${selectedTerm.id}`)}`)
       return
@@ -147,7 +149,10 @@ export function BookingView({ offices, note }: Props) {
             selected={selectedDate}
             minMonth={minMonth}
             loading={daysLoading}
-            onSelect={(date) => select(date)}
+            onSelect={(date) => {
+              track("Rezerwacja – dzień")
+              select(date)
+            }}
             onMonthChange={(year, month) => setView({ year, month })}
             legend={
               <>
@@ -202,7 +207,10 @@ export function BookingView({ offices, note }: Props) {
                       key={term.id}
                       type="button"
                       aria-pressed={active}
-                      onClick={() => select(term.date, active ? null : term.id)}
+                      onClick={() => {
+                        if (!active) track("Rezerwacja – godzina")
+                        select(term.date, active ? null : term.id)
+                      }}
                       className={cn(
                         "relative flex flex-col gap-1.5 rounded-[20px] bg-white p-4.5 text-left shadow-rest transition-[box-shadow,translate] duration-500 ease-mist hover:-translate-y-0.5 hover:shadow-[0_22px_44px_-26px_rgb(26_38_32/0.35)] lg:rounded-[22px] lg:px-6 lg:py-5.5",
                         "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:shadow-[inset_0_0_0_1.5px_var(--color-moss-800)] after:transition-opacity after:duration-450",
@@ -312,6 +320,7 @@ function ConfirmDialog({ dialogRef, term, booked, officeName, onBooked }: Dialog
     setError("")
     try {
       await createVisit(term.id)
+      track("Rezerwacja – potwierdzona")
       onBooked(term)
     } catch (err) {
       setError(errorMessage(err))

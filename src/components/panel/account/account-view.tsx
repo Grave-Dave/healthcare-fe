@@ -8,6 +8,7 @@ import { type FormEvent, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Field, FormAlert, PasswordField } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { errorMessage, fieldErrors } from "@/lib/api-errors"
 import { deleteAccount, type ProfileForm, updateProfile, type User } from "@/lib/auth/session"
 import { useSession } from "@/lib/auth/use-session"
@@ -305,6 +306,7 @@ function DeleteSection() {
     setError("")
     try {
       await deleteAccount()
+      track("Konto usunięte")
       close()
       toast("Konto zostało usunięte")
       router.replace(routes.home)

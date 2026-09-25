@@ -1,9 +1,17 @@
 import type { NextConfig } from "next"
 
+// Test/staging deployments (e.g. test.psychoterapia-trzeciakiewicz.pl) must not be indexed.
+const noIndex = process.env.SITE_NOINDEX === "1"
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Docker uses the standalone server (Dockerfile sets NEXT_OUTPUT); hosts that run `next start`
+  // (Hostinger Node.js apps) use the default output.
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   images: {
     remotePatterns: [{ protocol: "https", hostname: "api.flotiq.com" }],
+  },
+  async headers() {
+    return noIndex ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }] : []
   },
   // Old Vite routes. /login, /register and /password/* keep their paths because
   // backend e-mails and the Google OAuth callback link to them.

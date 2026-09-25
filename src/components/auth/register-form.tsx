@@ -9,6 +9,7 @@ import { GoogleButton } from "@/components/auth/google-button"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import { Field, FormAlert, PasswordField } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { errorMessage, fieldErrors } from "@/lib/api-errors"
 import { safeNext } from "@/lib/auth/redirect"
 import { register, type RegisterForm as RegisterData } from "@/lib/auth/session"
@@ -47,6 +48,7 @@ export function RegisterForm() {
         password_confirmation: data.password_confirmation,
       }
       await register(form)
+      track("Rejestracja")
       toast("Konto utworzone – sprawdź skrzynkę e-mail")
       router.replace(next)
     } catch (error) {

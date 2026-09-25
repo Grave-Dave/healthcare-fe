@@ -9,6 +9,7 @@ import { GoogleButton } from "@/components/auth/google-button"
 import { Button, ButtonArrow } from "@/components/ui/button"
 import { Field, FormAlert, PasswordField } from "@/components/ui/field"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { errorMessage, fieldErrors } from "@/lib/api-errors"
 import { safeNext } from "@/lib/auth/redirect"
 import { login } from "@/lib/auth/session"
@@ -36,6 +37,7 @@ export function LoginForm() {
     setFormError("")
     try {
       const result = await login({ email: String(data.get("email")), password: String(data.get("password")) })
+      track("Logowanie", { metoda: "e-mail" })
       if (result.status === "authenticated") toast("Zalogowano")
       router.replace(next)
     } catch (error) {

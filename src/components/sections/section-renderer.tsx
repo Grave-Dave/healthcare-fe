@@ -41,7 +41,12 @@ export function SectionRenderer({ sections, ctx }: { sections: unknown[] | undef
       if (process.env.NODE_ENV === "development") console.warn(`[sections] No component for "${internal.contentType}"`)
       return null
     }
-    return <Component key={id} section={section} ctx={ctx} />
+    // `contents` keeps the layout untouched; the attribute names the section in analytics events.
+    return (
+      <div key={id} data-analytics={internal.contentType.replace("section_", "")} className="contents">
+        <Component section={section} ctx={ctx} />
+      </div>
+    )
   })
 }
 

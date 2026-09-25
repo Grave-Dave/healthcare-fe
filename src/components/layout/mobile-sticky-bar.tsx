@@ -34,6 +34,7 @@ export function MobileStickyBar({ phone, cta }: { phone?: string; cta: ResolvedL
   return (
     <div
       aria-hidden={!visible}
+      data-analytics="pasek mobilny"
       className={cn(
         "fixed inset-x-0 bottom-0 z-30 flex items-center gap-2.5 bg-mist-50/90 px-4 pt-3 pb-[max(1.75rem,env(safe-area-inset-bottom))] shadow-[0_-18px_40px_-24px_rgb(26_38_32/0.25)] backdrop-blur-[16px] transition-[opacity,translate] duration-700 ease-mist lg:hidden",
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-6 opacity-0"

@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react"
 
 import { AuthCard } from "@/components/auth/auth-shell"
 import { useToast } from "@/components/ui/toast"
+import { track } from "@/lib/analytics"
 import { completeGoogleLogin } from "@/lib/auth/session"
 import { routes } from "@/lib/site"
 
@@ -27,6 +28,7 @@ export function GoogleCallback() {
 
     completeGoogleLogin().then((session) => {
       if (session.status === "anonymous") return fail()
+      track("Logowanie", { metoda: "google" })
       toast("Zalogowano przez Google")
       router.replace(routes.panel)
     })

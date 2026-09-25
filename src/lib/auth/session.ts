@@ -1,5 +1,6 @@
 "use client"
 
+import { excludeThisBrowser } from "@/lib/analytics"
 import { ApiError, request, type ApiInit } from "@/lib/api"
 
 export type User = {
@@ -96,6 +97,7 @@ export async function authRequest<T>(path: string, init: ApiInit = {}): Promise<
 export async function loadUser() {
   try {
     const { user, isAdmin } = await authRequest<{ user: User; isAdmin: boolean }>("/user")
+    if (isAdmin) excludeThisBrowser()
     setSession({ status: "authenticated", user, isAdmin })
   } catch (error) {
     const unverified = error instanceof ApiError && error.status === 403 && Boolean(accessToken)
