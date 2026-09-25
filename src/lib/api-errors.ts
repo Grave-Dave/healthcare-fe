@@ -23,6 +23,7 @@ const translations: Record<string, string> = {
   "The selected term is not available.": "Wybrany termin jest już niedostępny.",
   "Visit not found.": "Wizyta nie została znaleziona.",
   "Only available visits can be deleted.": "Można usunąć tylko dostępne wizyty.",
+  "Only incoming visits can be canceled.": "Odwołać można tylko wizyty od jutra – w sprawie dzisiejszej zadzwoń do gabinetu.",
   "Visit status can only be updated from pending to confirmed.": "Status wizyty można zmienić tylko z oczekującej na potwierdzoną.",
 }
 
@@ -39,7 +40,7 @@ export function fieldErrors(error: unknown): Record<string, string> {
 /** One message suitable for a toast or a form-level alert. */
 export function errorMessage(error: unknown): string {
   if (error instanceof ApiError) {
-    const first = Object.values(error.body?.errors ?? {})[0]?.[0] ?? error.body?.message
+    const first = Object.values(error.body?.errors ?? {})[0]?.[0] ?? error.body?.message ?? error.body?.error
     if (error.status === 429) return translate("Too Many Attempts.")
     return first ? translate(first) : GENERIC
   }

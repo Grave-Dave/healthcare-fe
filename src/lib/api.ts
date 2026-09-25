@@ -5,7 +5,7 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000
 export class ApiError extends Error {
   constructor(
     public status: number,
-    public body: { message?: string; errors?: Record<string, string[]> } | null
+    public body: { message?: string; error?: string; errors?: Record<string, string[]> } | null
   ) {
     super(body?.message || `API request failed with status ${status}`)
   }
