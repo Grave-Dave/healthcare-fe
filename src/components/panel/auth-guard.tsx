@@ -23,9 +23,9 @@ export function AuthGuard({ children, admin = false, publicPaths = [] }: { child
 
   useEffect(() => {
     if (isPublic) return
-    if (session.status === "anonymous") router.replace(`${routes.login}?next=${encodeURIComponent(pathname)}`)
+    if (session.status === "anonymous" && !session.endedByUser) router.replace(`${routes.login}?next=${encodeURIComponent(pathname)}`)
     if (session.status === "authenticated" && admin && !session.isAdmin) router.replace(routes.booking)
-  }, [session.status, session.isAdmin, admin, pathname, router, isPublic])
+  }, [session.status, session.endedByUser, session.isAdmin, admin, pathname, router, isPublic])
 
   if (isPublic) return children
   if (session.status === "unverified") return <VerifyEmail />

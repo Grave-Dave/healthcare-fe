@@ -311,6 +311,10 @@ Zasady: w widoku akcja jest drugorzędna (link lub `btn-quiet-danger`); właści
 - Zapis: „Anuluj zmiany” (quiet) + „Zapisz zmiany” (press) pod formularzami; potwierdzenie toastem (pill `moss-950`, ikona ✓ `dawn-400`, `role="status"`, znika po ~3 s).
 - Strefa usuwania: ramka `ember`, opis, `btn-quiet-danger` → dialog z checkboxem.
 
+**Implementacja:**
+- `/panel/wizyty`: listy dzielone we froncie po dacie i godzinie (backend dzieli tylko po dacie, więc dzisiejsza wizyta trafiałaby do minionych). „Odbyta” = potwierdzona wizyta w przeszłości, niepotwierdzona w przeszłości = „Niepotwierdzona”. Wizyty w dniu terminu nie da się odwołać online (backend: `date > now()`), zamiast przycisku jest informacja o telefonie. Backend po odwołaniu robi soft delete wizyty, więc odwołana **znika z listy** zamiast przejść do Zakończonych jako „Odwołana” (styl przekreślenia jest gotowy na wypadek zmiany backendu).
+- `/panel/konto`: sekcje przełączane jak zakładki (pionowe na desktopie, chipy na mobile), każda z własnym zapisem. `POST /user-update` wymaga telefonu i e-maila przy każdym wywołaniu, więc zmiana hasła wysyła też dane profilu; bez telefonu zmiana hasła jest zablokowana z odesłaniem do danych osobowych. Usuwanie konta jest zablokowane, dopóki pacjent ma nadchodzące wizyty (backend ich nie odwołuje). Po wylogowaniu i usunięciu konta strażnik panelu nie przekierowuje na `/login` (`session.endedByUser`), tylko na stronę główną.
+
 ## 10. Panel administratora (referencja: plansze „Admin · …”)
 
 Ten sam język co panel pacjenta. Różnice: plakietka „Administrator” przy nazwie, nawigacja **Wizyty / Terminy / Pacjenci**, licznik oczekujących wizyt przy „Wizyty” (pill `dawn-400`, z `aria-label`).
@@ -356,7 +360,9 @@ Komunikaty z Laravela (angielskie) tłumaczy `src/lib/api-errors.ts`.
 - **Backend – terminy:** `/month-terms` nie filtruje po terapeucie, a `/terms` tak (`MAIN_THERAPIST_ID`) – kalendarz mógłby pokazać dzień bez godzin, gdyby terminy dodał inny terapeuta. `/new-terms` przyjmuje **przedział** godzin `[od, do]`, nie listę – panel admina (zaznaczanie pojedynczych godzin) musi to uwzględnić.
 
 - Pasek trybu impersonacji w panelu pacjenta.
-- **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem.
+- **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem. Tymczasowo front blokuje usunięcie konta przy nadchodzących wizytach.
+- **Backend – konto:** zmiana hasła nie wymaga obecnego hasła, a zmiana e-maila nie wymaga ponownej weryfikacji adresu – do poprawy razem z aktualizacją Laravela.
+- **Backend – odwołane wizyty:** soft delete przy odwołaniu ukrywa je w historii pacjenta (`/user-visits` bez `withTrashed`).
 - Zasady odwoływania wizyt (np. minimalne wyprzedzenie) – placeholder w dialogu odwołania.
 - Teksty oznaczone w makiecie `[Szkic do CMS]` – do weryfikacji przez Kasię.
 

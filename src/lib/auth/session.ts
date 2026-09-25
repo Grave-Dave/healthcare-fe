@@ -17,6 +17,8 @@ export type Session = {
   status: SessionStatus
   user: User | null
   isAdmin: boolean
+  /** Logged out or deleted the account on purpose – the caller navigates away, the panel guard must not redirect to /login. */
+  endedByUser?: boolean
 }
 
 type TokenResponse = { access_token: string; token_type: string }
@@ -156,7 +158,7 @@ export async function logout() {
     await authRequest("/logout", { method: "POST" })
   } finally {
     accessToken = null
-    setSession({ status: "anonymous", user: null, isAdmin: false })
+    setSession({ status: "anonymous", user: null, isAdmin: false, endedByUser: true })
   }
 }
 
@@ -170,4 +172,26 @@ export function sendPasswordResetLink(email: string) {
 
 export function resetPassword(data: { email: string; token: string; password: string; password_confirmation: string }) {
   return request<{ message: string }>("/password/reset", { method: "POST", body: data })
+}
+
+export type ProfileForm = {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  password?: string
+  password_confirmation?: string
+}
+
+/** Saves the profile. The backend validates phone and e-mail on every call, so a password change sends the profile too. */
+export async function updateProfile(form: ProfileForm) {
+  const { user } = await authRequest<{ user: User }>("/user-update", { method: "POST", body: form })
+  setSession({ ...session, user })
+  return user
+}
+
+export async function deleteAccount() {
+  await authRequest("/user-delete", { method: "DELETE" })
+  accessToken = null
+  setSession({ status: "anonymous", user: null, isAdmin: false, endedByUser: true })
 }
