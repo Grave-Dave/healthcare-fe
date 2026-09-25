@@ -5,14 +5,10 @@ import { site } from "@/lib/site"
 
 import "./globals.css"
 
+// Page titles and descriptions come from Flotiq (lib/metadata.ts); these are fallbacks only.
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} – ${site.tagline} we Wrocławiu`,
-    template: `%s | ${site.name}`,
-  },
-  description:
-    "Psychoterapia psychodynamiczna osób dorosłych we Wrocławiu. Umów konsultację online u Katarzyny Trzeciakiewicz.",
+  title: site.name,
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

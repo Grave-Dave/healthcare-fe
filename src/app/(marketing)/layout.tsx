@@ -1,13 +1,10 @@
 import { PreviewBanner } from "@/components/marketing/preview-banner"
-import { SiteFooter } from "@/components/marketing/site-footer"
-import { SiteHeader } from "@/components/marketing/site-header"
 
+// Navbar and footer come from the Flotiq layout of each page (components/layout/site-frame.tsx).
 export default function MarketingLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      <SiteHeader />
-      <main className="flex-1">{children}</main>
-      <SiteFooter />
+      {children}
       <PreviewBanner />
     </>
   )

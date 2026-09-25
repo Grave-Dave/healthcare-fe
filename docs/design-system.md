@@ -126,7 +126,8 @@ Skala (desktop → mobile):
 | `lead` | 21/1.6 | 18/1.6 | Karla |
 | `body` | 18–19/1.75 | 17/1.7 | Karla |
 | `eyebrow` | 13, uppercase, tracking 0.18em | 12 | Karla |
-| `ui` (przyciski, nawigacja) | 15–16, 500 | 15 | Karla |
+| `nav` (linki w nawigacji desktop) | 18 | – | Karla |
+| `ui` (przyciski) | 15–16, 500 | 15 | Karla |
 
 ## 4. Layout i rytm
 
@@ -174,7 +175,7 @@ Wzór: bloki tła zaczynają się **w połowie sekcji i wchodzą w następną**,
 | Obszary pomocy | brak dekoracji tła – sekcja ma być czysta |
 | Baner zdjęciowy | wsunięty (margines 120 px, radius 40); `::before` pas `#E6EBE3` od połowy wysokości do dołu na całą szerokość |
 | O mnie | `::before` kontynuuje pas u góry sekcji (portret na niego nachodzi); `::after` `mist-100` z prawej, schodzi 200 px pod CTA band |
-| Portret | `::before` łuk-obrys `moss-300` przesunięty o 28 px (hover 18 px) |
+| Portret | łuk maks. 440 × 600 px (mobile 326 × 440), `::before` łuk-obrys `moss-300` przesunięty o 28 px (mobile 14 px) |
 | CTA band | `::before` obrys zaokrąglony przesunięty o 28 px w prawo-dół |
 | Karty gabinetów | `::after` obrys `moss-300` pojawia się na hover (opacity) |
 
@@ -182,7 +183,7 @@ Na mobile przesunięcia skalujemy do ~12–16 px, a bloki wchodzące w kolejną 
 
 - Easing zawsze `--ease-mist`. Czasy: 300 ms (opacity), 400 ms (kolor), 500–600 ms (cień, transform), 700 ms (linia taba).
 - Zmiana treści (tab, obszar pomocy): fade + 8 px w górę, 600 ms.
-- Hero: powolny zoom tła (24 s, alternate), wejście tekstu 1.4 s, pulsujący wskaźnik scrolla.
+- Hero: powolny zoom tła (24 s, alternate), wejście tekstu 1.4 s, biały wskaźnik scrolla (myszka 28×46, na mobile 24×38, kropka w środku, ruch 8 px w pionie co 2.4 s).
 - `prefers-reduced-motion: reduce` → wyłącza animacje i transition.
 
 ## 6. Komponenty
@@ -212,11 +213,11 @@ Na mobile przesunięcia skalujemy do ~12–16 px, a bloki wchodzące w kolejną 
 | `SiteHeader` | Dwa stany. **Na hero:** przezroczysty, biały tekst, wysokość ~112 px; kontrast zapewnia scrim u góry hero (gradient `rgb(14 22 18 / .5)` → 0 na 200 px desktop / 140 px mobile), a ogólna nakładka hero spada do 34% (mobile 38%). **Po przewinięciu** (próg ~80 px lub wyjście hero z viewportu – IntersectionObserver): `position: sticky`, wysokość 76 px, tło `mist-50/82` + `backdrop-filter: blur(18px) saturate(1.1)`, linia 1 px `moss-950/6%` i miękki cień w dół; ciemny tekst; telefon z ikoną; CTA „Umów wizytę” jako `btn-primary` w rozmiarze sm (15 px, strzałka 22 px). Przejście stanów: tło i kolor 400–500 ms `--ease-mist`, bez zmiany położenia elementów. Aktywny link = sekcja w widoku (scroll-spy): opacity 1 + linia 1.5 px. Belka jest zawsze widoczna (nie chowa się przy przewijaniu w dół) – CTA rezerwacji ma być pod ręką. Mobile: to samo, bez telefonu w belce (telefon jest w dolnym sticky pasku) | Flotiq: nawigacja |
 | `HeroVideo` | pętla wideo MP4/WebM (≤600 kB) z posterem, nakładka moss-950/38%, mgła u dołu, dwa CTA | Flotiq: tytuł, lead, media |
 | `Statement` | jedno duże zdanie z kursywą | Flotiq |
-| `AreasExplorer` | Strona „stoi”, dopóki nie przejdziemy przez wszystkie obszary. Implementacja: sekcja o wysokości ~`N × 70vh`, lista + panel `position: sticky`, aktywny obszar = postęp przewijania sekcji (`useScroll` / IntersectionObserver). Działa dla kółka, touchpada, klawiatury i dotyku, bez przechwytywania `wheel`. (Makieta symuluje to przechwyceniem `wheel` z `passive: false` – nie przenosić do produkcji.) Szyna postępu obok listy, klik w pozycję przewija do jej progu. Kontener ma **stałą wysokość** (desktop 720 px, lista i panel) – zmiana obszaru nie może przesuwać treści poniżej. W panelu: ilustracja 300 px (`flex-shrink: 0`), opis przycięty do 5 linii (`line-clamp`), link „Dowiedz się więcej” przyklejony do dołu (`margin-top: auto`). W CMS limit opisu skrótowego ~280 znaków. Mobile: zwykła lista rozwijana bez sticky | Flotiq: typ „Obszar pomocy” (nazwa, opis, ilustracja, slug) |
+| `AreasExplorer` | Strona „stoi”, dopóki nie przejdziemy przez wszystkie obszary. Implementacja: sekcja o wysokości ~`100vh + N × 35vh` (krótki skok – jeden obszar na ok. 1/3 ekranu), nagłówek sekcji + lista + panel przypięte razem (`position: sticky`, bez przerwy między nagłówkiem a listą), aktywny obszar = postęp przewijania sekcji (`useScroll` / IntersectionObserver). Działa dla kółka, touchpada, klawiatury i dotyku, bez przechwytywania `wheel`. (Makieta symuluje to przechwyceniem `wheel` z `passive: false` – nie przenosić do produkcji.) Szyna postępu obok listy, klik w pozycję przewija do jej progu. Panel ma **stałą wysokość** (`min(560px, 100vh − 340px)`) – zmiana obszaru nie może przesuwać treści poniżej. W panelu: ilustracja do 220 px (`flex-shrink: 0`), opis przycięty do 5 linii (`line-clamp`), link „Dowiedz się więcej” przyklejony do dołu (`margin-top: auto`). W CMS limit opisu skrótowego ~280 znaków. Mobile: zwykła lista rozwijana bez sticky | Flotiq: typ „Obszar pomocy” (nazwa, opis, ilustracja, slug) |
 | `ImageBanner` | pełnoszerokie zdjęcie z mgłą góra/dół, cytat, przycisk | Flotiq |
 | `AboutTabs` | portret w łuku + badge, `Tabs` z akapitami lub listą kart | Flotiq: „O mnie” (zakładki jako lista) |
 | `CtaBand` | ciemny zaokrąglony baner z CTA do kalendarza | Flotiq |
-| `LocationCard` | zdjęcie/mapa, nazwa, adres, link „Dojazd” | Flotiq: „Gabinet” + `backendLocationId` |
+| `LocationCard` | zdjęcie/mapa, nazwa, adres, link „Dojazd”. Karty w **karuzeli** (scroll-snap): desktop 2 karty + fragment trzeciej, strzałki ←/→ przy nagłówku (tylko gdy jest co przewijać); mobile 1 karta + fragment następnej, przewijanie palcem. Karuzela wychodzi do krawędzi ekranu | Flotiq: „Gabinet” + `backendLocationId` |
 | `SiteFooter` | nazwa, nawigacja, kontakt, linki prawne | Flotiq: ustawienia globalne |
 
 ### Ilustracje
@@ -339,3 +340,9 @@ Przełącznik (`switch`): tor 44×26 `mist-300` → `moss-800` po włączeniu, g
 - **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem.
 - Zasady odwoływania wizyt (np. minimalne wyprzedzenie) – placeholder w dialogu odwołania.
 - Teksty oznaczone w makiecie `[Szkic do CMS]` – do weryfikacji przez Kasię.
+
+## Uwagi implementacyjne
+
+- **Tailwind 4 – przejścia przesunięć:** klasy `translate-*` ustawiają właściwość CSS `translate`, nie `transform`. W listach `transition-[…]` trzeba podawać `translate` (nie `transform`), inaczej element „skacze” zamiast płynnie się przesuwać. Dotyczy przycisków `press`, kart i paska na mobile.
+- **Media z Flotiqa:** obrazy (także animowane GIF) z `/image/0x0/…` (oryginał), inne pliki (wideo) z `/file/…` – `getMediaUrl()` dobiera ścieżkę po typie medium.
+- **Dekoracje sekcji a warstwy:** tła wychodzące poza sekcję (`::before`/`::after` z `-z-10`) muszą należeć do kontekstu warstw `<main>` (ma `isolate`). Sekcja z takim tłem **nie może** mieć własnego `isolate` ani `z-index` – wtedy jej dekoracja przykrywa treść kolejnych sekcji (np. FAQ pod „O mnie”). `isolate` stosujemy tylko na małych elementach wewnątrz sekcji (portret z obrysem, CTA z ramką).

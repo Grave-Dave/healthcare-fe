@@ -17,7 +17,7 @@ Backend lokalnie: `php artisan serve` w WSL (`http://localhost:8000`). W `.env` 
 ```
 src/app/(marketing)/   strona publiczna – Server Components, treści z Flotiqa, draft mode
 src/app/(app)/panel/   panel pacjenta i administratora – dane z Laravel API
-src/app/api/draft      wejście w podgląd wersji roboczej (Flotiq preview URL)
+src/app/api/flotiq/draft  włączanie / wyłączanie podglądu wersji roboczych (plugin w edytorze Flotiqa)
 src/app/api/revalidate webhook Flotiqa – unieważnia cache treści
 src/components/ui      komponenty bazowe (shadcn/ui + warianty design systemu)
 src/lib                flotiq.ts, api.ts (Laravel), env.ts, site.ts
@@ -27,8 +27,11 @@ docs/design-system.md  kolory, typografia, komponenty, zachowania
 
 ## Flotiq
 
-- Preview URL w Flotiqu: `https://<domena>/api/draft?secret=<DRAFT_MODE_SECRET>&slug=/<ścieżka>`
-- Webhook po publikacji: `POST https://<domena>/api/revalidate?type=<nazwa_typu>` z nagłówkiem `x-revalidate-secret: <REVALIDATE_SECRET>`
+- Dostęp przez `@flotiq/flotiq-api-sdk` (`src/lib/flotiq.ts`). Typy: `npm run flotiq:types` → `flotiq-api.d.ts` (klucz z `.env.local`).
+- Model treści: `docs/content-model.md`.
+
+- Podgląd z edytora Flotiqa (plugin): `https://<domena>/api/flotiq/draft?key=<DRAFT_MODE_SECRET>&draft=true|false&redirect=/<ścieżka>`
+- Webhook po publikacji: `POST https://<domena>/api/revalidate?type=<nazwa_typu>` (tagi `flotiq-content` / `flotiq-content-<typ>`) z nagłówkiem `x-revalidate-secret: <REVALIDATE_SECRET>`
 
 ## Produkcja
 

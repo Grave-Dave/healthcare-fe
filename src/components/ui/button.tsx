@@ -9,7 +9,7 @@ const press =
   "-translate-y-[3px] shadow-lifted hover:translate-y-0 hover:shadow-pressed active:translate-y-px active:shadow-pressed-deep active:duration-100"
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-4 rounded-full font-medium whitespace-nowrap select-none transition-[background-color,box-shadow,transform,opacity,color] duration-500 ease-mist disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-40 disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "inline-flex shrink-0 items-center justify-center gap-4 rounded-full font-medium whitespace-nowrap select-none transition-[background-color,box-shadow,translate,opacity,color] duration-500 ease-mist disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-40 disabled:shadow-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
