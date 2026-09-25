@@ -11,17 +11,23 @@ import { loadUser, logout, resendVerificationEmail } from "@/lib/auth/session"
 import { useSession } from "@/lib/auth/use-session"
 import { routes } from "@/lib/site"
 
-/** Client-side guard for /panel (keeps the panel static-export friendly). `admin` also requires the therapist role. */
-export function AuthGuard({ children, admin = false }: { children: ReactNode; admin?: boolean }) {
+/**
+ * Client-side guard for /panel (keeps the panel static-export friendly). `admin` also requires the therapist role.
+ * `publicPaths` render for everyone (booking: browse terms first, log in when booking).
+ */
+export function AuthGuard({ children, admin = false, publicPaths = [] }: { children: ReactNode; admin?: boolean; publicPaths?: string[] }) {
   const session = useSession()
   const router = useRouter()
   const pathname = usePathname()
+  const isPublic = publicPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))
 
   useEffect(() => {
+    if (isPublic) return
     if (session.status === "anonymous") router.replace(`${routes.login}?next=${encodeURIComponent(pathname)}`)
     if (session.status === "authenticated" && admin && !session.isAdmin) router.replace(routes.booking)
-  }, [session.status, session.isAdmin, admin, pathname, router])
+  }, [session.status, session.isAdmin, admin, pathname, router, isPublic])
 
+  if (isPublic) return children
   if (session.status === "unverified") return <VerifyEmail />
   if (session.status !== "authenticated" || (admin && !session.isAdmin)) return <PanelLoader />
   return children

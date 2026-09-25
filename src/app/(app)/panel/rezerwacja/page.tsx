@@ -1,15 +1,19 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
+
+import { BookingView, type OfficeInfo } from "@/components/panel/booking/booking-view"
+import { getOffices, getSettings } from "@/lib/flotiq"
 
 export const metadata: Metadata = { title: "Rezerwacja" }
 
-// Stage 2: port from legacy/src/containers (see docs/design-system.md, sections 8–9).
-export default function BookingPage() {
+// Office names and the booking note come from Flotiq (at build time in a static export); terms are fetched in the browser.
+export default async function BookingPage() {
+  const [offices, settings] = await Promise.all([getOffices().catch(() => []), getSettings().catch(() => undefined)])
+  const officeInfo: OfficeInfo[] = offices.map((office) => ({ backendLocationId: office.backendLocationId, name: office.name, slug: office.slug }))
+
   return (
-    <div className="flex flex-col gap-3.5">
-      <span className="eyebrow">Panel</span>
-      <h1 className="font-display text-4xl font-light lg:text-[52px]">
-        Wybierz dogodny <em>termin</em>
-      </h1>
-    </div>
+    <Suspense>
+      <BookingView offices={officeInfo} note={settings?.bookingNote} />
+    </Suspense>
   )
 }

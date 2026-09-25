@@ -265,6 +265,8 @@ Panel używa tych samych tokenów, fontów i kontrolek co landing – bez hero, 
 | Potwierdzenie | modal 580 px, tło `mist-50`, radius 36, zasłona `moss-950/32` + blur 6 px; wiersze danych na białych kartach; „Wróć” (quiet) + „Potwierdzam rezerwację” (press) | bottom sheet z uchwytem, przyciski jeden pod drugim |
 | Sukces | ikona ✓ w kółku `#E6EBE3`, badge statusu, info o e-mailu, CTA „Moje wizyty” | to samo w bottom sheet |
 
+**Implementacja (`/panel/rezerwacja`):** strona jest publiczna – gość przegląda kalendarz i godziny, logowanie dopiero przy „Zarezerwuj” (powrót z `?next=`). Wybór jest w adresie (`?date=&term=`), więc przetrwa logowanie i odświeżenie. Po wejściu wybierany jest pierwszy dzień z terminami. Nazwy gabinetów z Flotiqa (`backendLocationId`), awaryjnie z adresu z API. Dzisiejsze godziny są ukrywane (backend przyjmuje rezerwacje od jutra).
+
 `btn-quiet` – przycisk drugorzędny w panelu: przezroczysty, obrys `mist-300`, hover białe tło + obrys `moss-300`.
 
 ### Statusy wizyt
@@ -350,6 +352,8 @@ Ekrany `/login`, `/register`, `/password/reset/link`, `/password/reset/[token]`,
 Komunikaty z Laravela (angielskie) tłumaczy `src/lib/api-errors.ts`.
 
 ## 12. Otwarte kwestie
+
+- **Backend – terminy:** `/month-terms` nie filtruje po terapeucie, a `/terms` tak (`MAIN_THERAPIST_ID`) – kalendarz mógłby pokazać dzień bez godzin, gdyby terminy dodał inny terapeuta. `/new-terms` przyjmuje **przedział** godzin `[od, do]`, nie listę – panel admina (zaznaczanie pojedynczych godzin) musi to uwzględnić.
 
 - Pasek trybu impersonacji w panelu pacjenta.
 - **Usuwanie konta w backendzie to soft delete** (`User` używa `SoftDeletes`): dane zostają w bazie, a nadchodzące wizyty nie są odwoływane (kaskada FK nie działa przy soft delete). Trzeba zdecydować, co ma się dziać (RODO – prawo do usunięcia danych; zwolnienie terminów) i dopiero wtedy doprecyzować tekst w dialogu. Makieta ma neutralny tekst z placeholderem.

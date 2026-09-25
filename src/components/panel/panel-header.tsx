@@ -46,6 +46,11 @@ export function PanelHeader() {
           ))}
         </nav>
       </div>
+      {status === "anonymous" && (
+        <Link href={`${routes.login}?next=${encodeURIComponent(pathname)}`} className="text-[15px] font-medium opacity-70 transition-opacity hover:opacity-100">
+          Zaloguj się
+        </Link>
+      )}
       {status === "authenticated" && user && (
         <div className="flex items-center gap-3.5">
           <span aria-hidden="true" className="grid size-9 place-items-center rounded-full bg-[#e6ebe3] text-[13px] font-bold text-moss-800 lg:size-10">

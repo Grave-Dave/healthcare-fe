@@ -23,7 +23,8 @@ type TokenResponse = { access_token: string; token_type: string }
 
 // Module-level store: survives route changes between (auth) and (app) layouts; the access token never leaves memory.
 let accessToken: string | null = null
-let session: Session = { status: "loading", user: null, isAdmin: false }
+const SERVER_SESSION: Session = { status: "loading", user: null, isAdmin: false }
+let session: Session = SERVER_SESSION
 const listeners = new Set<() => void>()
 
 // Non-sensitive hint that this browser had a session. The refresh cookie is httpOnly (unreadable), so public pages use
@@ -59,8 +60,8 @@ export const sessionStore = {
     return () => listeners.delete(listener)
   },
   get: () => session,
-  // Server render: always "loading" – the real state is known only in the browser.
-  getServer: (): Session => ({ status: "loading", user: null, isAdmin: false }),
+  // Server render: always "loading" – the real state is known only in the browser. Must be a stable reference.
+  getServer: () => SERVER_SESSION,
 }
 
 // The backend rotates the refresh token on every refresh, so concurrent refreshes would invalidate each other.
